@@ -1,17 +1,10 @@
 # Operating System
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+
 
 # Environment Variables
 .env
 .env.*
-!.env.example
-!.env.template
 
 # Dependencies
 node_modules/
@@ -27,9 +20,6 @@ build/
 # Turbo
 .turbo/
 
-# Build outputs
-*.tsbuildinfo
-.tsbuildinfo
 
 # Testing
 # Playwright
@@ -43,22 +33,6 @@ tests-examples/
 vitest-example/
 coverage/
 
-# Jest
-coverage/
-*.lcov
-
-# TypeScript
-*.tsbuildinfo
-
-# ESLint
-.eslintcache
-
-# Stylelint
-.stylelintcache
-
-# Prettier
-.prettiercache
-
 # npm
 npm-debug.log*
 npm-error.log*
@@ -67,82 +41,5 @@ npm-error.log*
 package-lock.json
 
 
-# IDEs and Editors
-.vscode/
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.idea/
-*.swp
-*.swo
-*~
-
-# Logs
-logs/
-*.log
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
 # Optional npm cache directory
 .npm/
-
-# Optional REPL history
-.node_repl_history
-
-# npm shrinkwrap file
-npm-shrinkwrap.json
-
-# npm workspace lockfiles (if using workspaces)
-packages/*/package-lock.json
-apps/*/package-lock.json
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file (not needed for npm)
-# .yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache/
-.parcel-cache/
-
-# Serverless directories
-.serverless/
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test/
-
-# Temporary folders
-tmp/
-temp/
-
-# MacOS
-.AppleDouble
-.LSOverride
-
-# Windows
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# Linux
-*~
-
-# Backup files
-*.bak
-*.backup
-*.old
