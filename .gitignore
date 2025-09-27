@@ -1,38 +1,148 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+!.env.template
 
 # Dependencies
-node_modules
-.pnp
-.pnp.js
+node_modules/
 
-# Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Project Specific
+/app/generated/
+/todo/
 
-# Testing
-coverage
+# React Router
+.react-router/
+build/
 
 # Turbo
-.turbo
+.turbo/
 
-# Vercel
-.vercel
+# Build outputs
+*.tsbuildinfo
+.tsbuildinfo
 
-# Build Outputs
-.next/
-out/
-build
-dist
+# Testing
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+tests-examples/
 
+# Vitest
+vitest-example/
+coverage/
 
-# Debug
+# Jest
+coverage/
+*.lcov
+
+# TypeScript
+*.tsbuildinfo
+
+# ESLint
+.eslintcache
+
+# Stylelint
+.stylelintcache
+
+# Prettier
+.prettiercache
+
+# npm
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+npm-error.log*
+.npm/
+.npmrc
+package-lock.json
 
-# Misc
-.DS_Store
-*.pem
+
+# IDEs and Editors
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm/
+
+# Optional REPL history
+.node_repl_history
+
+# npm shrinkwrap file
+npm-shrinkwrap.json
+
+# npm workspace lockfiles (if using workspaces)
+packages/*/package-lock.json
+apps/*/package-lock.json
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file (not needed for npm)
+# .yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache/
+.parcel-cache/
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test/
+
+# Temporary folders
+tmp/
+temp/
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Windows
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# Backup files
+*.bak
+*.backup
+*.old
