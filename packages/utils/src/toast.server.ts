@@ -1,6 +1,6 @@
 import { createCookieSessionStorage, redirect } from 'react-router'
 import { createId as cuid } from '@paralleldrive/cuid2'
-import { combineHeaders } from './misc'
+import { combineHeaders } from './misc.js'
 import { z } from 'zod'
 
 const toastKey = 'toast'

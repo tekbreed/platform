@@ -18,6 +18,8 @@ import {
 	Trophy,
 } from 'lucide-react'
 
+import React from 'react'
+
 const features = [
 	{
 		icon: FileText,
@@ -112,6 +114,11 @@ const features = [
 ]
 
 export function FeaturesSection() {
+	const [n, setN] = React.useState(0)
+
+	React.useEffect(() => {
+		console.log(n)
+	}, [])
 	return (
 		<section className="relative overflow-hidden text-card-foreground py-24 sm:py-32 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
 			<div className="absolute inset-0 pointer-events-none select-none" />
@@ -126,7 +133,7 @@ export function FeaturesSection() {
 					</p>
 					<p className="text-muted-foreground mt-6 text-pretty text-lg leading-8">
 						Our comprehensive learning platform provides structured content, practical
-						challenges, and AI-powered guidance to help you grow from beginner to
+						challenges, and AI-powered guidance to helmp you grow from beginner to
 						professional developer.
 					</p>
 				</div>

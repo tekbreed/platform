@@ -3,14 +3,15 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
-	"exports": {},
+	"exports": {
+		"./*": "./src/*"
+	},
 	"scripts": {
 		"lint": "eslint . --max-warnings 0"
 	},
 	"dependencies": {
 		"@repo/ui": "*",
-		"@repo/utils": "*",
-		"@repo/components": "*"
+		"@repo/utils": "*"
 	},
 	"peerDependencies": {
 		"@react-router/node": "^7.9.2",

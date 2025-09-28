@@ -5,11 +5,11 @@ import { useFetcher } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { parseWithZod } from '@conform-to/zod/v4'
-import { FormError } from './form-error'
 import { toast } from 'sonner'
 import { Loader } from 'lucide-react'
-import { Button } from '@repo/ui/components/button'
-import { Input } from '@repo/ui/components/input'
+import { FormError } from './form-error.js'
+import { Button } from '../components/button.js'
+import { Input } from '../components/input.js'
 
 export const SubscriptionSchema = z.object({
 	name: z

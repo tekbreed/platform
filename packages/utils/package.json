@@ -6,7 +6,8 @@
 	"exports": {
 		"./hooks/*": "./src/hooks/*.ts",
 		"./misc": "./src/misc.ts",
-		"./providers/nonce": "./src/providers/nonce.ts",
+		"./misc.server": "./src/misc.server.ts",
+		"./providers/*": "./src/providers/*",
 		"./env.server": "./src/env.server.ts",
 		"./theme.server": "./src/theme.server.ts",
 		"./toast.server": "./src/toast.server.ts"

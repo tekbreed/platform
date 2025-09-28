@@ -3,7 +3,7 @@ import { Theme, useTheme } from 'remix-themes'
 import { Loader, Monitor, Moon, Sun } from 'lucide-react'
 import { useNavigation } from 'react-router'
 import { cn } from '@repo/ui/lib/utils'
-import { Button } from '@repo/ui/components/button'
+import { Button } from '../components/button.js'
 import {
 	DropdownMenu,
 	DropdownMenuContent,

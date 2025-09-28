@@ -4,14 +4,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@repo/utils/*": ["./src/*"],
-			"@repo/components/*": ["../../packages/components/src/*"]
-		},
-		"moduleResolution": "node",
-		"module": "ESNext",
-		"allowImportingTsExtensions": false,
-		"resolveJsonModule": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true
+			"@repo/ui/*": ["../../packages/ui/src/*", "../../packages/ui/dist/*"]
+		}
 	},
 	"include": ["src"],
 	"exclude": ["node_modules"]

@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/avatar'
 import { Quote } from 'lucide-react'
 
 export function FounderQuoteSection() {
@@ -16,7 +17,10 @@ export function FounderQuoteSection() {
 
 					<div className="flex flex-col items-center">
 						<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary">
-							<span className="text-xl font-bold text-primary-foreground">CAS</span>
+							<Avatar className="h-full w-full">
+								<AvatarFallback>CAS</AvatarFallback>
+								<AvatarImage src="/csc.png" alt="Christopher Sesugh Aondona" />
+							</Avatar>
 						</div>
 						<cite className="not-italic">
 							<div className="text-lg font-semibold text-card-foreground">Founder</div>
