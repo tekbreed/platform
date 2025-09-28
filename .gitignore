@@ -19,6 +19,7 @@ build/
 
 # Turbo
 .turbo/
+/out/
 
 
 # Testing
@@ -32,14 +33,3 @@ tests-examples/
 # Vitest
 vitest-example/
 coverage/
-
-# npm
-npm-debug.log*
-npm-error.log*
-.npm/
-.npmrc
-package-lock.json
-
-
-# Optional npm cache directory
-.npm/
