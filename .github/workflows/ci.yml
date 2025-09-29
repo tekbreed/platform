@@ -1,0 +1,134 @@
+name: Manual Deploy
+
+# Triggered manually from GitHub UI
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "Which app to deploy?"
+        required: true
+        type: choice
+        options:
+          - web
+          - api
+          - admin
+          - docs
+      environment:
+        description: "Deploy to which environment?"
+        required: true
+        type: choice
+        options:
+          - production
+          - staging
+        default: production
+      skip_build:
+        description: "Skip build step? (use existing build)"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    name: Build ${{ inputs.app }}
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skip_build }}
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_REMOTE_ONLY: true
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      # Build only the selected app and its dependencies
+      - name: Build ${{ inputs.app }}
+        run: npx turbo run build --filter=${{ inputs.app }}
+
+      # Upload build artifacts for deploy job
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.app }}-build
+          path: |
+            apps/${{ inputs.app }}/dist
+            apps/${{ inputs.app }}/.next
+            apps/${{ inputs.app }}/build
+          retention-days: 1
+
+  deploy:
+    name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
+    needs: build
+    if: ${{ always() && !failure() }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    environment: ${{ inputs.environment }}
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        if: ${{ !inputs.skip_build }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.app }}-build
+          path: apps/${{ inputs.app }}
+
+      # Deploy based on selected app and environment
+      - name: Deploy ${{ inputs.app }} to Railway
+        run: |
+          case "${{ inputs.app }}" in
+            web)
+              if [ "${{ inputs.environment }}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_STAGING_SERVICE_ID }}"
+              fi
+              ;;
+            api)
+              if [ "${{ inputs.environment }}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_API_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_API_STAGING_SERVICE_ID }}"
+              fi
+              ;;
+            admin)
+              if [ "${{ inputs.environment }}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_ADMIN_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_ADMIN_STAGING_SERVICE_ID }}"
+              fi
+              ;;
+            docs)
+              if [ "${{ inputs.environment }}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_DOCS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_DOCS_STAGING_SERVICE_ID }}"
+              fi
+              ;;
+          esac
+
+          echo "Deploying ${{ inputs.app }} to ${{ inputs.environment }} (Service: ${SERVICE_ID})"
+          railway up --service=${SERVICE_ID}
+        working-directory: apps/${{ inputs.app }}
+
+      - name: Deployment summary
+        run: |
+          echo "### 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **App:** ${{ inputs.app }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build:** ${{ inputs.skip_build && 'Skipped (reused existing)' || 'Fresh build' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY

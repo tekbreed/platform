@@ -89,7 +89,7 @@ export function AboutSection() {
 				</div>
 
 				{/* Mission and Vision */}
-				<div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+				<div className="mx-auto mt-16 max-w-3xl sm:mt-20 lg:mt-24 lg:max-w-none">
 					<div className="grid max-w-xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-2">
 						{missionPoints.map((point, index) => (
 							<Card key={index} className="backdrop-blur-sm">
@@ -114,7 +114,7 @@ export function AboutSection() {
 				</div>
 
 				{/* Core Values */}
-				<div className="mx-auto mt-20 max-w-2xl lg:max-w-none">
+				<div className="mx-auto mt-20 max-w-3xl lg:max-w-none">
 					<div className="mb-12 text-center">
 						<h3 className="text-foreground text-2xl font-bold tracking-tight sm:text-3xl">
 							Our Core Values

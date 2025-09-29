@@ -1,10 +1,10 @@
-import { Badge } from '@repo/ui/components/badge'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from '@repo/ui/components/accordion'
+import { Badge } from '@repo/ui/components/badge'
 import {
 	FileText,
 	GraduationCap,
@@ -18,8 +18,6 @@ import {
 	Trophy,
 } from 'lucide-react'
 
-import React from 'react'
-
 const features = [
 	{
 		icon: FileText,
@@ -29,7 +27,7 @@ const features = [
 		detailedDescription:
 			'Access a comprehensive library of in-depth technical articles covering everything from basic programming concepts to advanced software architecture. Each article is carefully curated by industry experts and includes real-world examples, case studies, and practical insights to deepen your understanding of software engineering principles.',
 		isFirstRelease: true,
-		releaseTimeline: '3 months',
+		releaseTimeline: '4 months',
 	},
 	{
 		icon: PlayCircle,
@@ -39,7 +37,7 @@ const features = [
 		detailedDescription:
 			'Learn through hands-on experience with our interactive tutorial system. Each tutorial provides step-by-step guidance through real coding challenges, complete with interactive code examples, live previews, and practical exercises. Build actual projects while learning new concepts and technologies.',
 		isFirstRelease: true,
-		releaseTimeline: '3 months',
+		releaseTimeline: '4 months',
 	},
 	{
 		icon: Bot,
@@ -48,8 +46,8 @@ const features = [
 			'Advanced software engineering AI assistant trained on your learning progress with contextually-aware guidance.',
 		detailedDescription:
 			'Meet your personal AI mentor that understands your learning journey. This advanced assistant analyzes your progress, identifies knowledge gaps, and provides personalized recommendations. It can answer technical questions, review your code, suggest improvements, and adapt its teaching style to match your learning preferences.',
-		isFirstRelease: false,
-		releaseTimeline: '6 months',
+		isFirstRelease: true,
+		releaseTimeline: '4 months',
 	},
 	{
 		icon: GraduationCap,
@@ -114,26 +112,19 @@ const features = [
 ]
 
 export function FeaturesSection() {
-	const [n, setN] = React.useState(0)
-
-	React.useEffect(() => {
-		console.log(n)
-	}, [])
 	return (
-		<section className="relative overflow-hidden text-card-foreground py-24 sm:py-32 dark:from-indigo-950/20 dark:via-purple-950/20 dark:to-pink-950/20">
-			<div className="absolute inset-0 pointer-events-none select-none" />
-			<div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+		<section className="py-24 sm:py-32 bg-muted/30">
+			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center">
-					<h2 className="text-primary text-base font-semibold leading-7">
+					<h2 className="text-base font-semibold leading-7 text-primary">
 						Learning Modules
 					</h2>
-					<p className="text-foreground mt-2 text-balance text-3xl font-bold tracking-tight sm:text-4xl">
-						Everything you need to master{' '}
-						<span className="text-primary">software engineering</span>
+					<p className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
+						Everything you need to master software engineering
 					</p>
-					<p className="text-muted-foreground mt-6 text-pretty text-lg leading-8">
+					<p className="mt-6 text-lg leading-8 text-muted-foreground text-pretty">
 						Our comprehensive learning platform provides structured content, practical
-						challenges, and AI-powered guidance to helmp you grow from beginner to
+						challenges, and AI-powered guidance to help you grow from beginner to
 						professional developer.
 					</p>
 				</div>
@@ -144,20 +135,20 @@ export function FeaturesSection() {
 							<AccordionItem
 								key={index}
 								value={`item-${index}`}
-								className="bg-card/80 rounded-lg border backdrop-blur-sm"
+								className="border rounded-lg bg-card/50 backdrop-blur-sm"
 							>
-								<AccordionTrigger className="bg-card px-6 py-4 hover:no-underline">
-									<div className="flex w-full items-center gap-4">
+								<AccordionTrigger className="px-6 py-4 hover:no-underline">
+									<div className="flex items-center gap-4 w-full">
 										{feature.isFirstRelease && (
 											<div className="bg-primary rounded-full p-1.5 shadow-lg">
-												<Check className="text-primary-foreground h-4 w-4" />
+												<Check className="h-4 w-4 text-primary-foreground" />
 											</div>
 										)}
-										<div className="flex h-12 w-12 items-center justify-center rounded-lg">
-											<feature.icon className="text-primary h-6 w-6" />
+										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+											<feature.icon className="h-6 w-6 text-primary" />
 										</div>
 										<div className="flex-1 text-left">
-											<h3 className="text-foreground text-xl font-semibold">
+											<h3 className="text-xl font-semibold text-foreground">
 												{feature.title}
 											</h3>
 											<Badge
@@ -171,12 +162,14 @@ export function FeaturesSection() {
 										</div>
 									</div>
 								</AccordionTrigger>
-								<AccordionContent className="px-6 py-4">
-									<div className="space-y-3 text-sm">
-										<p className="leading-relaxed text-lg text-muted-foreground">
+								<AccordionContent className="px-6 pb-4">
+									<div className="space-y-3">
+										<p className="text-muted-foreground leading-relaxed">
 											{feature.description}
 										</p>
-										<p className="leading-relaxed">{feature.detailedDescription}</p>
+										<p className="text-sm text-muted-foreground/80 leading-relaxed">
+											{feature.detailedDescription}
+										</p>
 									</div>
 								</AccordionContent>
 							</AccordionItem>

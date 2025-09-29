@@ -1,5 +1,5 @@
 import { HeroSection } from './components/hero'
-import { CountdownTimer } from './components/timer'
+import { LaunchDateSection } from './components/launch-date'
 import { FeaturesSection } from './components/features'
 import { AboutSection } from './components/about'
 import { FormSection } from './components/form'
@@ -14,7 +14,7 @@ export default function WaitlistRoute() {
 	return (
 		<>
 			<HeroSection />
-			<CountdownTimer />
+			<LaunchDateSection />
 			<FeaturesSection />
 			<AboutSection />
 			<FounderQuoteSection />
