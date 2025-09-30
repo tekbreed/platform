@@ -38,7 +38,8 @@ jobs:
   build:
     name: Build ${{ inputs.app }}
     runs-on: ubuntu-latest
-    if: ${{ !inputs.skip_build }}
+    # Fix: inputs.skip_build is a string "true"/"false", not a boolean
+    if: ${{ inputs.skip_build != 'true' }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
@@ -71,133 +72,180 @@ jobs:
             apps/${{ inputs.app }}/.next
             apps/${{ inputs.app }}/build
           retention-days: 1
+          # Fix: Don't fail if some build directories don't exist
+          if-no-files-found: ignore
 
   deploy:
     name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
     needs: build
-    if: ${{ always() && !failure() }}
+    # Fix: Remove contradictory always() && !failure()
+    # needs: build already handles the dependency correctly
+    if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
     container: ghcr.io/railwayapp/cli:latest
     environment: ${{ inputs.environment }}
-    env:
-      # Use different Railway tokens based on environment
-      RAILWAY_TOKEN: ${{ inputs.environment == 'production' && secrets.RAILWAY_TOKEN_PROD || secrets.RAILWAY_TOKEN_DEV }}
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
       - name: Download build artifacts
-        if: ${{ !inputs.skip_build }}
+        if: ${{ inputs.skip_build != 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.app }}-build
           path: apps/${{ inputs.app }}
 
       # Deploy based on selected app and environment
+      # Fix: Handle both Railway token and service ID in the same block
       - name: Deploy ${{ inputs.app }} to Railway
+        env:
+          APP_NAME: ${{ inputs.app }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          # Secrets for development
+          RAILWAY_TOKEN_DEV: ${{ secrets.RAILWAY_TOKEN_DEV }}
+          # Secrets for production
+          RAILWAY_TOKEN_PROD: ${{ secrets.RAILWAY_TOKEN_PROD }}
         run: |
-          case "${{ inputs.app }}" in
+          # Set Railway token based on environment
+          if [ "${ENVIRONMENT}" = "production" ]; then
+            export RAILWAY_TOKEN="${RAILWAY_TOKEN_PROD}"
+          else
+            export RAILWAY_TOKEN="${RAILWAY_TOKEN_DEV}"
+          fi
+
+          # Set service ID based on app and environment
+          case "${APP_NAME}" in
             waitlist)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
               fi
               ;;
             web)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
               fi
               ;;
             tutorials)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_TUTORIALS_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_TUTORIALS_DEV_SERVICE_ID }}"
               fi
               ;;
             chat)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_CHAT_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_CHAT_DEV_SERVICE_ID }}"
               fi
               ;;
             admin)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_ADMIN_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_ADMIN_DEV_SERVICE_ID }}"
               fi
               ;;
             programs)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_PROGRAMS_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_PROGRAMS_DEV_SERVICE_ID }}"
               fi
               ;;
             coding-challenges)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_DEV_SERVICE_ID }}"
               fi
               ;;
             teams)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_TEAMS_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_TEAMS_DEV_SERVICE_ID }}"
               fi
               ;;
             job-board)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_JOB_BOARD_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_JOB_BOARD_DEV_SERVICE_ID }}"
               fi
               ;;
             store)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_STORE_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_STORE_DEV_SERVICE_ID }}"
               fi
               ;;
             docs)
-              if [ "${{ inputs.environment }}" = "production" ]; then
+              if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_DOCS_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_DOCS_DEV_SERVICE_ID }}"
               fi
               ;;
             *)
-              echo "❌ Unknown app: ${{ inputs.app }}"
+              echo "❌ Unknown app: ${APP_NAME}"
               exit 1
               ;;
           esac
 
-          if [ -z "${SERVICE_ID}" ]; then
-            echo "❌ SERVICE_ID not found for ${{ inputs.app }} in ${{ inputs.environment }}"
-            echo "Please ensure the secret is configured in GitHub repository settings."
+          # Validate required variables are set
+          if [ -z "${RAILWAY_TOKEN}" ]; then
+            echo "❌ RAILWAY_TOKEN not found for ${ENVIRONMENT} environment"
+            echo "Please ensure RAILWAY_TOKEN_DEV or RAILWAY_TOKEN_PROD secret is configured."
             exit 1
           fi
 
-          echo "🚀 Deploying ${{ inputs.app }} to ${{ inputs.environment }}"
+          if [ -z "${SERVICE_ID}" ]; then
+            echo "❌ SERVICE_ID not found for ${APP_NAME} in ${ENVIRONMENT}"
+            echo "Please ensure the secret RAILWAY_${APP_NAME^^}_${ENVIRONMENT^^}_SERVICE_ID is configured."
+            exit 1
+          fi
+
+          # Verify app directory exists
+          if [ ! -d "apps/${APP_NAME}" ]; then
+            echo "❌ App directory not found: apps/${APP_NAME}"
+            echo "Please ensure the app name matches the directory structure."
+            exit 1
+          fi
+
+          echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
           echo "Service ID: ${SERVICE_ID}"
-          railway up --service=${SERVICE_ID}
-        working-directory: apps/${{ inputs.app }}
+          cd "apps/${APP_NAME}"
+          railway up --service="${SERVICE_ID}"
+        shell: bash
 
       - name: Deployment summary
+        if: success()
         run: |
           echo "### 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **App:** ${{ inputs.app }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Build:** ${{ inputs.skip_build && 'Skipped (reused existing)' || 'Fresh build' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build:** ${{ inputs.skip_build == 'true' && 'Skipped (reused existing)' || 'Fresh build' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        shell: bash
+
+      - name: Deployment failed
+        if: failure()
+        run: |
+          echo "### ❌ Deployment Failed!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **App:** ${{ inputs.app }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Please check the logs above for error details." >> $GITHUB_STEP_SUMMARY
+        shell: bash

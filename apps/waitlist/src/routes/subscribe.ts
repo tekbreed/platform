@@ -1,7 +1,7 @@
-import { redirect } from 'react-router'
+import { redirect } from "react-router";
 
-export const loader = () => redirect('/')
+export const loader = () => redirect("/");
 
 export async function action() {
-	return {}
+  return {};
 }
