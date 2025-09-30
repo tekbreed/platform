@@ -33,10 +33,21 @@ export default defineConfig([
       tseslint: tseslint,
     },
     rules: {
-      "no-unused-vars": "error",
+      "no-unused-vars": "off",
       "no-empty": "warn", // Warn instead of error for empty blocks
       "no-empty-pattern": "off", // Allow empty destructuring patterns
       "@typescript-eslint/no-namespace": "off", // Allow TypeScript namespaces
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          vars: "all", // Check all variables
+          args: "none", // Don't check function arguments
+          caughtErrors: "none", // Don't check catch block parameters
+          ignoreRestSiblings: true, // Ignore rest siblings
+          varsIgnorePattern: "^_", // Allow variables starting with _
+          argsIgnorePattern: "^_", // Allow args starting with _ (though args are ignored anyway)
+        },
+      ],
     },
   },
 ]);

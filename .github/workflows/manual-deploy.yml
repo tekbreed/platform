@@ -69,16 +69,13 @@ jobs:
           name: ${{ inputs.app }}-build
           path: |
             apps/${{ inputs.app }}/dist
-            apps/${{ inputs.app }}/.next
             apps/${{ inputs.app }}/build
           retention-days: 1
-          # Fix: Don't fail if some build directories don't exist
           if-no-files-found: ignore
 
   deploy:
     name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
     needs: build
-    # Fix: Remove contradictory always() && !failure()
     # needs: build already handles the dependency correctly
     if: ${{ always() && (needs.build.result == 'success' || needs.build.result == 'skipped') }}
     runs-on: ubuntu-latest
@@ -97,30 +94,29 @@ jobs:
           path: apps/${{ inputs.app }}
 
       # Deploy based on selected app and environment
-      # Fix: Handle both Railway token and service ID in the same block
       - name: Deploy ${{ inputs.app }} to Railway
         env:
           APP_NAME: ${{ inputs.app }}
           ENVIRONMENT: ${{ inputs.environment }}
           # Secrets for development
-          RAILWAY_TOKEN_DEV: ${{ secrets.RAILWAY_TOKEN_DEV }}
+          RAILWAY_DEV_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}
           # Secrets for production
-          RAILWAY_TOKEN_PROD: ${{ secrets.RAILWAY_TOKEN_PROD }}
+          RAILWAY_PROD_TOKEN: ${{ secrets.RAILWAY_PROD_TOKEN }}
         run: |
           # Set Railway token based on environment
           if [ "${ENVIRONMENT}" = "production" ]; then
-            export RAILWAY_TOKEN="${RAILWAY_TOKEN_PROD}"
+            export RAILWAY_TOKEN="${RAILWAY_PROD_TOKEN}"
           else
-            export RAILWAY_TOKEN="${RAILWAY_TOKEN_DEV}"
+            export RAILWAY_TOKEN="${RAILWAY_DEV_TOKEN}"
           fi
 
           # Set service ID based on app and environment
           case "${APP_NAME}" in
             waitlist)
               if [ "${ENVIRONMENT}" = "production" ]; then
-                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_PROD_SERVICE_ID }}"
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
               else
-                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
               fi
               ;;
             web)
@@ -202,7 +198,7 @@ jobs:
           # Validate required variables are set
           if [ -z "${RAILWAY_TOKEN}" ]; then
             echo "❌ RAILWAY_TOKEN not found for ${ENVIRONMENT} environment"
-            echo "Please ensure RAILWAY_TOKEN_DEV or RAILWAY_TOKEN_PROD secret is configured."
+            echo "Please ensure RAILWAY_PROD_TOKEN or RAILWAY_PROD_TOKEN secret is configured."
             exit 1
           fi
 

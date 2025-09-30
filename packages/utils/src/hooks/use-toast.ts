@@ -1,5 +1,5 @@
 import React from "react";
-import type { Toast } from "../toast.server";
+import type { Toast } from "../toast.server.js";
 import { toast } from "sonner";
 
 export function useToast(toastSession?: Toast | null) {

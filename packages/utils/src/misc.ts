@@ -535,11 +535,14 @@ export function getInitials(name: string): string {
   if (!validWords || validWords.length === 0) return "";
 
   if (validWords.length === 1) {
-    return validWords[0][0].toUpperCase();
+    return validWords[0].toUpperCase() ?? "";
   }
 
-  const firstInitial = validWords[0][0].toUpperCase();
-  const lastInitial = validWords[validWords.length - 1][0].toUpperCase();
+  const firstWord = validWords[0];
+  const lastWord = validWords[validWords.length - 1];
+
+  const firstInitial = firstWord?.[0]?.toUpperCase() ?? "";
+  const lastInitial = lastWord?.[0]?.toUpperCase() ?? "";
 
   return `${firstInitial}${lastInitial}`;
 }
