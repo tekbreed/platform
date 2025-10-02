@@ -315,9 +315,10 @@ jobs:
       # Prune for Docker and upload pruned artifacts
       - name: Turbo prune for Docker
         run: |
-          turbo prune ${{ inputs.app }} --docker
-          # copy Dockerfile into pruned output
-          cp Dockerfile out/Dockerfile
+          pwd
+          ls -R apps/${{ inputs.app }} | head -20
+          npx turbo prune ${{ inputs.app }} --docker
+          cp apps/${{ inputs.app }}/Dockerfile out/Dockerfile
 
       - name: Upload pruned artifacts
         uses: actions/upload-artifact@v4
