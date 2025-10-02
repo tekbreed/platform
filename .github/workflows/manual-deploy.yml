@@ -463,7 +463,7 @@ jobs:
 
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
           echo "Service ID: ${SERVICE_ID}"
-          cd "pruned/full"
+          cd "pruned"
           railway up --service="${SERVICE_ID}"
 
       - name: Deployment summary
