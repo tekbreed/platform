@@ -1,63 +1,83 @@
-# FROM node:22-bookworm-slim AS development-dependencies-env
-# COPY . /app
-# WORKDIR /app
-# RUN npm ci
+# This Dockerfile is adapted from the official Turborepo example
+# https://github.com/vercel/turborepo/tree/main/examples/with-docker
+# Designed to be placed at: apps/waitlist/Dockerfile
 
-# FROM node:22-alpine AS production-dependencies-env
-# COPY package.json package-lock.json /app/
-# WORKDIR /app
-# RUN npm ci --omit=dev
+FROM node:22-alpine AS base
 
-# FROM node:22-alpine AS build-env
-# COPY . /app/
-# COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-# WORKDIR /app
-# RUN npm run build
+# ========================================
+# Stage 1: Prune the monorepo
+# ========================================
+FROM base AS pruner
+RUN apk add --no-cache libc6-compat
+RUN apk update
 
-# FROM node:22-alpine
-# COPY package.json package-lock.json /app/
-# COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-# COPY --from=build-env /app/build /app/build
-# WORKDIR /app
-# CMD ["npm", "run", "start"]
-
-FROM node:22-bookworm-slim AS development-dependencies-env
-# Copy monorepo root files
-COPY ../../package.json ../../package-lock.json /app/
-COPY ../../turbo.json /app/
-# Copy all workspace packages
-COPY ../../packages /app/packages
-COPY ../../apps /app/apps
 WORKDIR /app
+
+# Install turbo globally
+RUN npm install -g turbo
+
+# Copy the entire monorepo
+COPY . .
+
+# Prune the monorepo for waitlist app only
+RUN turbo prune waitlist --docker
+
+# ========================================
+# Stage 2: Install dependencies
+# ========================================
+FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+
+WORKDIR /app
+
+# First install the dependencies (leveraging Docker layer caching)
+# Copy only the pruned lockfile and package.json files
+COPY --from=pruner /app/out/json/ .
+
+# Install dependencies
 RUN npm ci
 
-FROM node:22-alpine AS production-dependencies-env
-# Copy monorepo root files
-COPY ../../package.json ../../package-lock.json /app/
-COPY ../../turbo.json /app/
-# Copy necessary workspace packages
-COPY ../../packages /app/packages
-COPY ../../apps/waitlist /app/apps/waitlist
-WORKDIR /app
-RUN npm ci --omit=dev
+# Copy pruned source code and build
+COPY --from=pruner /app/out/full/ .
 
-FROM node:22-alpine AS build-env
-# Copy everything for build
-COPY ../../package.json ../../package-lock.json /app/
-COPY ../../turbo.json /app/
-COPY ../../packages /app/packages
-COPY ../../apps /app/apps
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-# Build the specific app using turbo
+# Build the waitlist app
 RUN npx turbo run build --filter=waitlist
 
-FROM node:22-alpine
-# Copy only what's needed for runtime
-COPY ../../package.json ../../package-lock.json* /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/apps/waitlist/build /app/apps/waitlist/build
-# OR if build output is in dist:
-# COPY --from=build-env /app/apps/waitlist/dist /app/apps/waitlist/dist
+# ========================================
+# Stage 3: Production runner
+# ========================================
+FROM base AS runner
+WORKDIR /app
+
+# Don't run production as root
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+
+# Copy package files
+COPY --from=installer /app/package.json ./package.json
+COPY --from=installer /app/package-lock.json ./package-lock.json
+
+# Copy node_modules
+COPY --from=installer --chown=nodejs:nodejs /app/node_modules ./node_modules
+
+# Copy the built waitlist app
+COPY --from=installer --chown=nodejs:nodejs /app/apps/waitlist/build ./apps/waitlist/build
+COPY --from=installer --chown=nodejs:nodejs /app/apps/waitlist/package.json ./apps/waitlist/package.json
+
+# Copy shared packages if they exist
+COPY --from=installer --chown=nodejs:nodejs /app/packages ./packages
+
+USER nodejs
+
+# Set working directory to waitlist app
 WORKDIR /app/apps/waitlist
+
+# Expose port
+EXPOSE 8080
+
+ENV NODE_ENV=production
+ENV PORT=8080
+
+# Start the application
 CMD ["npm", "run", "start"]
