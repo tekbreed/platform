@@ -13,13 +13,14 @@
   "dependencies": {
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
+    "@repo/base-config": "*",
     "@repo/ui": "*",
     "@repo/utils": "*",
-    "@repo/base-config": "*",
     "isbot": "^5.1.31",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router": "^7.9.2"
+    "react-router": "^7.9.2",
+    "use-page-view": "^1.0.1"
   },
   "devDependencies": {
     "@react-router/dev": "^7.9.2",
