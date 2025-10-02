@@ -468,7 +468,7 @@ jobs:
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
           echo "Service ID: ${SERVICE_ID}"
           cd "out"
-          railway up --service="${SERVICE_ID}" -- --build-type=docker
+          railway up --service="${SERVICE_ID}"
 
       - name: Deployment summary
         if: success()
