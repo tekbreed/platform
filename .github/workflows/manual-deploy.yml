@@ -309,8 +309,8 @@ jobs:
         run: npm install -g turbo
 
       # Build only the selected app and its dependencies
-      - name: Build ${{ inputs.app }}
-        run: npx turbo run build --filter=${{ inputs.app }}
+      # - name: Build ${{ inputs.app }}
+      #   run: npx turbo run build --filter=${{ inputs.app }}
 
       # Prune for Docker and upload pruned artifacts
       - name: Turbo prune for Docker
