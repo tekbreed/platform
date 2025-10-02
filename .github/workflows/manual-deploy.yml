@@ -102,6 +102,7 @@ jobs:
           RAILWAY_DEV_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}
           # Secrets for production
           RAILWAY_PROD_TOKEN: ${{ secrets.RAILWAY_PROD_TOKEN }}
+        # shell: sh
         run: |
           # Set Railway token based on environment
           if [ "${ENVIRONMENT}" = "production" ]; then
@@ -219,8 +220,7 @@ jobs:
           echo "Service ID: ${SERVICE_ID}"
           cd "apps/${APP_NAME}"
           railway up --service="${SERVICE_ID}"
-        shell: bash
-
+        shell: sh
       - name: Deployment summary
         if: success()
         run: |
@@ -232,7 +232,7 @@ jobs:
           echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
-        shell: bash
+        shell: sh
 
       - name: Deployment failed
         if: failure()
@@ -244,4 +244,4 @@ jobs:
           echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Please check the logs above for error details." >> $GITHUB_STEP_SUMMARY
-        shell: bash
+        shell: sh

@@ -44,7 +44,7 @@ export function FormSection() {
           <p className="mt-6 text-lg leading-8 text-pretty text-muted-foreground">
             Join our exclusive waitlist and get early access to the platform
             that will transform how you build software. Plus, receive a special
-            launch discount when we go live.
+            launch discount when we go live
           </p>
         </div>
 
