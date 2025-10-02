@@ -67,8 +67,9 @@ jobs:
         with:
           name: ${{ inputs.app }}-build
           path: |
-            apps/${{ inputs.app }}/dist
             apps/${{ inputs.app }}/build
+            apps/${{ inputs.app }}/package.json
+            apps/${{ inputs.app }}/package-lock.json
           retention-days: 1
           if-no-files-found: ignore
 
