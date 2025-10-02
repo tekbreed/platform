@@ -38,7 +38,6 @@ jobs:
   build:
     name: Build ${{ inputs.app }}
     runs-on: ubuntu-latest
-    # Fix: inputs.skip_build is a string "true"/"false", not a boolean
     if: ${{ inputs.skip_build != 'true' }}
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}

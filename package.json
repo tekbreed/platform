@@ -6,15 +6,16 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint --fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md,mdx}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,md,mdx,toml}\"",
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.8",
-    "typescript": "5.9.2",
     "@types/react": "19.1.13",
-    "@types/react-dom": "19.1.9"
+    "@types/react-dom": "19.1.9",
+    "prettier": "^3.6.2",
+    "prettier-plugin-toml": "^2.0.6",
+    "turbo": "^2.5.8",
+    "typescript": "5.9.2"
   },
   "engines": {
     "node": ">=22"
