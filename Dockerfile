@@ -68,7 +68,7 @@ COPY --from=installer --chown=nodejs:nodejs /app/node_modules ./node_modules
 
 # Copy the built application
 # Adjust the path based on your build output (dist or build)
-COPY --from=installer --chown=nodejs:nodejs /app/apps/${APP_NAME}/dist ./apps/${APP_NAME}/build
+COPY --from=installer --chown=nodejs:nodejs /app/apps/${APP_NAME}/build ./apps/${APP_NAME}/build
 COPY --from=installer --chown=nodejs:nodejs /app/apps/${APP_NAME}/package.json ./apps/${APP_NAME}/package.json
 
 # If you have shared packages, copy them too
@@ -86,5 +86,4 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Start the application
-# Adjust based on your start command
-CMD ["node", "dist/index.js"]
+CMD ["npm", "run", "start"]
