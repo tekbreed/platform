@@ -218,7 +218,7 @@ jobs:
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
           echo "Service ID: ${SERVICE_ID}"
           cd "apps/${APP_NAME}"
-          railway up --service="${SERVICE_ID}"
+          railway up --service="${SERVICE_ID}" --context=.
         shell: sh
       - name: Deployment summary
         if: success()

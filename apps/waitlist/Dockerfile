@@ -1,71 +1,60 @@
-# This Dockerfile is adapted from the official Turborepo example
-# https://github.com/vercel/turborepo/tree/main/examples/with-docker
-# Designed to be placed at: apps/waitlist/Dockerfile
+# Reference: https://github.com/vercel/turborepo/tree/main/examples/with-docker
 
 FROM node:22-alpine AS base
+
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 
 # ========================================
 # Stage 1: Prune the monorepo
 # ========================================
 FROM base AS pruner
-RUN apk add --no-cache libc6-compat
-RUN apk update
 
 WORKDIR /app
 
 # Install turbo globally
-RUN npm install -g turbo
+RUN npm install -g turbo@latest
 
-# Copy the entire monorepo
+# First copy only the files needed to install dependencies
+# This leverages Docker layer caching
 COPY . .
-
-# Prune the monorepo for waitlist app only
 RUN turbo prune waitlist --docker
 
 # ========================================
-# Stage 2: Install dependencies
+# Stage 2: Install dependencies and build
 # ========================================
 FROM base AS installer
-RUN apk add --no-cache libc6-compat
-RUN apk update
 
 WORKDIR /app
 
-# First install the dependencies (leveraging Docker layer caching)
-# Copy only the pruned lockfile and package.json files
+# First install dependencies (based on pruned package.json files)
 COPY --from=pruner /app/out/json/ .
-
-# Install dependencies
+COPY --from=pruner /app/out/package-lock.json ./package-lock.json
 RUN npm ci
 
-# Copy pruned source code and build
+# Copy the rest of the pruned source code
 COPY --from=pruner /app/out/full/ .
 
-# Build the waitlist app
-RUN npx turbo run build --filter=waitlist
+# Build the project
+RUN npx turbo run build --filter=waitlist...
 
 # ========================================
 # Stage 3: Production runner
 # ========================================
 FROM base AS runner
+
 WORKDIR /app
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nodejs
 
-# Copy package files
+# Copy built application and node_modules
 COPY --from=installer /app/package.json ./package.json
-COPY --from=installer /app/package-lock.json ./package-lock.json
-
-# Copy node_modules
+COPY --from=installer --chown=nodejs:nodejs /app/apps/waitlist/ ./apps/waitlist/
 COPY --from=installer --chown=nodejs:nodejs /app/node_modules ./node_modules
 
-# Copy the built waitlist app
-COPY --from=installer --chown=nodejs:nodejs /app/apps/waitlist/build ./apps/waitlist/build
-COPY --from=installer --chown=nodejs:nodejs /app/apps/waitlist/package.json ./apps/waitlist/package.json
-
-# Copy shared packages if they exist
+# If you have shared packages, copy them too
 COPY --from=installer --chown=nodejs:nodejs /app/packages ./packages
 
 USER nodejs
@@ -73,11 +62,9 @@ USER nodejs
 # Set working directory to waitlist app
 WORKDIR /app/apps/waitlist
 
-# Expose port
 EXPOSE 8080
 
 ENV NODE_ENV=production
 ENV PORT=8080
 
-# Start the application
 CMD ["npm", "run", "start"]
