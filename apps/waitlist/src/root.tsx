@@ -1,15 +1,17 @@
 import type { Route } from "./+types/root";
 import { data, Outlet, useLoaderData } from "react-router";
 import { useTheme } from "remix-themes";
+import { HoneypotProvider } from "remix-utils/honeypot/react";
 
 import appStyles from "./styles/app.css?url";
-import fontStyles from "./styles/fonts.css?url";
+import fontStyles from "@repo/ui/fonts.css?url";
 
 import { Toaster } from "@repo/ui/components/sonner";
 import { getToast } from "@repo/utils/toast.server";
 import { useToast } from "@repo/utils/hooks/use-toast";
 import { useNonce } from "@repo/utils/providers/nonce";
 import { themeSessionResolver } from "@repo/utils/theme.server";
+import { honeypot } from "@repo/utils/honeypot.server";
 import { Document } from "@repo/base-config/document";
 import { ThemedApp } from "@repo/base-config/themed-app";
 import { RootErrorBoundary } from "@repo/base-config/root-error-boundary";
@@ -21,6 +23,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
+  const honeypotInputProps = honeypot.getInputProps();
   const { getTheme } = await themeSessionResolver(request);
   const { toast: toastSession } = await getToast(request);
 
@@ -28,6 +31,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     toastSession,
     theme: getTheme(),
     env: undefined,
+    honeypotInputProps,
   });
 }
 
@@ -50,13 +54,14 @@ export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
   const {
     theme,
     //  honeyProps
+    honeypotInputProps,
   } = loaderData;
   return (
-    // <HoneypotProvider {...honeyProps}>
-    <ThemedApp theme={theme}>
-      <App />
-    </ThemedApp>
-    // </HoneypotProvider>
+    <HoneypotProvider {...honeypotInputProps}>
+      <ThemedApp theme={theme}>
+        <App />
+      </ThemedApp>
+    </HoneypotProvider>
   );
 }
 

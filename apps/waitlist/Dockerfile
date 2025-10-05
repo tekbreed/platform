@@ -1,5 +1,6 @@
-# Dockerfile at repository root
 FROM node:22-alpine AS base
+
+# Builder
 FROM base AS builder
 RUN apk update
 RUN apk add --no-cache libc6-compat
@@ -15,6 +16,7 @@ ARG RAILWAY_SERVICE_NAME
  
 RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
+# Installer
 FROM base AS installer
 RUN apk update
 RUN apk add --no-cache libc6-compat
@@ -26,6 +28,8 @@ RUN npm ci --legacy-peer-deps
 COPY --from=builder /app/out/full/ .
 RUN npx turbo run build
  
+
+# Runner
 FROM base AS runner
 WORKDIR /app
 
@@ -45,8 +49,6 @@ COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
 
 ENV NODE_ENV=production
 ENV PORT=8080
-
-# WORKDIR /app
 
 CMD ["npm", "run", "start"]
 

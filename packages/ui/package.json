@@ -11,9 +11,11 @@
   ],
   "exports": {
     "./globals.css": "./dist/globals.css",
+    "./fonts.css": "./src/styles/fonts.css",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./composed/*": "./src/composed/*.tsx",
+    "./email/*": "./src/email/*.tsx",
     "./hooks/*": "./src/hooks/*.ts"
   },
   "scripts": {
@@ -49,6 +51,7 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-email/components": "^0.5.5",
     "@tailwindcss/typography": "^0.5.19",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

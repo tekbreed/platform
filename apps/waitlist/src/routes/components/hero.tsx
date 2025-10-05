@@ -64,10 +64,11 @@ export function HeroSection() {
           </p>
 
           <p className="mx-auto mt-4 max-w-4xl text-base leading-7 text-pretty text-muted-foreground">
-            Get contextually-aware tutorials and courses powered by RAG/CR
-            technology, real-time code reviews, monthly coding challenges, and
-            access to an advanced software engineering AI assistant trained on
-            your learning progress.
+            Get contextually-aware tutorials and courses powered by
+            Retrieval-Augmented Generation (RAG)/Contextual Retrieval (CR) in AI
+            Systems technology, real-time code reviews, monthly coding
+            challenges, and access to an advanced software engineering AI
+            assistant trained on your learning progress.
           </p>
 
           <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-pretty text-muted-foreground">
@@ -76,7 +77,7 @@ export function HeroSection() {
             developers need.
           </p>
 
-          <div className="mt-10 flex items-center justify-center gap-x-6">
+          <div className="mt-10 flex flex-col items-center justify-center gap-6 gap-x-6 md:flex-row">
             <Button
               size="lg"
               onClick={scrollToWaitlist}

@@ -23,7 +23,7 @@ export function FormSection() {
   const isSubscribed = fetcher.data?.response?.status === "success";
 
   const [form, fields] = useForm({
-    id: "waitlist-sub",
+    id: "waitlist-form",
     lastResult: fetcher?.data?.result,
     defaultValue: {
       intent: "waitlist",
@@ -50,14 +50,16 @@ export function FormSection() {
 
         <div className="mx-auto mt-16 max-w-xl">
           <Card className="border-border bg-card shadow-xl">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl font-bold text-foreground">
-                Join the Waitlist
-              </CardTitle>
-              <CardDescription className="text-muted-foreground">
-                Get notified when we launch and receive exclusive early access
-              </CardDescription>
-            </CardHeader>
+            {!isSubscribed ? (
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl font-bold text-foreground">
+                  Join the Waitlist
+                </CardTitle>
+                <CardDescription className="text-muted-foreground">
+                  Get notified when we launch and receive exclusive early access
+                </CardDescription>
+              </CardHeader>
+            ) : null}
             <CardContent>
               {isSubscribed ? (
                 <div className="py-8 text-center">
@@ -83,7 +85,7 @@ export function FormSection() {
                       <Input
                         {...getInputProps(fields.name, { type: "text" })}
                         placeholder="Tony Max"
-                        className="mb-2 flex h-12 w-full rounded-full border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
+                        className="mb-2 flex h-12 w-full rounded-lg border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
                       />
                       <FormError errors={fields.name.errors} />
                     </div>
@@ -91,7 +93,7 @@ export function FormSection() {
                       <Input
                         {...getInputProps(fields.email, { type: "email" })}
                         placeholder="tonymax@tekbreed.com"
-                        className="mb-2 flex h-12 w-full rounded-full border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
+                        className="mb-2 flex h-12 w-full rounded-lg border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
                       />
                       <FormError errors={fields.email.errors} />
                     </div>
@@ -142,7 +144,9 @@ export function FormSection() {
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary">Q1 2026</div>
+              <div className="text-3xl font-bold text-primary">
+                Feb. 1st, 2026
+              </div>
               <div className="text-sm text-muted-foreground">
                 Expected launch
               </div>

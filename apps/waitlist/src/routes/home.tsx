@@ -13,6 +13,12 @@ export async function loader() {
 export default function WaitlistRoute() {
   return (
     <>
+      <title>Waitlist | TekBreed</title>
+      <meta name="keywords" content="TekBreed, Software, AI, Learning" />
+      <meta
+        name="description"
+        content="Breeding the next generation of software engineers."
+      />
       <HeroSection />
       <LaunchDateSection />
       <FeaturesSection />

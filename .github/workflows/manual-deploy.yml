@@ -152,6 +152,5 @@ jobs:
           fi
 
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
-          echo "Using path: apps/${APP_NAME}"
           railway up --service="${SERVICE_ID}" --detach
         shell: sh

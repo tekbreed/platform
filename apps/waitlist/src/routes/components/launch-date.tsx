@@ -47,7 +47,7 @@ export function LaunchDateSection() {
                   Launch Timeline
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  First modules launch on February 1st, 2026
+                  First modules launching February 1st, 2026.
                 </p>
               </CardContent>
             </Card>
@@ -59,7 +59,8 @@ export function LaunchDateSection() {
                   Early Access
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Waitlist members get priority access to beta features
+                  Waitlist members get <strong>one month free</strong> and
+                  priority access to beta features.
                 </p>
               </CardContent>
             </Card>
@@ -71,7 +72,7 @@ export function LaunchDateSection() {
                   Stay Updated
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  Regular updates on development progress and feature releases
+                  Regular updates on development progress and feature releases.
                 </p>
               </CardContent>
             </Card>

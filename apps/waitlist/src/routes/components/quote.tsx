@@ -28,10 +28,10 @@ export function FounderQuoteSection() {
             </div>
             <cite className="not-italic">
               <div className="text-lg font-semibold text-card-foreground">
-                Founder
+                Christopher S. Aondona
               </div>
               <div className="font-medium text-primary">
-                Visionary & Lead Developer
+                Founder & Lead Developer
               </div>
             </cite>
           </div>
