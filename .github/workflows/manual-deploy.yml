@@ -1,6 +1,5 @@
 name: Manual Deploy
 
-# Triggered manually from GitHub UI
 on:
   workflow_dispatch:
     inputs:
@@ -58,9 +57,9 @@ jobs:
           case "${APP_NAME}" in
             waitlist)
               if [ "${ENVIRONMENT}" = "production" ]; then
-                SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
+                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_PROD_SERVICE_ID }}"
               else
-                SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
+                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
               fi
               ;;
             web)
@@ -152,11 +151,21 @@ jobs:
             exit 1
           fi
 
+          # Copy the app's Dockerfile to the repo root so Railway can find it
+          echo "📦 Copying apps/${APP_NAME}/Dockerfile to root..."
+          if [ ! -f "apps/${APP_NAME}/Dockerfile" ]; then
+            echo "❌ Dockerfile not found at apps/${APP_NAME}/Dockerfile"
+            exit 1
+          fi
+          cp "apps/${APP_NAME}/Dockerfile" "./Dockerfile"
+          sed -i "s|ARG APP_NAME=.*|ARG APP_NAME=${APP_NAME}|g" Dockerfile
+          echo "✅ Dockerfile copied successfully."
+
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
           echo "Service ID: ${SERVICE_ID}"
           echo "Railway will handle pruning and building..."
 
-          # Deploy - Railway will find Dockerfile and build everything
+          # Deploy - Railway will now see Dockerfile in the root
           railway up --service="${SERVICE_ID}" --detach
         shell: sh
 
@@ -167,7 +176,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **App:** ${{ inputs.app }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Build:** Railway handles pruning and Docker build" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build:** Railway handled pruning and Docker build" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
