@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache libc6-compat
 FROM base AS pruner
 WORKDIR /app
 
-ARG APP_NAME
+ARG RAILWAY_SERVICE_NAME
 
 # Install turbo
 RUN npm install -g turbo@2.5.8
@@ -17,7 +17,7 @@ RUN npm install -g turbo@2.5.8
 COPY . .
 
 # Prune the monorepo for the specific app
-RUN turbo prune $APP_NAME --docker
+RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
 # ============================================
 # Installer Stage: Install deps and build
@@ -25,7 +25,7 @@ RUN turbo prune $APP_NAME --docker
 FROM base AS installer
 WORKDIR /app
 
-ARG APP_NAME
+ARG RAILWAY_SERVICE_NAME
 
 RUN npm install -g turbo@2.5.8
 
@@ -39,7 +39,7 @@ RUN npm ci
 COPY --from=pruner /app/out/full/ .
 
 # Build the application
-RUN turbo run build --filter=${APP_NAME}
+RUN turbo run build --filter=${RAILWAY_SERVICE_NAME}
 
 # ============================================
 # Runner Stage: Production runtime
@@ -47,25 +47,26 @@ RUN turbo run build --filter=${APP_NAME}
 FROM base AS runner
 WORKDIR /app
 
-ARG APP_NAME
+ARG RAILWAY_SERVICE_NAME
 
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
 # Copy package.json for start script
-COPY --from=installer --chown=appuser:nodejs /app/apps/$APP_NAME/package.json ./package.json
+COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
 
 # Copy node_modules (production dependencies)
 COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
 
 # Copy the build directory
-COPY --from=installer --chown=appuser:nodejs /app/apps/$APP_NAME/build ./build
+COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/build ./build
 
 USER appuser
 
 ENV NODE_ENV=production
 ENV PORT=8080
 
-# React Router v7 start command
+# WORKDIR /app
+
 CMD ["npm", "run", "start"]
