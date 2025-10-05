@@ -27,7 +27,7 @@ const features = [
     detailedDescription:
       "Access a comprehensive library of in-depth technical articles covering everything from basic programming concepts to advanced software architecture. Each article is carefully curated by industry experts and includes real-world examples, case studies, and practical insights to deepen your understanding of software engineering principles.",
     isFirstRelease: true,
-    releaseTimeline: "Feb. 1st, 2026",
+    releaseTimeline: "Q1 2026",
   },
   {
     icon: PlayCircle,
@@ -37,7 +37,7 @@ const features = [
     detailedDescription:
       "Learn through hands-on experience with our interactive tutorial system. Each tutorial provides step-by-step guidance through real coding challenges, complete with interactive code examples, live previews, and practical exercises. Build actual projects while learning new concepts and technologies.",
     isFirstRelease: true,
-    releaseTimeline: "Feb. 1st, 2026",
+    releaseTimeline: "Q1 2026",
   },
   {
     icon: Bot,
@@ -47,7 +47,7 @@ const features = [
     detailedDescription:
       "Meet your personal AI mentor that understands your learning journey. This advanced assistant analyzes your progress, identifies knowledge gaps, and provides personalized recommendations. It can answer technical questions, review your code, suggest improvements, and adapt its teaching style to match your learning preferences.",
     isFirstRelease: true,
-    releaseTimeline: "Feb. 1st, 2026",
+    releaseTimeline: "Q1 2026",
   },
   {
     icon: GraduationCap,
@@ -57,7 +57,7 @@ const features = [
     detailedDescription:
       "Comprehensive courses designed by industry professionals, featuring structured learning paths from beginner to advanced levels. Each course includes video lectures, hands-on projects, quizzes, and milestone assessments. Track your progress with detailed analytics and earn certificates upon completion.",
     isFirstRelease: false,
-    releaseTimeline: "9 months",
+    releaseTimeline: "Q4 2026",
   },
   {
     icon: Trophy,
@@ -67,7 +67,7 @@ const features = [
     detailedDescription:
       "Participate in monthly coding challenges designed to sharpen your algorithmic thinking and problem-solving abilities. Each challenge includes multiple difficulty levels, real-time leaderboards, detailed solution explanations, and community discussions. Earn badges, climb the rankings, and showcase your skills to potential employers.",
     isFirstRelease: false,
-    releaseTimeline: "12 months",
+    releaseTimeline: "Q4 2026",
   },
   {
     icon: BookOpen,
@@ -77,7 +77,7 @@ const features = [
     detailedDescription:
       "Intensive, career-focused programs that combine multiple courses into cohesive learning journeys. These programs are designed to take you from your current skill level to job-ready proficiency in specific technologies or roles, with clear milestones, portfolio projects, and career guidance.",
     isFirstRelease: false,
-    releaseTimeline: "15 months",
+    releaseTimeline: "Q2 2027",
   },
   {
     icon: Users,
@@ -87,7 +87,7 @@ const features = [
     detailedDescription:
       "Learn together with peers through collaborative projects, group challenges, and team-based learning experiences. Features include shared workspaces, peer code reviews, group discussions, and team progress tracking. Perfect for study groups, bootcamp cohorts, or corporate training programs.",
     isFirstRelease: false,
-    releaseTimeline: "18 months",
+    releaseTimeline: "Q3 2027",
   },
   {
     icon: Briefcase,
@@ -97,7 +97,7 @@ const features = [
     detailedDescription:
       "Connect your learning directly to career opportunities with our intelligent job matching system. The platform analyzes your skills, completed courses, and learning progress to recommend relevant job openings. Features include application tracking, interview preparation resources, and direct connections with hiring partners.",
     isFirstRelease: false,
-    releaseTimeline: "21 months",
+    releaseTimeline: "Q4 2027",
   },
   {
     icon: Store,
@@ -107,7 +107,7 @@ const features = [
     detailedDescription:
       "Shop exclusive TekBreed branded merchandise, cutting-edge tech gadgets, development tools, and accessories at special subsidized prices available only to our community members. From custom hoodies and laptop stickers to premium keyboards, monitors, and developer hardware - everything you need to showcase your TekBreed pride and enhance your coding setup.",
     isFirstRelease: false,
-    releaseTimeline: "24 months",
+    releaseTimeline: "Q1 2028",
   },
 ];
 

@@ -24,9 +24,7 @@ export function LaunchDateSection() {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-2xl font-bold text-primary">
-                  February 1st, 2026
-                </h3>
+                <h3 className="text-2xl font-bold text-primary">Q1 2026</h3>
                 <p className="text-muted-foreground">First Modules Launch</p>
               </div>
 
@@ -47,7 +45,7 @@ export function LaunchDateSection() {
                   Launch Timeline
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  First modules launching February 1st, 2026.
+                  First modules launching Q1 2026.
                 </p>
               </CardContent>
             </Card>
