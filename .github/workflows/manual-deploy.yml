@@ -30,75 +30,16 @@ on:
         default: development
 
 jobs:
-  build-and-deploy:
-    name: Build & Deploy ${{ inputs.app }} to ${{ inputs.environment }}
+  deploy:
+    name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
     runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
     environment: ${{ inputs.environment }}
 
     steps:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install Turbo globally
-        run: npm install -g turbo@2.5.8
-
-      # Prune the monorepo for Docker deployment
-      - name: Turbo prune for Docker
-        run: |
-          echo "🔍 Pruning monorepo for ${{ inputs.app }}"
-          npx turbo prune ${{ inputs.app }} --docker
-
-          # Copy the correct Dockerfile for the app into the pruned output
-          if [ -f "apps/${{ inputs.app }}/Dockerfile" ]; then
-            cp "apps/${{ inputs.app }}/Dockerfile" out/Dockerfile
-            echo "✅ Copied apps/${{ inputs.app }}/Dockerfile to out/Dockerfile"
-          else
-            echo "❌ No Dockerfile found at apps/${{ inputs.app }}/Dockerfile!"
-            exit 1
-          fi
-
-          echo "📦 Pruned structure:"
-          ls -la out/
-          echo "📦 JSON structure:"
-          ls -la out/json/
-          echo "📦 Full structure:"
-          ls -la out/full/ | head -20
-
-      # Set up Docker Buildx for better build performance
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      # Build Docker image
-      - name: Build Docker image
-        run: |
-          cd out
-          echo "🐳 Building Docker image for ${{ inputs.app }}"
-          docker buildx build \
-            --build-arg APP_NAME=${{ inputs.app }} \
-            --tag ${{ inputs.app }}:${{ github.sha }} \
-            --tag ${{ inputs.app }}:latest \
-            --load \
-            .
-
-          echo "✅ Docker image built successfully"
-          docker images | grep ${{ inputs.app }}
-
-      # Install Railway CLI
-      - name: Install Railway CLI
-        run: |
-          curl -fsSL https://railway.app/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
-
-      # Deploy to Railway
       - name: Deploy to Railway
         env:
           APP_NAME: ${{ inputs.app }}
@@ -213,10 +154,11 @@ jobs:
 
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
           echo "Service ID: ${SERVICE_ID}"
+          echo "Railway will handle pruning and building..."
 
-          # Deploy using Railway CLI with Docker image
-          cd out
+          # Deploy - Railway will find Dockerfile and build everything
           railway up --service="${SERVICE_ID}" --detach
+        shell: sh
 
       - name: Deployment summary
         if: success()
@@ -225,10 +167,11 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **App:** ${{ inputs.app }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Environment:** ${{ inputs.environment }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Docker Image:** ${{ inputs.app }}:${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build:** Railway handles pruning and Docker build" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- **Time:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+        shell: sh
 
       - name: Deployment failed
         if: failure()
@@ -240,3 +183,4 @@ jobs:
           echo "- **Triggered by:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Please check the logs above for error details." >> $GITHUB_STEP_SUMMARY
+        shell: sh
