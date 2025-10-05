@@ -158,7 +158,7 @@ export function FeaturesSection() {
                         className="mt-1 text-xs"
                       >
                         {feature.isFirstRelease
-                          ? `Launch - ${feature.releaseTimeline}`
+                          ? `${feature.releaseTimeline}`
                           : `Coming ${feature.releaseTimeline}`}
                       </Badge>
                     </div>
