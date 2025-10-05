@@ -1,5 +1,4 @@
 # Dockerfile at repository root
-# Railway will build this with APP_NAME as build arg
 FROM node:22-alpine AS base
 RUN apk update && apk add --no-cache libc6-compat
 
@@ -18,7 +17,7 @@ RUN npm install -g turbo@2.5.8
 COPY . .
 
 # Prune the monorepo for the specific app
-RUN turbo prune ${APP_NAME} --docker
+RUN turbo prune $APP_NAME --docker
 
 # ============================================
 # Installer Stage: Install deps and build
@@ -55,13 +54,13 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
 # Copy package.json for start script
-COPY --from=installer --chown=appuser:nodejs /app/apps/${APP_NAME}/package.json ./package.json
+COPY --from=installer --chown=appuser:nodejs /app/apps/$APP_NAME/package.json ./package.json
 
 # Copy node_modules (production dependencies)
 COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
 
 # Copy the build directory
-COPY --from=installer --chown=appuser:nodejs /app/apps/${APP_NAME}/build ./build
+COPY --from=installer --chown=appuser:nodejs /app/apps/$APP_NAME/build ./build
 
 USER appuser
 
