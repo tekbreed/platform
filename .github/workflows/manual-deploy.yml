@@ -158,14 +158,10 @@ jobs:
             exit 1
           fi
           cp "apps/${APP_NAME}/Dockerfile" "./Dockerfile"
-          sed -i "s|ARG APP_NAME=.*|ARG APP_NAME=${APP_NAME}|g" Dockerfile
           echo "✅ Dockerfile copied successfully."
 
           echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
-          echo "Service ID: ${SERVICE_ID}"
-          echo "Railway will handle pruning and building..."
-
-          # Deploy - Railway will now see Dockerfile in the root
+          echo "Using path: apps/${APP_NAME}"
           railway up --service="${SERVICE_ID}" --detach
         shell: sh
 
