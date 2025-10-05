@@ -33,7 +33,7 @@ RUN npm install -g turbo@2.5.8
 COPY --from=pruner /app/out/json/ .
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy pruned source code
 COPY --from=pruner /app/out/full/ .
