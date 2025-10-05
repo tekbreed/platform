@@ -57,9 +57,9 @@ jobs:
           case "${APP_NAME}" in
             waitlist)
               if [ "${ENVIRONMENT}" = "production" ]; then
-                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_PROD_SERVICE_ID }}"
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
               else
-                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
               fi
               ;;
             web)
