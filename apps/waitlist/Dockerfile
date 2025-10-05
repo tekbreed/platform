@@ -15,7 +15,7 @@ RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
 FROM base AS installer
 RUN apk update
-RUN apk add --no-cache libc6-compat python3 make g++
+RUN apk add --no-cache libc6-compat python3 make g++ py3-pip
 WORKDIR /app
  
 COPY --from=builder /app/out/json/ .
