@@ -1,26 +1,46 @@
-# Base image
+# This Dockerfile will be copied to out/ by the workflow
 FROM node:22-alpine AS base
+RUN apk update && apk add --no-cache libc6-compat
+
+# ============================================
+# Installer Stage: Install deps and build
+# ============================================
+FROM base AS installer
 WORKDIR /app
 
 ARG APP_NAME
 
-# Copy minimal lockfiles first (better layer caching)
-COPY json/apps/${APP_NAME}/package.json ./package.json
-COPY json/package-lock.json ./package-lock.json
+RUN npm install -g turbo@2.5.8
 
-# Install dependencies (production by default, dev skipped if needed)
-RUN npm ci --ignore-scripts --omit=dev
+COPY json/ .
+RUN npm ci
 
-# Copy actual pruned app files
-COPY full/ ./
+COPY full/ .
+RUN npx turbo run build --filter=${APP_NAME}
 
-# Build app inside Docker (workspace context provided by prune)
-# APP_NAME must be passed as a build arg in the CI/CD step
+# ============================================
+# Runner Stage: Production runtime
+# ============================================
+FROM base AS runner
+WORKDIR /app
+
 ARG APP_NAME
-RUN npm run build --workspace=apps/${APP_NAME}
 
-# If your app uses Prisma, uncomment this
-# RUN npx prisma generate
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 appuser
 
-# Default startup command
+# Copy package.json for start script
+COPY --from=installer --chown=appuser:nodejs /app/apps/${APP_NAME}/package.json ./package.json
+
+# Copy node_modules (React Router v7 needs minimal deps at runtime)
+COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
+
+# Copy the complete build directory
+COPY --from=installer --chown=appuser:nodejs /app/apps/${APP_NAME}/build ./build
+
+USER appuser
+
+ENV NODE_ENV=production
+ENV PORT=8080
+
 CMD ["npm", "run", "start"]
