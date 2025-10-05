@@ -57,12 +57,12 @@ jobs:
           echo "🔍 Pruning monorepo for ${{ inputs.app }}"
           npx turbo prune ${{ inputs.app }} --docker
 
-          # Copy the Dockerfile to the out directory
-          if [ -f "Dockerfile" ]; then
-            cp Dockerfile out/Dockerfile
-            echo "✅ Copied Dockerfile to out/"
+          # Copy the correct Dockerfile for the app into the pruned output
+          if [ -f "apps/${{ inputs.app }}/Dockerfile" ]; then
+            cp "apps/${{ inputs.app }}/Dockerfile" out/Dockerfile
+            echo "✅ Copied apps/${{ inputs.app }}/Dockerfile to out/Dockerfile"
           else
-            echo "❌ No Dockerfile found at root!"
+            echo "❌ No Dockerfile found at apps/${{ inputs.app }}/Dockerfile!"
             exit 1
           fi
 
