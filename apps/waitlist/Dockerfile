@@ -1,57 +1,8 @@
-# # Dockerfile at repository root
-# FROM node:22-alpine AS base
-# FROM base AS builder
-# RUN apk update
-# RUN apk add --no-cache libc6-compat
-
-# WORKDIR /app
-
-# RUN npm install -g turbo@2.5.8
-# COPY . .
-
-# ARG RAILWAY_SERVICE_NAME
- 
-# RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
-
-# FROM base AS installer
-# RUN apk update
-# RUN apk add --no-cache libc6-compat
-# WORKDIR /app
- 
-# COPY --from=builder /app/out/json/ .
-# RUN npm ci
- 
-# COPY --from=builder /app/out/full/ .
-# RUN npx turbo run build
- 
-# FROM base AS runner
-# WORKDIR /app
-
-# ARG RAILWAY_SERVICE_NAME
-
-# RUN addgroup --system --gid 1001 nodejs && \
-#     adduser --system --uid 1001 appuser
-
-# USER appuser
-
-# COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
-# COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/public ./public
-# COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/build ./build
-# COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
-
-# ENV NODE_ENV=production
-# ENV PORT=8080
-
-# # WORKDIR /app
-
-# CMD ["npm", "run", "start"]
-
 # Dockerfile at repository root
-FROM node:22-slim AS base
-
+FROM node:22-alpine AS base
 FROM base AS builder
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
@@ -59,18 +10,18 @@ RUN npm install -g turbo@2.5.8
 COPY . .
 
 ARG RAILWAY_SERVICE_NAME
+# For Dev
+# ENV RAILWAY_SERVICE_NAME="waitlist"
  
 RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
 FROM base AS installer
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 make g++ \
-    && rm -rf /var/lib/apt/lists/*
-
+RUN apk update
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
  
 COPY --from=builder /app/out/json/ .
-RUN npm ci
+RUN npm ci --legacy-peer-deps
  
 COPY --from=builder /app/out/full/ .
 RUN npx turbo run build
@@ -79,9 +30,11 @@ FROM base AS runner
 WORKDIR /app
 
 ARG RAILWAY_SERVICE_NAME
+# For Dev
+# ENV RAILWAY_SERVICE_NAME="waitlist"
 
-RUN groupadd --system --gid 1001 nodejs && \
-    useradd --system --uid 1001 appuser
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 appuser
 
 USER appuser
 
@@ -93,4 +46,7 @@ COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
 ENV NODE_ENV=production
 ENV PORT=8080
 
+# WORKDIR /app
+
 CMD ["npm", "run", "start"]
+
