@@ -159,7 +159,7 @@ export function FeaturesSection() {
                       >
                         {feature.isFirstRelease
                           ? `Launch - ${feature.releaseTimeline}`
-                          : `Coming in ${feature.releaseTimeline}`}
+                          : `Coming ${feature.releaseTimeline}`}
                       </Badge>
                     </div>
                   </div>
