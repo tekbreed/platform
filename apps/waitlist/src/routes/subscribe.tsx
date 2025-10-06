@@ -17,17 +17,8 @@ export async function action({ request }: Route.ActionArgs): Promise<unknown> {
   // await checkHoneypot(formData);
   const submission = await parseWithZod(formData, {
     schema: SubscriptionSchema.transform(async (data, ctx) => {
-      const { name, email, intent } = data;
+      const { name, email } = data;
       const response = await subscribeUser({ name, email });
-      if (intent === "waitlist") {
-        void sendEmail({
-          to: email,
-          subject: "Welcome to TekBreed - You're on the waitlist!",
-          react: (
-            <WaitlistEmail firstName={name?.split(" ")[0] || "Developer"} />
-          ),
-        });
-      }
       if (response.status !== "success") {
         ctx.addIssue({
           path: ["root"],
@@ -36,6 +27,11 @@ export async function action({ request }: Route.ActionArgs): Promise<unknown> {
         });
         return z.NEVER;
       }
+      void sendEmail({
+        to: email,
+        subject: "Welcome to TekBreed - You're on the waitlist!",
+        react: <WaitlistEmail firstName={name?.split(" ")[0] || "Developer"} />,
+      });
       return { response };
     }),
     async: true,
