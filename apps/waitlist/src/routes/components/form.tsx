@@ -145,7 +145,7 @@ export function FormSection() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-primary">
-                Feb. 1st, 2026
+                Q1 2026
               </div>
               <div className="text-sm text-muted-foreground">
                 Expected launch
