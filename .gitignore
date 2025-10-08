@@ -9,12 +9,13 @@
 node_modules/
 
 # Project Specific
-/app/generated/
+/src/generated/
 /todo/
 
 # React Router
 .react-router/
 build/
+apps/waitlist/posts/
 
 # Turbo
 .turbo/
