@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "start": "turbo run start",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint --fix",
@@ -10,12 +11,22 @@
     "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
-    "@types/react": "19.1.13",
-    "@types/react-dom": "19.1.9",
+    "@tailwindcss/vite": "^4.1.13",
+    "@tailwindcss/cli": "^4.1.13",
+    "@types/node": "^22",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@react-router/dev": "^7.9.2",
+    "dotenv": "^16.0.3",
+    "tailwindcss": "^4.1.13",
     "prettier": "^3.6.2",
     "prettier-plugin-toml": "^2.0.6",
     "turbo": "^2.5.8",
-    "typescript": "5.9.2"
+    "tsx": "^4.20.6",
+    "typescript": "5.9.2",
+    "vite": "^7.1.7",
+    "vite-tsconfig-paths": "^5.1.4",
+    "zod": "^4.1.11"
   },
   "engines": {
     "node": ">=22"
