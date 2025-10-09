@@ -68,7 +68,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
                 engineers learn, grow, and connect with each other. Our mission
                 is to provide world-class education, mentorship, and career
                 resources that help developers at every stage of their journey.
-                We&apos;re targeting a launch in Q2 2025, and as a waitlist
+                We&apos;re targeting a launch in Q1 2026, and as a waitlist
                 member, you&apos;ll be among the first to experience it.
               </Text>
 

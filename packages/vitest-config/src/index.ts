@@ -1,8 +1,12 @@
 export const sharedConfig = {
-  test: {
+  browser: {
     globals: true,
-    environment: "jsdom",
-    setupFiles: ["./src/test/setup.ts"],
+    setupFiles: ["./src/test/setup-env.ts"],
+    // Other shared configuration
+  },
+  node: {
+    globals: true,
+    setupFiles: ["./src/test/setup-env.ts"],
     // Other shared configuration
   },
 };
