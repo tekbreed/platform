@@ -32,3 +32,9 @@ tests-examples/
 # Vitest
 vitest-example/
 coverage/
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

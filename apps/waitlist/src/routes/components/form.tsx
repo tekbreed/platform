@@ -76,7 +76,7 @@ export function FormSection() {
                 <fetcher.Form
                   {...getFormProps(form)}
                   method="post"
-                  action="/subscribe"
+                  action="/?index"
                   className="space-y-6"
                 >
                   <HoneypotInputs />

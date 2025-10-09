@@ -23,7 +23,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const honeypotInputProps = honeypot.getInputProps();
+  const honeypotInputProps = await honeypot.getInputProps();
   const { getTheme } = await themeSessionResolver(request);
   const { toast: toastSession } = await getToast(request);
 
@@ -51,11 +51,8 @@ function App() {
 }
 
 export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
-  const {
-    theme,
-    //  honeyProps
-    honeypotInputProps,
-  } = loaderData;
+  const { theme, honeypotInputProps } = loaderData;
+
   return (
     <HoneypotProvider {...honeypotInputProps}>
       <ThemedApp theme={theme}>

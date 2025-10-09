@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { ThemeProvider, type Theme } from "remix-themes";
 

@@ -1,21 +1,22 @@
 {
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"compilerOptions": {
-		"declaration": true,
-		"declarationMap": true,
-		"esModuleInterop": true,
-		"incremental": false,
-		"isolatedModules": true,
-		"lib": ["es2022", "DOM", "DOM.Iterable"],
-		"module": "NodeNext",
-		"target": "ES2022",
-		"moduleDetection": "force",
-		"moduleResolution": "bundler",
-		"noUncheckedIndexedAccess": true,
-		"verbatimModuleSyntax": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"noEmit": true
-	}
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "types": ["@vitest/browser/matchers"],
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "incremental": false,
+    "isolatedModules": true,
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "target": "ES2022",
+    "moduleDetection": "force",
+    "moduleResolution": "bundler",
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true
+  }
 }
