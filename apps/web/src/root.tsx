@@ -1,75 +1,70 @@
-import {
-  isRouteErrorResponse,
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "react-router";
-
 import type { Route } from "./+types/root";
-import "./app.css";
+import { data, Outlet, useLoaderData } from "react-router";
+import { useTheme } from "remix-themes";
+import { HoneypotProvider } from "remix-utils/honeypot/react";
+
+import appStyles from "./styles/app.css?url";
+import fontStyles from "@repo/ui/fonts.css?url";
+
+import { Toaster } from "@repo/ui/components/sonner";
+import { getToast } from "@repo/utils/toast.server";
+import { useToast } from "@repo/utils/hooks/use-toast";
+import { useNonce } from "@repo/utils/providers/nonce";
+import { themeSessionResolver } from "@repo/utils/theme.server";
+import { honeypot } from "@repo/utils/honeypot.server";
+import { Document } from "@repo/base-config/document";
+import { ThemedApp } from "@repo/base-config/themed-app";
+import { RootErrorBoundary } from "@repo/base-config/root-error-boundary";
 
 export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
+  { rel: "icon", href: "/favicon.png" },
+  { rel: "stylesheet", href: appStyles },
+  { rel: "stylesheet", href: fontStyles },
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export async function loader({ request }: Route.LoaderArgs) {
+  const honeypotInputProps = honeypot.getInputProps();
+  const { getTheme } = await themeSessionResolver(request);
+  const { toast: toastSession } = await getToast(request);
+
+  return data({
+    toastSession,
+    theme: getTheme(),
+    env: undefined,
+    honeypotInputProps,
+  });
+}
+
+function App() {
+  const [currentTheme] = useTheme();
+  const nonce = useNonce();
+  const { theme, toastSession, env } =
+    useLoaderData<Route.ComponentProps["loaderData"]>();
+  useToast(toastSession);
+
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
+    <Document currentTheme={currentTheme} theme={theme} env={env} nonce={nonce}>
+      <Outlet />
+      <Toaster position="top-right" richColors />
+    </Document>
   );
 }
 
-export default function App() {
-  return <Outlet />;
+export default function AppWithProviders({ loaderData }: Route.ComponentProps) {
+  const {
+    theme,
+    //  honeyProps
+    honeypotInputProps,
+  } = loaderData;
+  return (
+    <HoneypotProvider {...honeypotInputProps}>
+      <ThemedApp theme={theme}>
+        <App />
+      </ThemedApp>
+    </HoneypotProvider>
+  );
 }
 
-export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
-  let stack: string | undefined;
-
-  if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
-    details = error.message;
-    stack = error.stack;
-  }
-
-  return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
-      <p>{details}</p>
-      {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
-      )}
-    </main>
-  );
+export function ErrorBoundary() {
+  return <RootErrorBoundary />;
 }

@@ -56,24 +56,27 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
               >
                 Thank you for joining our waitlist. You&apos;re now part of an
                 exclusive community dedicated to breeding the next generation of
-                software engineers.
+                software engineers through our comprehensive learning platform
+                and developer community.
               </Text>
 
               <Text
                 className="mb-[16px] text-[16px] leading-[24px]"
                 style={{ color: "#fbfbfc" }}
               >
-                We&apos;re working hard to create something special that will
-                transform how software engineers learn, grow, and connect. As a
-                waitlist member, you&apos;ll be among the first to know when we
-                launch.
+                We&apos;re building a platform that will transform how software
+                engineers learn, grow, and connect with each other. Our mission
+                is to provide world-class education, mentorship, and career
+                resources that help developers at every stage of their journey.
+                We&apos;re targeting a launch in Q2 2025, and as a waitlist
+                member, you&apos;ll be among the first to experience it.
               </Text>
 
               <Text
                 className="mb-[24px] text-[16px] leading-[24px]"
                 style={{ color: "#fbfbfc" }}
               >
-                Here&apos;s what you can expect as we prepare for launch:
+                Here&apos;s what you can expect as a founding member:
               </Text>
 
               <Section className="mb-[32px]">
@@ -81,31 +84,31 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
                   className="mb-[8px] ml-[16px] text-[14px] leading-[20px]"
                   style={{ color: "#fbfbfc" }}
                 >
-                  • Early access to our platform before public launch
+                  • One month free access to all premium content and features
                 </Text>
                 <Text
                   className="mb-[8px] ml-[16px] text-[14px] leading-[20px]"
                   style={{ color: "#fbfbfc" }}
                 >
-                  • Exclusive updates on our development progress
+                  • Priority access to new features before general release
                 </Text>
                 <Text
                   className="mb-[8px] ml-[16px] text-[14px] leading-[20px]"
                   style={{ color: "#fbfbfc" }}
                 >
-                  • Special founder pricing and benefits
+                  • Weekly email updates on our development progress
                 </Text>
                 <Text
                   className="mb-[8px] ml-[16px] text-[14px] leading-[20px]"
                   style={{ color: "#fbfbfc" }}
                 >
-                  • Direct input on features and improvements
+                  • Exclusive founding member badge and recognition
                 </Text>
                 <Text
                   className="mb-[8px] ml-[16px] text-[14px] leading-[20px]"
                   style={{ color: "#fbfbfc" }}
                 >
-                  • Behind-the-scenes content and development insights
+                  • Behind-the-scenes development insights and sneak peeks
                 </Text>
               </Section>
 
@@ -113,17 +116,18 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
                 className="mb-[16px] text-[16px] leading-[24px]"
                 style={{ color: "#fbfbfc" }}
               >
-                We&apos;re building something that will change how software
-                engineers approach their craft. Your patience and support during
-                this development phase means everything to us.
+                Want to get involved right away? Join our Discord community to
+                connect with other founding members, share ideas, and get the
+                latest updates in real-time. We&apos;d love to hear your
+                thoughts on what features matter most to you.
               </Text>
 
               <Text
                 className="mb-[16px] text-[16px] leading-[24px]"
                 style={{ color: "#fbfbfc" }}
               >
-                Stay connected with us on social media for the latest updates
-                and behind-the-scenes content:
+                Stay connected with us on social media for daily updates and
+                behind-the-scenes content:
               </Text>
 
               {/* Social Media Links */}
@@ -220,7 +224,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
                 className="m-0 mb-[8px] text-[12px] leading-[16px]"
                 style={{ color: "#9ca3af" }}
               >
-                42D Isa Shado by Halima Road, Sabon Tasha
+                Kaduna, Nigeria.
               </Text>
               <Text
                 className="m-0 mb-[8px] text-[12px] leading-[16px]"

@@ -1,0 +1,10 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "module": "preserve",
+    "outDir": "build",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["build", "node_modules"]
+}

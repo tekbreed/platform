@@ -12,7 +12,7 @@ export async function sendEmail(options: {
 }) {
   try {
     const emailData = {
-      from: "TekBreed <info@mail.tekbreed.com>",
+      from: "TekBreed <noreply@mail.tekbreed.com>",
       ...options,
     };
     const { data, error } = await resend.emails.send(emailData);
