@@ -3,6 +3,15 @@ import { defineProject } from "vitest/config";
 
 export default defineProject({
   test: {
+    exclude: [
+      "**/build/**",
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/e2e/**",
+      "**/*.e2e.{test,spec}.{ts,tsx,js,jsx}",
+    ],
+
+    // setupFiles: ["./vitest.setup.ts"],
     projects: [
       "apps/*",
       "packages/*",
