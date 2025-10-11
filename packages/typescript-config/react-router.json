@@ -1,24 +1,9 @@
 {
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": "./base.json",
-	"include": [
-		"**/*",
-		"**/.server/**/*",
-		"**/.client/**/*",
-		"../../packages/ui/src/**/*",
-		"../../packages/utils/src/**/*",
-		"../../packages/base-config/src/**/*"
-	],
-	"compilerOptions": {
-		"types": ["node", "vite/client"],
-		"module": "ES2022",
-		"jsx": "react-jsx",
-		"baseUrl": ".",
-		"paths": {
-			"~/*": ["src/*"],
-			"@repo/ui/*": ["../../packages/ui/src/*", "../../packages/ui/dist/*"],
-			"@repo/utils/*": ["../../packages/utils/src/*"],
-			"@repo/base-config/*": ["../../packages/base-config/src/*"]
-		}
-	}
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "types": ["node", "vite/client"],
+    "module": "ES2022",
+    "jsx": "react-jsx"
+  }
 }
