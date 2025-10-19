@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./hooks/*": "./src/hooks/*.ts",
-    "./providers/*": "./src/providers/*",
+    "./hooks/*": "./src/hooks/*.tsx",
+    "./providers/*": "./src/providers/*.tsx",
     "./misc": "./src/misc.ts",
+    "./constants/*": "./src/constants/*.tsx",
     "./honeypot.server": "./src/honeypot.server.ts",
     "./misc.server": "./src/misc.server.ts",
     "./env.server": "./src/env.server.ts",

@@ -7,9 +7,9 @@ import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod/v4";
 import { toast } from "sonner";
 import { Loader } from "lucide-react";
-import { FormError } from "./form-error.js";
-import { Button } from "../components/button.js";
-import { Input } from "../components/input.js";
+import { FormError } from "./form-error";
+import { Button } from "../components/button";
+import { Input } from "../components/input";
 
 export const SubscriptionSchema = z.object({
   name: z

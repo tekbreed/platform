@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import type { ErrorResponse } from "react-router";
 import {
   isRouteErrorResponse,
@@ -6,7 +8,9 @@ import {
   useNavigate,
   Link,
 } from "react-router";
+
 import { motion } from "framer-motion";
+
 import {
   AlertTriangle,
   Home,
@@ -14,9 +18,10 @@ import {
   Mail,
   ChevronDown,
 } from "lucide-react";
-import { useState } from "react";
-import { Button } from "@repo/ui/components/button";
+
 import { getErrorMessage } from "@repo/utils/misc";
+
+import { Button } from "@/components/button";
 
 type StatusHandler = (info: {
   error: ErrorResponse;

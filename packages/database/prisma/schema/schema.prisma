@@ -11,9 +11,224 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
+  id                       String  @id @default(ulid())
+  email                    String  @unique
+  name                     String
+  polarCustomerId          String? @unique
+  isSubscribedToNewsletter Boolean @default(false)
+
+  totalTokensUsed Int       @default(0)
+  monthlyTokens   Int       @default(0)
+  lastTokenReset  DateTime?
+
+  lastSeenAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  image                Image?
+  password             Password?
+  // subscription         Subscription?
+  notificationSettings NotificationSetting?
+  roles                Role[]
+  sessions             Session[]
+  connections          Connection[]
+  // likes                Like[]
+  // comments             Comment[]
+  // bookmarks            Bookmark[]
+  // tags                 Tag[]
+  // reviews              Review[]
+  // programs             Program[]
+  // courses              Course[]
+  // modules              Module[]
+  // subModules           SubModule[]
+  // lessons              Lesson[]
+  // enrollments          Enrollment[]
+  // certificates         Certificate[]
+  // timeSpent            TimeSpent[]
+  // teams                Team[]
+  // teamMembers          TeamMember[]
+  // teamInvites          TeamInvite[]
+  // contentReports       ContentReport[]
+  // resolvedReports      ContentReport[]      @relation("ResolvedReports")
+
+  // // Audit log relations
+  // auditLogs       AuditLog[]
+  // auditLogExports AuditLogExport[]
+
+  // // Challenge relations
+  // challengeSubmissions ChallengeSubmission[]
+  // challengeBadges      UserChallengeBadge[]
+  // leaderboardEntries   LeaderboardEntry[]
+  // userChallenges       UserChallenge[]
+
+  // // Conversation relations
+  // conversations Conversation[]
+
+  @@index([lastSeenAt])
+  @@index([createdAt])
+}
+
+model Password {
+  hash String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+}
+
+model Image {
+  id      String  @id @default(ulid())
+  fileKey String
+  altText String?
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @unique
+
+  // team         Team?         @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  // teamSettings TeamSettings? @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  // teamId       String?       @unique
+
+  // badge   Badge?  @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  // badgeId String? @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id String @id @default(ulid())
+
+  expirationDate DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  @@index([userId])
+}
+
+model Verification {
+  id        String   @id @default(ulid())
+  createdAt DateTime @default(now())
+
+  /// The type of verification being performed.
+  type      VerificationType
+  /// The target of the verification (e.g., the email address).
+  target    String
+  /// The secret key used to generate the OTP.
+  secret    String
+  /// The algorithm used for OTP generation.
+  algorithm String
+  /// The number of digits in the OTP.
+  digits    Int
+  /// The validity period of the OTP in seconds.
+  period    Int
+  /// The set of valid characters for the OTP.
+  charSet   String
+  /// The timestamp when this verification record can be safely deleted.
+  expiresAt DateTime?
+
+  @@unique([target, type])
+}
+
+enum VerificationType {
+  onboarding
+  reset_password
+  change_email
+  two_fa
+}
+
+model Connection {
+  id           String @id @default(ulid())
+  /// The name of the OAuth provider (e.g., "github").
+  providerName String
+  /// The user's unique ID from the OAuth provider.
+  providerId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  @@unique([providerName, providerId])
+  @@unique([providerName, userId])
+  @@index([userId])
+}
+
+model Permission {
+  id          String @id @default(ulid())
+  /// The action being permitted (e.g., CREATE, READ, UPDATE, DELETE).
+  action      Action
+  /// The entity the action applies to (e.g., USER, COMMENT).
+  entity      Entity
+  /// The access level for the action (e.g., OWN for records owned by the user, ANY for all records).
+  access      String
+  description String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  roles Role[]
+
+  @@unique([action, entity, access])
+}
+
+enum Action {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+}
+
+enum Entity {
+  USER
+  COMMENT
+  CONTENT_REPORT
+  BOOKMARK
+  REVIEW
+  SETTINGS
+  TEAM
+  TEAM_MEMBER
+  TEAM_INVITE
+  TEAM_LEARNING_PATH
+  TEAM_CERTIFICATE
+  TEAM_ANALYTICS
+  TEAM_INTEGRATION
+  TEAM_SETTINGS
+}
+
+model Role {
+  id          String   @id @default(ulid())
+  name        RoleName @unique
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
+  // teamMembers TeamMember[]
+  permissions Permission[]
+
+  @@index([name])
+}
+
+enum RoleName {
+  ADMIN
+  MODERATOR
+  USER
+  TEAM_OWNER
+  TEAM_ADMIN
+  TEAM_MEMBER
+}
+
+model NotificationSetting {
+  id               String  @id @default(ulid())
+  contentUpdate    Boolean @default(true)
+  promotions       Boolean @default(false)
+  communityEvents  Boolean @default(true)
+  allNotifications Boolean @default(false)
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

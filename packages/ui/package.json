@@ -74,6 +74,7 @@
     "react-day-picker": "^9.11.0",
     "react-markdown": "^10.1.0",
     "react-resizable-panels": "^3.0.6",
+    "react-router": "^7.9.4",
     "react-shiki": "^0.5.0",
     "reading-time-estimator": "^1.12.0",
     "recharts": "^2.15.4",
@@ -93,9 +94,9 @@
     "lightningcss-linux-x64-musl": "^1.30.2"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.1.13",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
+    "@tailwindcss/cli": "^4.1.13",
     "tailwindcss": "^4.1.13"
   }
 }

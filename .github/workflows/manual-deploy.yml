@@ -9,9 +9,7 @@ on:
         type: choice
         options:
           - waitlist
-          - auth
           - web
-          - tutorials
           - chat
           - admin
           - programs
@@ -63,25 +61,11 @@ jobs:
                 SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
               fi
               ;;
-            auth)
-              if [ "${ENVIRONMENT}" = "production" ]; then
-                SERVICE_ID="${{ secrets.RAILWAY_AUTH_PROD_SERVICE_ID }}"
-              else
-                SERVICE_ID="${{ secrets.RAILWAY_AUTH_DEV_SERVICE_ID }}"
-              fi
-              ;;
             web)
               if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
               else
                 SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
-              fi
-              ;;
-            tutorials)
-              if [ "${ENVIRONMENT}" = "production" ]; then
-                SERVICE_ID="${{ secrets.RAILWAY_TUTORIALS_PROD_SERVICE_ID }}"
-              else
-                SERVICE_ID="${{ secrets.RAILWAY_TUTORIALS_DEV_SERVICE_ID }}"
               fi
               ;;
             chat)

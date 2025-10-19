@@ -1,4 +1,4 @@
-import { handleRequest } from "@repo/base-config/entry.server.tsx";
+import { handleRequest } from "@repo/base-config/entry.server";
 // import { getEnv, init } from "@repo/utils/env.server";
 
 // init()

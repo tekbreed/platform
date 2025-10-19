@@ -28,10 +28,6 @@ RUN npm ci --legacy-peer-deps
  
 COPY --from=builder /app/out/full/ .
 
-# RUN npm install --no-save \
-#     @rollup/rollup-linux-x64-musl \
-#     lightningcss-linux-x64-musl
-
 RUN npx turbo run build
  
 

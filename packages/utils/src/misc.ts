@@ -46,8 +46,8 @@ export function getRandomBotAvatar(seed: string) {
  * const singleName = getSeed("John"); // "John"
  * ```
  */
-export function getSeed(name: string) {
-  return name?.split(" ")?.[0] ?? "Kent";
+export function getSeed(name: string = "Tony Max") {
+  return name.split(" ")[0];
 }
 
 export const bunnyStorageZone = "https://cdn.tekbreed.com";
@@ -58,7 +58,7 @@ export const bunnyStorageZone = "https://cdn.tekbreed.com";
  * @returns {string} Image URL
  */
 export function getImgSrc({
-  seed = "Kent",
+  seed = "Tony",
   fileKey,
   storageZone = bunnyStorageZone,
 }: {
@@ -69,7 +69,7 @@ export function getImgSrc({
   if (fileKey) {
     return `${storageZone}/images/${encodeURIComponent(fileKey)}`;
   }
-  return getRandomBotAvatar(getSeed(seed!));
+  return getRandomBotAvatar(getSeed(seed) ?? "Tony");
 }
 
 /**
@@ -541,8 +541,8 @@ export function getInitials(name: string): string {
   const firstWord = validWords[0];
   const lastWord = validWords[validWords.length - 1];
 
-  const firstInitial = firstWord?.[0]?.toUpperCase() ?? "";
-  const lastInitial = lastWord?.[0]?.toUpperCase() ?? "";
+  const firstInitial = firstWord?.[0]?.toUpperCase();
+  const lastInitial = lastWord?.[0]?.toUpperCase();
 
   return `${firstInitial}${lastInitial}`;
 }

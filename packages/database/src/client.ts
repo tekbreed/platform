@@ -6,14 +6,18 @@ import { PrismaClient } from "./generated/prisma/client";
 const { NODE_ENV, DATABASE_URL, TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } =
   process.env;
 
+if (!DATABASE_URL || !TURSO_DATABASE_URL || !TURSO_AUTH_TOKEN) {
+  throw new Error("DATABASE_URL or AUTH_TOKEN not set.");
+}
+
 const isDev = NODE_ENV !== "production";
 const databaseConfig = isDev
   ? { url: DATABASE_URL }
   : { url: TURSO_DATABASE_URL, authToken: TURSO_AUTH_TOKEN };
 
-const adapter = new PrismaLibSQL(databaseConfig);
-
 export const prisma = remember("prisma", () => {
+  const adapter = new PrismaLibSQL(databaseConfig);
+
   const LOG_THRESHOLD = 20;
 
   const client = new PrismaClient({

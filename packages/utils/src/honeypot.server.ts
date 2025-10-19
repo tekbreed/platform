@@ -1,8 +1,13 @@
 import { StatusCodes } from "http-status-codes";
-import { Honeypot, SpamError } from "remix-utils/honeypot/server";
+import {
+  Honeypot,
+  SpamError,
+  type HoneypotInputProps,
+} from "remix-utils/honeypot/server";
+
+export type { HoneypotInputProps };
 
 export const honeypot = new Honeypot({
-  // randomizeNameFieldName: false,
   nameFieldName: "name__confirm",
   validFromFieldName: "from__confirm",
   encryptionSeed: "somesecret",

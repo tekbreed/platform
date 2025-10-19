@@ -1,22 +1,30 @@
 import React from "react";
-import { Theme, useTheme } from "remix-themes";
-import { Loader, Monitor, Moon, Sun } from "lucide-react";
+
 import { useNavigation } from "react-router";
-import { cn } from "@repo/ui/lib/utils";
-import { Button } from "../components/button.js";
+
+import { Theme, useTheme } from "remix-themes";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/button";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@repo/ui/components/dropdown-menu";
+} from "@/components/dropdown-menu";
+import { VisuallyHidden } from "@/components/visually-hidden";
+import { Icons } from "./icons";
 
 export function ThemeToggle() {
   const [dropDown, setDropDown] = React.useState(false);
-  const navigation = useNavigation();
   const [theme, setTheme, { definedBy }] = useTheme();
 
+  const navigation = useNavigation();
+
   const isNavigating = navigation.state === "loading";
+  const isLightTheme = theme === "light" && definedBy !== "SYSTEM";
+  const isDarkTheme = theme === "dark" && definedBy !== "SYSTEM";
 
   return (
     <DropdownMenu open={dropDown} onOpenChange={setDropDown}>
@@ -28,7 +36,7 @@ export function ThemeToggle() {
             className="relative rounded-full"
             arial-disabled={true}
           >
-            <Loader className="animate-spin" />
+            <Icons.loader className="animate-spin" />
           </Button>
         ) : (
           <Button
@@ -37,7 +45,7 @@ export function ThemeToggle() {
             className="relative rounded-full"
           >
             {/* System Theme Icon */}
-            <Monitor
+            <Icons.monitor
               className={cn(
                 "absolute h-[1.2rem] w-[1.2rem] transition-all",
                 definedBy === "SYSTEM"
@@ -47,24 +55,22 @@ export function ThemeToggle() {
               aria-hidden="true"
             />
             {/* Light Theme Icon */}
-            <Sun
+            <Icons.sun
               className={cn(
                 "absolute h-[1.2rem] w-[1.2rem] transition-all",
-                theme === "light" ? "scale-100 rotate-0" : "scale-0 -rotate-90",
+                isLightTheme ? "scale-100 rotate-0" : "scale-0 -rotate-90",
               )}
               aria-hidden="true"
             />
             {/* Dark Theme Icon */}
-            <Moon
+            <Icons.moon
               className={cn(
                 "absolute h-[1.2rem] w-[1.2rem] transition-all",
-                theme === "dark" && definedBy !== "SYSTEM"
-                  ? "scale-100 rotate-0"
-                  : "scale-0 rotate-90",
+                isDarkTheme ? "scale-100 rotate-0" : "scale-0 rotate-90",
               )}
               aria-hidden="true"
             />
-            <span className="sr-only">Toggle theme</span>
+            <VisuallyHidden>Toogle Theme</VisuallyHidden>
           </Button>
         )}
       </DropdownMenuTrigger>
