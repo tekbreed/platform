@@ -66,6 +66,12 @@
     "db:deploy": {
       "cache": false
     },
+    "db:seed": {
+      "cache": false
+    },
+    "db:studio": {
+      "cache": false
+    },
     "test:run": {},
     "test:all": {},
     "test:node": {},

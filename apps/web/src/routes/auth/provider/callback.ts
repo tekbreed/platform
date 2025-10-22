@@ -1,11 +1,6 @@
 import type { Route } from "./+types/callback";
 import { redirect } from "react-router";
-import {
-  authenticator,
-  getSessionExpirationDate,
-  getUserId,
-} from "@/utils/auth.server";
-import { verifySessionStorage } from "@/utils/verification.server";
+
 import { prefilledProfileKey, providerIdKey } from "../onboarding/provider";
 import { combineHeaders, combineResponseInits } from "@repo/utils/misc";
 import { prisma } from "@repo/database";
@@ -14,12 +9,18 @@ import {
   destroyRedirectToHeader,
   getRedirectCookieValue,
 } from "@repo/utils/redirect-cookie.server";
-import { handleNewSession } from "@/utils/session.server";
 import {
   createToastHeaders,
   redirectWithToast,
 } from "@repo/utils/toast.server";
-import { onboardingSessionKey } from "../onboarding";
+import {
+  authenticator,
+  getSessionExpirationDate,
+  getUserId,
+} from "@repo/utils/auth.server";
+import { verifySessionStorage } from "@repo/utils/verification.server";
+import { handleNewSession } from "@repo/utils/session.server";
+import { onboardingSessionKey } from "@repo/utils/onboarding";
 
 const destroyRedirectTo = { "set-cookie": destroyRedirectToHeader };
 
@@ -33,7 +34,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     .authenticate(providerName, request)
     .catch(async () => {
       const signinRedirect = [
-        "/signin",
+        "/auth/signin",
         redirectTo ? new URLSearchParams({ redirectTo }) : null,
       ]
         .filter(Boolean)
@@ -130,7 +131,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   verifySession.set(prefilledProfileKey, profile);
   verifySession.set(providerIdKey, profile.id);
   const onboardingRedirect = [
-    `/onboarding/${providerName}`,
+    `/auth/onboarding/${providerName}`,
     redirectTo ? new URLSearchParams({ redirectTo }) : null,
   ]
     .filter(Boolean)

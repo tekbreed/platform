@@ -19,7 +19,11 @@ import { FormError } from "@repo/ui/composed/form-error";
 import { ConnectionForm } from "./connection-form";
 import { useRedirectTo } from "@repo/utils/hooks/use-redirect-to";
 import { getImgSrc, useIsPending } from "@repo/utils/misc";
-import { EmailSchema, PasswordSchema } from "@repo/utils/user-validation";
+import {
+  EmailSchema,
+  PasswordSchema,
+  RememberMeSchema,
+} from "@repo/utils/user-validation";
 import { Icons } from "@repo/ui/composed/icons";
 import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back";
 
@@ -28,7 +32,7 @@ import { FormConsent } from "./form-consent";
 const BaseSchema = z.object({
   email: EmailSchema,
   redirectTo: z.string().optional(),
-  rememberMe: z.string().optional(),
+  rememberMe: RememberMeSchema,
 });
 
 export const SignupSchema = BaseSchema;
@@ -74,7 +78,6 @@ export function AuthForm({
   const [searchParams] = useSearchParams();
 
   const redirectTo = searchParams.get("redirectTo") ?? "";
-  const params = new URLSearchParams({ redirectTo });
   const [form, fields] = useForm({
     id: `${action}-form`,
     lastResult: actionData,
@@ -96,7 +99,7 @@ export function AuthForm({
         <CardContent className="space-y-4">
           <Form
             {...getFormProps(form)}
-            action={`/${action}`}
+            action={`/auth/${action}`}
             method="post"
             className="space-y-4"
           >
@@ -213,8 +216,7 @@ function FormFooter({ action }: { action: Action }) {
           {formContent.redirect[action]}{" "}
           <Link
             to={{
-              pathname: action === "signin" ? "/signup" : "/signin",
-              search: redirectTo,
+              pathname: action === "signin" ? "/auth/signup" : "/auth/signin",
             }}
             className="font-medium text-blue-600 hover:underline dark:text-blue-400"
           >

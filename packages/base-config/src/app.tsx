@@ -29,10 +29,15 @@ export function App({
 }) {
   const [currentTheme] = useTheme();
   const location = useLocation();
-  const excludedRoutes = ["signin", "signup"];
+  const excludedRoutes = [
+    "auth/signin",
+    "auth/signup",
+    "auth/verify",
+    "auth/onboarding",
+  ];
   return (
     <Document currentTheme={currentTheme} theme={theme} env={env} nonce={nonce}>
-      {excludedRoutes.some((r) => !location.pathname.includes(r)) ? (
+      {!excludedRoutes.some((r) => location.pathname.includes(r)) ? (
         <Header />
       ) : null}
       <main className="min-h-screen">

@@ -1,8 +1,8 @@
 import { createCookieSessionStorage } from "react-router";
-import { type ProviderName } from "~/components/connection-form";
-import { GitHubProvider } from "./providers/github.server";
-import { type AuthProvider } from "./providers/provider";
+import { GitHubProvider } from "./auth-providers/github.server";
+import { type AuthProvider } from "./auth-providers/provider";
 import { baseUrl } from "@/constants/config";
+import type { ProviderName } from "./connection";
 
 export const connectionSessionStorage = createCookieSessionStorage({
   cookie: {

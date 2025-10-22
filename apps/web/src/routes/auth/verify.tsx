@@ -1,13 +1,6 @@
 import React from "react";
 import type { Route } from "./+types/verify";
-import { motion } from "framer-motion";
-import {
-  Mail,
-  ArrowLeft,
-  RefreshCw,
-  RectangleEllipsis,
-  MailQuestion,
-} from "lucide-react";
+import { Mail, ArrowLeft, RectangleEllipsis, MailQuestion } from "lucide-react";
 import {
   InputOTP,
   InputOTPGroup,
@@ -15,40 +8,25 @@ import {
 } from "@repo/ui/components/input-otp";
 import { Button } from "@repo/ui/components/button";
 import { z } from "zod/v4";
-import {
-  getFormProps,
-  getInputProps,
-  useForm,
-  type Submission,
-} from "@conform-to/react";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod/v4";
-import { Form, useNavigate, useSearchParams } from "react-router";
+import { Form, useSearchParams } from "react-router";
 import { validateRequest } from "./verify.server";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { FormError } from "@repo/ui/composed/form-error";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
 import { useIsPending } from "@repo/utils/misc";
-
-export const codeQueryParam = "code";
-export const targetQueryParam = "target";
-export const typeQueryParam = "type";
-export const redirectToQueryParam = "redirectTo";
-
-const types = ["onboarding", "reset_password", "change_email"] as const;
-const VerificationTypeSchema = z.enum(types);
-export type VerificationTypes = z.infer<typeof VerificationTypeSchema>;
-
-export const VerifySchema = z.object({
-  [codeQueryParam]: z.string({ error: "OTP is required." }).min(6).max(6),
-  [targetQueryParam]: z.string(),
-  [typeQueryParam]: VerificationTypeSchema,
-  [redirectToQueryParam]: z.string().optional(),
-});
-export type VerifyFunctionArgs = {
-  request: Request;
-  submission: Submission<z.infer<typeof VerifySchema>>;
-  body: FormData | URLSearchParams;
-};
+import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back";
+import {
+  codeQueryParam,
+  redirectToQueryParam,
+  targetQueryParam,
+  typeQueryParam,
+  VerificationTypeSchema,
+  VerifySchema,
+  type VerificationTypes,
+} from "@repo/utils/verify";
+import { Icons } from "@repo/ui/composed/icons";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const params = new URL(request.url).searchParams;
@@ -74,7 +52,7 @@ export default function VerifyPage({
   actionData,
 }: Route.ComponentProps) {
   // const metadata = generateMetadata({ title: "Verify" });
-  const navigate = useNavigate();
+  const goBack = useSmartGoBack();
   const [searchParams] = useSearchParams();
   const isVerifying = useIsPending();
   const parseWithZoddType = VerificationTypeSchema.safeParse(
@@ -159,16 +137,11 @@ export default function VerifyPage({
   return (
     <>
       {/* {metadata} */}
-      <div className="flex min-h-screen items-center justify-center bg-muted p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="w-full max-w-md rounded-xl bg-card p-8 shadow-lg"
-        >
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <div className="w-full max-w-md rounded-xl bg-card p-8 shadow-lg">
           {/* Back button */}
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => goBack()}
             className="mb-6 flex items-center text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -222,7 +195,7 @@ export default function VerifyPage({
             >
               {type === "reset_password" ? "Reset Password" : "Verify Email"}
               {isVerifying ? (
-                <RefreshCw className="mr-2 size-4 animate-spin" />
+                <Icons.loader2 className="mr-2 size-4 animate-spin" />
               ) : null}
             </Button>
             <FormError errors={form.errors} />
@@ -233,7 +206,7 @@ export default function VerifyPage({
               expires in 10 minutes.
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </>
   );

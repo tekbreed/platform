@@ -1,22 +1,22 @@
 import { z } from "zod/v4";
 import { parseWithZod } from "@conform-to/zod/v4";
 import { StatusCodes } from "http-status-codes";
-import {
-  requireAnonymous,
-  sessionKey,
-  signupWithConnection,
-} from "@/utils/auth.server";
-import { verifySessionStorage } from "@/utils/verification.server";
 import { safeRedirect } from "remix-utils/safe-redirect";
-import { ProviderNameSchema } from "@/components/connection-form";
-import { authSessionStorage } from "@/utils/session.server";
-import { OnboardingSchema, onboardingSessionKey } from ".";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
 import { redirectWithToast } from "@repo/utils/toast.server";
 import { prisma } from "@repo/database";
 import { subscribeUser } from "@repo/utils/email.server";
 import { data, redirect, type Params } from "react-router";
-import { providerIdKey } from "./provider";
+import { OnboardingSchema, providerIdKey } from "./provider";
+import {
+  requireAnonymous,
+  sessionKey,
+  signupWithConnection,
+} from "@repo/utils/auth.server";
+import { verifySessionStorage } from "@repo/utils/verification.server";
+import { ProviderNameSchema } from "@repo/utils/connection";
+import { authSessionStorage } from "@repo/utils/session.server";
+import { onboardingSessionKey } from "@repo/utils/onboarding";
 
 export async function requireData({
   request,
@@ -41,8 +41,7 @@ export async function requireData({
   if (result.success) {
     return result.data;
   } else {
-    console.error(result.error);
-    throw redirect("/signup");
+    throw redirect("/auth/signup");
   }
 }
 
@@ -90,6 +89,8 @@ export async function handleProviderOnboarding(
   });
 
   if (submission.status !== "success") {
+    console.log("Yo error", submission);
+
     return data({ status: "error", ...submission.reply() } as const, {
       status:
         submission.status === "error"
@@ -121,7 +122,8 @@ export async function handleProviderOnboarding(
     "set-cookie",
     await verifySessionStorage.destroySession(verifySession),
   );
-  return redirectWithToast(
+
+  return await redirectWithToast(
     safeRedirect(redirectTo),
     {
       title: "Welcome aboard!",

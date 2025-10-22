@@ -1,8 +1,13 @@
-import { useFormAction, useNavigation } from "react-router";
+import {
+  useFormAction,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSpinDelay } from "spin-delay";
-// import { useOptionalUser } from "~/hooks/user";
 import { StatusCodes } from "http-status-codes";
+import { useOptionalUser } from "./hooks/user";
 // const vitest: undefined | typeof import('vitest') = import.meta.vitest
 
 /**
@@ -577,21 +582,21 @@ export function capitalizeName(name: string): string {
  *
  * @returns A function that takes a callback and executes it only if authenticated
  */
-// export function useRequireAuth() {
-// 	const user = useOptionalUser()
-// 	const navigate = useNavigate()
-// 	const location = useLocation()
-// 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// 	return async <T extends (...args: unknown[]) => any>(
-// 		fn: T,
-// 		...args: Parameters<T>
-// 	): Promise<Awaited<ReturnType<T>> | undefined> => {
-// 		if (!user) {
-// 			const params = new URLSearchParams()
-// 			params.set('redirectTo', `${location.pathname}${location.search}`)
-// 			navigate(`/signin?${params.toString()}`)
-// 			return undefined
-// 		}
-// 		return await fn(...args)
-// 	}
-// }
+export function useRequireAuth() {
+  const user = useOptionalUser();
+  const navigate = useNavigate();
+  const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return async <T extends (...args: unknown[]) => any>(
+    fn: T,
+    ...args: Parameters<T>
+  ): Promise<Awaited<ReturnType<T>> | undefined> => {
+    if (!user) {
+      const params = new URLSearchParams();
+      params.set("redirectTo", `${location.pathname}${location.search}`);
+      navigate(`/auth/signin?${params.toString()}`);
+      return undefined;
+    }
+    return await fn(...args);
+  };
+}

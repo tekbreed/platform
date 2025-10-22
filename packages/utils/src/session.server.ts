@@ -1,21 +1,20 @@
 import { createCookieSessionStorage, redirect } from "react-router";
 import { safeRedirect } from "remix-utils/safe-redirect";
 import { combineResponseInits } from "./misc";
-import { sessionKey } from "~/utils/auth.server";
-import { logSystemEvent, SystemAction } from "./system.server";
-import { prisma } from "./db.server";
-import { domain } from "./constants";
+import { sessionKey } from "./auth.server";
+import { prisma } from "@repo/database";
+import { baseUrl } from "./constants/config";
 
 export const authSessionStorage = createCookieSessionStorage({
   cookie: {
-    name: "__cs_session",
+    name: "__tb_session",
     path: "/",
     httpOnly: true,
     sameSite: "lax",
     secrets: [process.env.SESSION_SECRET],
     ...(process.env.NODE_ENV === "production"
       ? {
-          domain: domain,
+          domain: `.${baseUrl}`,
           secure: true,
         }
       : {}),
@@ -62,7 +61,6 @@ export async function handleNewSession(
     request.headers.get("cookie"),
   );
   authSession.set(sessionKey, session.id);
-  console.log("FINAL", redirectTo);
 
   return redirect(
     safeRedirect(redirectTo),
@@ -88,21 +86,21 @@ export async function cleanupExpiredSessions() {
     });
     const deletedCount = result.count;
     if (deletedCount > 0) {
-      await logSystemEvent({
-        action: SystemAction.SYSTEM_MAINTENANCE,
-        description: `Cleaned up ${deletedCount} expired sessions`,
-        metadata: { deletedCount },
-      });
+      // await logSystemEvent({
+      //   action: SystemAction.SYSTEM_MAINTENANCE,
+      //   description: `Cleaned up ${deletedCount} expired sessions`,
+      //   metadata: { deletedCount },
+      // });
     }
     return { success: true, deletedCount, timestamp: now };
   } catch (error) {
     console.error("Failed to cleanup expired sessions:", error);
-    await logSystemEvent({
-      action: SystemAction.SYSTEM_ERROR,
-      description: "Failed to cleanup expired sessions",
-      severity: "ERROR",
-      metadata: { error: String(error) },
-    });
+    // await logSystemEvent({
+    //   action: SystemAction.SYSTEM_ERROR,
+    //   description: "Failed to cleanup expired sessions",
+    //   severity: "ERROR",
+    //   metadata: { error: String(error) },
+    // });
     return { success: false, error: String(error), timestamp: now };
   }
 }

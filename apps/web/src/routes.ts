@@ -9,22 +9,17 @@ export default [
   index("routes/home/index.tsx"),
   route("set-theme", "routes/set-theme.ts"),
 
-  // route("legal/:pageSlug", "routes/legal.tsx"),
-  // route("about", "routes/about/index.tsx"),
-  // route("faqs", "routes/faqs/index.tsx"),
-  // route("support", "routes/support.tsx"),
-  route("verify", "routes/auth/verify.tsx"),
-  route("signup", "routes/auth/signup/index.tsx"),
-  route("signin", "routes/auth/signin/index.tsx"),
-  route("signout", "routes/auth/signout.ts"),
-  route("forgot-password", "routes/auth/forgot-password.tsx"),
-  // route("authors/:authorSlug", "routes/author.tsx"),
-  // route("roadmap", "routes/roadmap/index.tsx"),
-  // route("*", "routes/not-found.tsx"),
+  route("legal/:pageSlug", "routes/legal.tsx"),
+  route("about", "routes/about/index.tsx"),
+  route("faqs", "routes/faqs/index.tsx"),
+  route("support", "routes/support.tsx"),
+  route("authors/:authorSlug", "routes/author.tsx"),
+  route("roadmap", "routes/roadmap/index.tsx"),
+  route("*", "routes/not-found.tsx"),
 
   // SEO
-  // route("robots.txt", "routes/seo/robots[.]txt.ts"),
-  // route("sitemap.xml", "routes/seo/sitemap[.]xml.ts"),
+  route("robots.txt", "routes/seo/robots[.]txt.ts"),
+  route("sitemap.xml", "routes/seo/sitemap[.]xml.ts"),
 
   // Resource routes
   // route("set-theme", "routes/resources/set-theme.ts"),
@@ -51,14 +46,16 @@ export default [
   // ]),
 
   ...prefix("auth", [
-    route("reset-password", "routes/auth/reset-password/index.tsx"),
+    route("signup", "routes/auth/signup/index.tsx"),
+    route("signin", "routes/auth/signin/index.tsx"),
+    route("signout", "routes/auth/signout.ts"),
+    route("verify", "routes/auth/verify.tsx"),
     route(":provider", "routes/auth/provider/index.ts"),
     route(":provider/callback", "routes/auth/provider/callback.ts"),
-  ]),
-
-  ...prefix("onboarding", [
-    index("routes/auth/onboarding/index.tsx"),
-    route(":provider", "routes/auth/onboarding/provider.tsx"),
+    route("forgot-password", "routes/auth/forgot-password.tsx"),
+    route("reset-password", "routes/auth/reset-password/index.tsx"),
+    route("onboarding", "routes/auth/onboarding/index.tsx"),
+    route("onboarding/:provider", "routes/auth/onboarding/provider.tsx"),
   ]),
 
   // ...prefix("articles", [

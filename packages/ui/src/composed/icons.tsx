@@ -55,6 +55,7 @@ import {
   ArrowBigRight,
   ArrowLeft,
   ArrowRight,
+  Home,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -193,4 +194,5 @@ export const Icons = {
   arrowRight: ArrowRight,
   arrowBigLeft: ArrowBigLeft,
   arrowBigRight: ArrowBigRight,
+  home: Home,
 };

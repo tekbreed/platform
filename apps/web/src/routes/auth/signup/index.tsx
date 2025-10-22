@@ -1,8 +1,8 @@
 import type { Route } from "./+types/index";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
-import { requireAnonymous } from "@/utils/auth.server";
 import { AuthForm } from "@/components/auth-form";
 import { handleSignUp } from "./action.server";
+import { requireAnonymous } from "@repo/utils/auth.server";
 
 export async function loader({ request }: Route.LoaderArgs) {
   await requireAnonymous(request);

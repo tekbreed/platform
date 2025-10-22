@@ -10,7 +10,7 @@ export type { HoneypotInputProps };
 export const honeypot = new Honeypot({
   nameFieldName: "name__confirm",
   validFromFieldName: "from__confirm",
-  encryptionSeed: "somesecret",
+  encryptionSeed: process.env.SESSION_SECRET,
 });
 
 export async function checkHoneypot(formData: FormData) {

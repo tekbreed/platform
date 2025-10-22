@@ -1,15 +1,12 @@
 import { Form } from "react-router";
-import { z } from "zod/v4";
 import { Button } from "@repo/ui/components/button";
 import { Icons } from "@repo/ui/composed/icons";
 import { useIsPending } from "@repo/utils/misc";
 import type { Action } from "./auth-form";
-
-const GITHUB_PROVIDER_NAME = "github";
-
-export const providerNames = [GITHUB_PROVIDER_NAME] as const;
-export const ProviderNameSchema = z.enum(providerNames);
-export type ProviderName = z.infer<typeof ProviderNameSchema>;
+import {
+  GITHUB_PROVIDER_NAME,
+  type ProviderName,
+} from "@repo/utils/connection";
 
 export const providerLabels: Record<ProviderName, string> = {
   [GITHUB_PROVIDER_NAME]: "GitHub",

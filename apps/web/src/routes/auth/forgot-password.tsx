@@ -47,7 +47,7 @@ export async function action({ request }: Route.ActionArgs) {
       if (!user) {
         ctx.addIssue({
           path: ["email"],
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           message: "No user exists with this email",
         });
         return z.NEVER;
@@ -82,7 +82,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   const response = await sendEmail({
     to: user.email,
-    subject: `Coding Simba Password Reset`,
+    subject: `TekBreed Password Reset`,
     react: <Verification verificationUrl={verifyUrl.toString()} code={otp} />,
   });
 
@@ -100,7 +100,9 @@ export const handle: SEOHandle = {
   getSitemapEntries: () => null,
 };
 
-export default function ForgotPassword({ actionData }: Route.ComponentProps) {
+export default function ForgotPasswordRoute({
+  actionData,
+}: Route.ComponentProps) {
   // const metadata = generateMetadata({ title: "Forgot Password" });
 
   const isSubmitting = useIsPending();

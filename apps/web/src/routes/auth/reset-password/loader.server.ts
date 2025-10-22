@@ -1,7 +1,7 @@
-import { requireAnonymous } from "@/utils/auth.server";
-import { verifySessionStorage } from "@/utils/verification.server";
+import { requireAnonymous } from "@repo/utils/auth.server";
 import { resetPasswordEmailSessionKey } from "../forgot-password";
 import { redirect } from "react-router";
+import { verifySessionStorage } from "@repo/utils/verification.server";
 
 export async function requireResetPasswordEmail(request: Request) {
   await requireAnonymous(request);
@@ -10,7 +10,7 @@ export async function requireResetPasswordEmail(request: Request) {
   );
   const resetPasswordEmail = verifySession.get(resetPasswordEmailSessionKey);
   if (typeof resetPasswordEmail !== "string" || !resetPasswordEmail) {
-    throw redirect("/signin");
+    throw redirect("/auth/signin");
   }
   return resetPasswordEmail;
 }

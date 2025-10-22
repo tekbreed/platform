@@ -3,13 +3,14 @@ import { z } from "zod/v4";
 import { data, redirect } from "react-router";
 import { invariant } from "@repo/utils/misc";
 import { parseWithZod } from "@conform-to/zod/v4";
-import { verifySessionStorage } from "@/utils/verification.server";
 import { StatusCodes } from "http-status-codes";
-import { sessionKey, signup } from "@/utils/auth.server";
-import { authSessionStorage } from "@/utils/session.server";
 import { safeRedirect } from "remix-utils/safe-redirect";
-import { OnboardingSchema, onboardingSessionKey } from ".";
+import { OnboardingSchema } from ".";
 import { subscribeUser } from "@repo/utils/email.server";
+import { verifySessionStorage } from "@repo/utils/verification.server";
+import { sessionKey, signup } from "@repo/utils/auth.server";
+import { authSessionStorage } from "@repo/utils/session.server";
+import { onboardingSessionKey } from "@repo/utils/onboarding";
 
 export async function requireOnboardingEmail(request: Request) {
   const verifySesison = await verifySessionStorage.getSession(
@@ -17,7 +18,7 @@ export async function requireOnboardingEmail(request: Request) {
   );
   const email = await verifySesison.get(onboardingSessionKey);
   if (typeof email !== "string" || !email) {
-    throw redirect("/signup");
+    throw redirect("/auth/signup");
   }
   return email;
 }
@@ -29,7 +30,7 @@ export async function handleVerification({ submission }: VerifyFunctionArgs) {
   );
   const verifySession = await verifySessionStorage.getSession();
   verifySession.set(onboardingSessionKey, submission.value.target);
-  return redirect("/onboarding", {
+  return redirect("/auth/onboarding", {
     headers: {
       "set-cookie": await verifySessionStorage.commitSession(verifySession),
     },

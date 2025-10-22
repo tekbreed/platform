@@ -4,11 +4,11 @@ import { parseWithZod } from "@conform-to/zod/v4";
 import { StatusCodes } from "http-status-codes";
 import { sendEmail } from "@repo/utils/email.server";
 import { prisma } from "@repo/database";
-import { verifySessionStorage } from "@/utils/verification.server";
 import { Verification } from "@repo/ui/email/verification";
 import { prepareVerification } from "../verify.server";
 import { SignupSchema } from "@/components/auth-form";
-import { onboardingSessionKey } from "../onboarding";
+import { verifySessionStorage } from "@repo/utils/verification.server";
+import { onboardingSessionKey } from "@repo/utils/onboarding";
 
 export async function handleSignUp(request: Request, formData: FormData) {
   const submission = await parseWithZod(formData, {

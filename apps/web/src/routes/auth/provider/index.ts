@@ -1,10 +1,10 @@
 import type { Route } from "./+types/index";
-import { ProviderNameSchema } from "@/components/connection-form";
 import { redirect } from "react-router";
-import { handleMockAction } from "@/utils/connection.server";
 import { getReferrerRoute } from "@repo/utils/misc";
 import { getRedirectCookieHeader } from "@repo/utils/redirect-cookie.server";
-import { authenticator } from "@/utils/auth.server";
+import { ProviderNameSchema } from "@repo/utils/connection";
+import { handleMockAction } from "@repo/utils/connection.server";
+import { authenticator } from "@repo/utils/auth.server";
 
 export async function loader() {
   return redirect("/");

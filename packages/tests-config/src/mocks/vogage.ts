@@ -1,6 +1,6 @@
 import { http, HttpResponse, type HttpHandler } from "msw";
 import { faker } from "@faker-js/faker";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 const VOYAGE_URL = "https://api.voyageai.com/v1" as const;
 

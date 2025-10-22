@@ -1,7 +1,8 @@
 import type { Route } from "./+types/index";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
 import { AuthForm } from "@/components/auth-form";
-import { requireAnonymous } from "@/utils/auth.server";
+import { requireAnonymous } from "@repo/utils/auth.server";
+import { handleSignIn } from "./action.server";
 
 export async function loader({ request }: Route.LoaderArgs) {
   await requireAnonymous(request);
@@ -11,8 +12,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   await checkHoneypot(formData);
-  console.log("Signin");
-  return {};
+  return handleSignIn(request, formData);
 }
 
 export default function SigninRoute({ actionData }: Route.ComponentProps) {

@@ -1,6 +1,6 @@
 import TurndownService from "turndown";
-import { marked } from "marked";
 import DOMPurify from "isomorphic-dompurify";
+import { marked } from "marked";
 
 /**
  * Validates and sanitizes component code for security
@@ -114,7 +114,7 @@ const turndownService = new TurndownService({
 });
 
 marked.setOptions({
-  breaks: true, // Convert line breaks to <br>
+  breaks: true, // Convert line breaks to <br/>
   gfm: true, // GitHub Flavored Markdown
 });
 

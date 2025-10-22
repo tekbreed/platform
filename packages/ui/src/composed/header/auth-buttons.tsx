@@ -17,17 +17,16 @@ import { ThemeToggle } from "@/composed/theme-toggle";
 import { getModuleUrl } from "@repo/utils/constants/client";
 
 import { getImgSrc } from "@repo/utils/misc";
-import { useRedirectTo } from "@repo/utils/hooks/use-redirect-to";
+import { SignoutButton } from "../signout-button";
+import { useOptionalUser } from "@repo/utils/hooks/user";
 
 export function AuthButtons() {
-  // const user = useOptionalUser();
-  const redirectTo = useRedirectTo();
+  const user = useOptionalUser();
   const { openMobileNav } = useMobileNav();
 
   // const image = user?.image;
   // const userIsAdmin = userHasRole(user, "ADMIN");
 
-  const user = null;
   // const image = null;
   const userIsAdmin = false;
 
@@ -36,9 +35,7 @@ export function AuthButtons() {
       <ThemeToggle />
       {!user ? (
         <Button className="hidden lg:flex" asChild>
-          <SmartLink to={getModuleUrl("web", `signin?${redirectTo}`)}>
-            Sign In
-          </SmartLink>
+          <SmartLink to={getModuleUrl("web", `auth/signin`)}>Sign In</SmartLink>
         </Button>
       ) : null}
       {userIsAdmin ? (
@@ -75,7 +72,7 @@ export function AuthButtons() {
               </SmartLink>
             </DropdownMenuItem>
             <Separator className="my-1" />
-            {/* <SignoutButton /> */}
+            <SignoutButton />
           </DropdownMenuContent>
         </DropdownMenu>
       ) : null}

@@ -1,11 +1,11 @@
 import { createCookieSessionStorage, redirect } from "react-router";
-import type { VerifyFunctionArgs } from "~/routes/auth/verify";
 import { invariant } from "./misc";
-import { onboardingSessionKey } from "~/routes/auth/onboarding";
+import { onboardingSessionKey } from "./onboarding";
+import type { VerifyFunctionArgs } from "./verify";
 
 export const verifySessionStorage = createCookieSessionStorage({
   cookie: {
-    name: "__tk_verification",
+    name: "__tb_verification",
     sameSite: "lax",
     path: "/",
     httpOnly: true,
@@ -24,7 +24,7 @@ export async function handleVerification({
     request.headers.get("cookie"),
   );
   verifySession.set(onboardingSessionKey, submission.payload.target);
-  return redirect("/onboarding", {
+  return redirect("/auth/onboarding", {
     headers: {
       "set-cookie": await verifySessionStorage.commitSession(verifySession),
     },

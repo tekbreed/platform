@@ -1,11 +1,11 @@
 import { parseWithZod } from "@conform-to/zod/v4";
 import { StatusCodes } from "http-status-codes";
 import { prisma } from "@repo/database";
-import { getPasswordHash } from "@/utils/auth.server";
 import { requireResetPasswordEmail } from "./loader.server";
 import { ResetPasswordSchema } from "./index";
 import { data, redirect } from "react-router";
-import { verifySessionStorage } from "@/utils/verification.server";
+import { getPasswordHash } from "@repo/utils/auth.server";
+import { verifySessionStorage } from "@repo/utils/verification.server";
 
 export async function handlePasswordReset(
   request: Request,
@@ -42,7 +42,7 @@ export async function handlePasswordReset(
     });
   }
   const verifySession = await verifySessionStorage.getSession();
-  throw redirect("/signin", {
+  throw redirect("/auth/signin", {
     headers: {
       "set-cookie": await verifySessionStorage.destroySession(verifySession),
     },

@@ -16,21 +16,21 @@ import { Label } from "@repo/ui/components/label";
 import { FormError } from "@repo/ui/composed/form-error";
 import { Button } from "@repo/ui/components/button";
 import { parseWithZod } from "@conform-to/zod/v4";
-import { requireAnonymous } from "@/utils/auth.server";
-import { verifySessionStorage } from "@/utils/verification.server";
 import { RememberMeSchema } from "@repo/utils/user-validation";
-import { useIsPending } from "@repo/utils/misc";
+import { getImgSrc, useIsPending } from "@repo/utils/misc";
 // import { generateMetadata } from "~/utils/meta";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { handleProviderOnboarding, requireData } from "./provider.server";
 import { Icons } from "@repo/ui/composed/icons";
+import { requireAnonymous } from "@repo/utils/auth.server";
+import { verifySessionStorage } from "@repo/utils/verification.server";
 
 export const providerIdKey = "providerId";
 export const prefilledProfileKey = "prefilledProfile";
 
 export const OnboardingSchema = z.object({
   imageUrl: z.string().optional(),
-  name: z.string(),
+  name: z.string({ error: "Name is required" }),
   redirectTo: z.string().optional(),
   rememberMe: RememberMeSchema,
 });
@@ -38,7 +38,6 @@ export const OnboardingSchema = z.object({
 export async function loader({ request, params }: Route.LoaderArgs) {
   await requireAnonymous(request);
   const { email } = await requireData({ request, params });
-
   const verifySession = await verifySessionStorage.getSession(
     request.headers.get("cookie"),
   );
@@ -54,7 +53,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
 }
 
 export async function action({ request, params }: Route.ActionArgs) {
-  return await handleProviderOnboarding(request, params);
+  return handleProviderOnboarding(request, params);
 }
 
 export default function OnboardingProvider({
@@ -73,70 +72,80 @@ export default function OnboardingProvider({
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: OnboardingSchema });
     },
-    shouldValidate: "onBlur",
+    shouldValidate: "onSubmit",
     defaultValue: { redirectTo },
   });
+  console.log(actionData);
 
   return (
     <>
       {/* {metadata} */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-md"
-      >
-        <Card className="border-0 bg-card/80 shadow-xl backdrop-blur-sm">
-          <CardHeader className="text-center">
-            <CardTitle className="text-xl">Welcome aboard {email}</CardTitle>
-            <CardDescription>Please enter your details</CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            <Form {...getFormProps(form)} method="post" className="space-y-4">
-              <input
-                {...getInputProps(fields.redirectTo, { type: "hidden" })}
-                // value={redirectTo ?? ""}
-              />
-              <HoneypotInputs />
-              <div className="space-y-2">
-                <Label htmlFor={fields.name.id}>Name</Label>
-                <Input
-                  {...getInputProps(fields.name, { type: "text" })}
-                  placeholder="Tony Max"
+      <div className="flex min-h-screen items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative z-10 w-full max-w-md"
+        >
+          <Card className="border-0 bg-card/80 shadow-xl backdrop-blur-sm">
+            <CardHeader className="text-center">
+              <div className="mx-auto flex w-full items-center justify-center pb-4">
+                <img
+                  src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
+                  alt="TekBreed"
+                  className="size-10"
                 />
-                <FormError errors={fields.name.errors} />
               </div>
-              <div className="flex justify-between">
-                <Label
-                  htmlFor={fields.rememberMe.id}
-                  className="flex items-center gap-2 text-sm text-muted-foreground"
-                >
-                  <input
-                    {...getInputProps(fields.rememberMe, {
-                      type: "checkbox",
-                    })}
-                    className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+              <CardTitle className="text-xl">Welcome aboard {email}</CardTitle>
+              <CardDescription>Please enter your details</CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+              <Form {...getFormProps(form)} method="post" className="space-y-4">
+                <input
+                  {...getInputProps(fields.redirectTo, { type: "hidden" })}
+                  // value={redirectTo ?? ""}
+                />
+                <HoneypotInputs />
+                <div className="space-y-2">
+                  <Label htmlFor={fields.name.id}>Name</Label>
+                  <Input
+                    {...getInputProps(fields.name, { type: "text" })}
+                    placeholder="Tony Max"
                   />
-                  Remember Me
-                </Label>
-              </div>
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-                aria-label="Create account"
-              >
-                Create account{" "}
-                {isSubmitting ? (
-                  <Icons.loader2 className="ml-2 animate-spin" />
-                ) : null}
-              </Button>
-              <FormError errors={form.allErrors.root || form.errors} />
-            </Form>
-          </CardContent>
-        </Card>
-      </motion.div>
+                  <FormError errors={fields.name.errors} />
+                </div>
+                <div className="flex justify-between">
+                  <Label
+                    htmlFor={fields.rememberMe.id}
+                    className="flex items-center gap-2 text-sm text-muted-foreground"
+                  >
+                    <input
+                      {...getInputProps(fields.rememberMe, {
+                        type: "checkbox",
+                      })}
+                      className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+                    />
+                    Remember Me
+                  </Label>
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting}
+                  aria-label="Create account"
+                >
+                  Create account{" "}
+                  {isSubmitting ? (
+                    <Icons.loader2 className="ml-2 animate-spin" />
+                  ) : null}
+                </Button>
+                <FormError errors={form.allErrors.root || form.errors} />
+              </Form>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </>
   );
 }

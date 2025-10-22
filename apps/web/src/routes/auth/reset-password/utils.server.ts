@@ -1,10 +1,10 @@
 import { data, redirect } from "react-router";
 import { invariant } from "@repo/utils/misc";
-import type { VerifyFunctionArgs } from "../verify";
 import { prisma } from "@repo/database";
 import { resetPasswordEmailSessionKey } from "../forgot-password";
 import { StatusCodes } from "http-status-codes";
-import { verifySessionStorage } from "@/utils/verification.server";
+import { verifySessionStorage } from "@repo/utils/verification.server";
+import type { VerifyFunctionArgs } from "../verify.server";
 
 export async function handleVerification({ submission }: VerifyFunctionArgs) {
   invariant(

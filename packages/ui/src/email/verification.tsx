@@ -17,7 +17,7 @@ import {
 
 export const Verification = ({
   code = "TB2025",
-  verificationUrl = "https://tekbreed.com/verify?code=TB2025",
+  verificationUrl = "https://tekbreed.com/auth/verify?code=TB2025",
 }: {
   code: string;
   verificationUrl: string;
@@ -186,7 +186,7 @@ export const Verification = ({
                 className="m-0 mb-[8px] text-center text-[12px]"
                 style={{ color: "#fbfbfc" }}
               >
-                42D Isa Shado by Halima Road, Sabon Tasha
+                Kaduna, Nigeria.
               </Text>
               <Text
                 className="m-0 mb-[8px] text-center text-[12px]"

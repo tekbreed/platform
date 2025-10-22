@@ -13,7 +13,6 @@
  */
 
 import { Polar } from "@polar-sh/sdk";
-import { logSystemEvent, SystemAction } from "./system.server";
 // import { prisma } from "./db.server";
 
 const { POLAR_ACCESS_TOKEN, NODE_ENV, POLAR_ORGANIZATION_ID } = process.env;
@@ -300,39 +299,4 @@ export async function getUserActiveSubscription(userId: string | null) {
   //   },
   // });
   return null;
-}
-
-/**
- * Logs subscription events to the database
- */
-export async function logSubscriptionEvent({
-  action,
-  subscriptionId,
-  plan,
-  status,
-  metadata,
-  ipAddress,
-  userAgent,
-}: {
-  action: SystemAction;
-  subscriptionId: string;
-  plan?: string;
-  status?: string;
-  metadata?: Record<string, unknown>;
-  ipAddress?: string;
-  userAgent?: string;
-}) {
-  await logSystemEvent({
-    action,
-    description: `Subscription ${action.toLowerCase().replace("_", " ")}`,
-    severity: "INFO",
-    metadata: {
-      subscriptionId,
-      plan,
-      status,
-      ...metadata,
-    },
-    ipAddress,
-    userAgent,
-  });
 }

@@ -1,7 +1,6 @@
 import type { Route } from "./+types/index";
 import { z } from "zod/v4";
 import { motion } from "framer-motion";
-import { LoaderCircle } from "lucide-react";
 import { Form, useSearchParams } from "react-router";
 import {
   Card,
@@ -17,7 +16,6 @@ import { Label } from "@repo/ui/components/label";
 import { FormError } from "@repo/ui/composed/form-error";
 import { Button } from "@repo/ui/components/button";
 import { parseWithZod } from "@conform-to/zod/v4";
-import { requireAnonymous } from "@/utils/auth.server";
 import {
   EmailSchema,
   NameSchema,
@@ -28,10 +26,9 @@ import { useIsPending } from "@repo/utils/misc";
 // import { generateMetadata } from "~/utils/meta";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
-// import { subscribeUser } from "@repo/utils/email.server";
 import { handleOnboarding, requireOnboardingEmail } from "./onboarding.server";
-
-export const onboardingSessionKey = "onboardingEmail";
+import { requireAnonymous } from "@repo/utils/auth.server";
+import { Icons } from "@repo/ui/composed/icons";
 
 export const OnboardingSchema = z
   .object({
@@ -99,7 +96,7 @@ export default function Onboarding({
               <HoneypotInputs />
               <input
                 {...getInputProps(fields.redirectTo, { type: "hidden" })}
-                value={redirectTo ?? ""}
+                // value={redirectTo ?? ""}
               />
               <input
                 {...getInputProps(fields.email, { type: "hidden" })}
@@ -155,7 +152,7 @@ export default function Onboarding({
               >
                 Create account{" "}
                 {isSubmitting ? (
-                  <LoaderCircle className="ml-2 animate-spin" />
+                  <Icons.loader2 className="ml-2 animate-spin" />
                 ) : null}
               </Button>
               <FormError errors={form.allErrors.root || form.errors} />

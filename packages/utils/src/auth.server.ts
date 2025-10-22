@@ -6,7 +6,7 @@ import { redirect } from "react-router";
 import { Authenticator } from "remix-auth";
 import { safeRedirect } from "remix-utils/safe-redirect";
 import { prisma } from "@repo/database";
-import type { ProviderUser } from "./providers/provider";
+import type { ProviderUser } from "./auth-providers/provider";
 import { providers } from "./connection.server";
 import { authSessionStorage } from "./session.server";
 

@@ -3561,6 +3561,11 @@
       color: var(--color-red-400);
     }
   }
+  .dark\:text-red-500 {
+    &:where([data-theme="dark"], [data-theme="dark"] *) {
+      color: var(--color-red-500);
+    }
+  }
   .dark\:hover\:bg-accent\/50 {
     &:where([data-theme="dark"], [data-theme="dark"] *) {
       &:hover {

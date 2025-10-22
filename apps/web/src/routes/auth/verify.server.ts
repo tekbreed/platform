@@ -6,14 +6,15 @@ import { handleVerification as handleChangeEmailVerification } from "./onboardin
 import { TOTP } from "@repo/utils/totp.server";
 import { handleVerification as handleOnboardingVerification } from "./onboarding/onboarding.server";
 import { handleVerification as handleResetPasswordVerification } from "./reset-password/utils.server";
+
 import {
-  VerifySchema,
   codeQueryParam,
   redirectToQueryParam,
   targetQueryParam,
   typeQueryParam,
+  VerifySchema,
   type VerificationTypes,
-} from "./verify";
+} from "@repo/utils/verify";
 import { prisma } from "@repo/database";
 import { getDomainUrl } from "@repo/utils/misc";
 import { StatusCodes } from "http-status-codes";
@@ -39,7 +40,7 @@ export function getRedirectToUrl({
   target: string;
   redirectTo?: string;
 }) {
-  const redirectToUrl = new URL(`${getDomainUrl(request)}/verify`);
+  const redirectToUrl = new URL(`${getDomainUrl(request)}/auth/verify`);
   redirectToUrl.searchParams.set(typeQueryParam, type);
   redirectToUrl.searchParams.set(targetQueryParam, target);
   if (redirectTo) {
@@ -123,7 +124,7 @@ export async function validateRequest(
       if (!codeIsValid) {
         ctx.addIssue({
           path: ["code"],
-          code: z.ZodIssueCode.custom,
+          code: "custom",
           message: `Invalid code`,
         });
         return;

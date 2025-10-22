@@ -9,7 +9,7 @@ const VectorUpsertSchema = z.object({
     z.object({
       id: z.string(),
       values: z.array(z.number()),
-      metadata: z.record(z.unknown()).optional(),
+      metadata: z.record(z.string(), z.unknown()).optional(),
     }),
   ),
   namespace: z.string().optional(),
@@ -21,14 +21,14 @@ const VectorQuerySchema = z.object({
   includeMetadata: z.boolean().default(true),
   includeValues: z.boolean().default(false),
   namespace: z.string().optional(),
-  filter: z.record(z.unknown()).optional(),
+  filter: z.record(z.string(), z.unknown()).optional(),
 });
 
 const VectorDeleteSchema = z.object({
   ids: z.array(z.string()).optional(),
   documentId: z.string().optional(),
   prefix: z.string().optional(),
-  filter: z.record(z.unknown()).optional(),
+  filter: z.record(z.string(), z.unknown()).optional(),
 });
 
 // Generate mock vector data for consistent testing

@@ -15,7 +15,7 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  return data(await getAppLoaderData(request));
+  return await getAppLoaderData(request);
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
