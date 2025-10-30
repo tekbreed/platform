@@ -1,0 +1,124 @@
+import { defineField, defineType } from "sanity"
+import { BookIcon } from "@sanity/icons"
+
+export const article = defineType({
+  name: "article",
+  title: "Articles",
+  type: "document",
+  icon: BookIcon,
+  fields: [
+    defineField({
+      name: "title",
+      title: "Title",
+      type: "string",
+      validation: (Rule) => Rule.required().error("Title is required"),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required().error("Slug is required"),
+      hidden: ({ document }) => !document?.title,
+    }),
+    defineField({
+      name: "createdAt",
+      title: "Published Date",
+      type: "datetime",
+      validation: (Rule) => Rule.required().error("Published Date is required"),
+    }),
+
+    defineField({
+      name: "published",
+      title: "Published",
+      type: "boolean",
+      initialValue: false,
+    }),
+
+    defineField({
+      name: "featured",
+      title: "Featured",
+      type: "boolean",
+      initialValue: false,
+    }),
+
+    defineField({
+      name: "image",
+      title: "Image",
+      type: "image",
+      validation: (Rule) => Rule.required().error("Image is required"),
+    }),
+    defineField({
+      name: "author",
+      title: "Author",
+      type: "reference",
+      to: [{ type: "author" }],
+      validation: (Rule) => Rule.required().error("Author is required"),
+    }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "reference",
+      to: [{ type: "category" }],
+      validation: (Rule) => Rule.required().error("Category is required"),
+    }),
+    defineField({
+      name: "tags",
+      title: "Tags",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "tag" }],
+        },
+      ],
+      validation: (Rule) => Rule.min(1).error("At least one tag is required."),
+    }),
+
+    defineField({
+      name: "excerpt",
+      title: "Excerpt",
+      type: "text",
+      validation: (Rule) => Rule.required().error("Excerpt is required"),
+    }),
+    defineField({
+      name: "content",
+      title: "Content",
+      type: "markdown",
+      validation: (Rule) => Rule.required().error("Content is required"),
+    }),
+    defineField({
+      name: "sandpackTemplates",
+      title: "Embedded Sandpack Templates",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "sandpack" }],
+        },
+      ],
+    }),
+    defineField({
+      name: "reactComponents",
+      title: "Embedded React Components",
+      type: "array",
+      of: [
+        {
+          type: "reference",
+          to: [{ type: "component" }],
+        },
+      ],
+    }),
+  ],
+
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "excerpt",
+      media: "image",
+    },
+  },
+})

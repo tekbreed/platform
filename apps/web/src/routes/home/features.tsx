@@ -9,32 +9,47 @@ import {
 import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router";
 
 const features = [
   {
     icon: Icons.bot,
-    title: "AI-Powered Learning",
+    title: "AI Learning Companion",
     description:
-      "Get personalized guidance from our advanced AI assistant that adapts to your learning style and provides contextual help.",
+      "Your personal coding tutor available 24/7—get instant help debugging code, understanding complex concepts, and personalized guidance that adapts to how you learn best.",
   },
   {
     icon: Icons.zap,
-    title: "RAG Technology",
+    title: "Smart Progress Insights",
     description:
-      "Experience cutting-edge Retrieval-Augmented Generation that provides accurate, up-to-date information tailored to your needs.",
+      "Track your learning journey with intelligent analytics that identify your strengths, highlight knowledge gaps, and provide actionable recommendations to accelerate your growth.",
   },
   {
-    icon: Icons.sparkles,
-    title: "Monthly Challenges",
+    icon: Icons.code,
+    title: "Interactive Learning Experience",
     description:
-      "Participate in exciting coding challenges that test your skills and help you grow as a developer.",
+      "Master concepts through hands-on practice with embedded code playgrounds, interactive diagrams, and real-time experimentation—learn by doing, not just watching.",
     comingSoon: true,
   },
   {
-    icon: Icons.checkCircle,
-    title: "Verified Certificates",
+    icon: Icons.trophy,
+    title: "Monthly Coding Challenges",
     description:
-      "Earn industry-recognized certificates that showcase your skills to potential employers.",
+      "Test your skills and compete with peers through fresh monthly challenges that push your boundaries and help you build an impressive portfolio of solved problems.",
+    comingSoon: true,
+  },
+  {
+    icon: Icons.users,
+    title: "Team Collaboration",
+    description:
+      "Work together with your team on projects, share knowledge, and learn from each other in a collaborative environment that mirrors real workplace dynamics.",
+    comingSoon: true,
+  },
+  {
+    icon: Icons.briefcase,
+    title: "Career Pathways",
+    description:
+      "Connect your learning directly to opportunities with curated job listings, portfolio showcasing, and industry-recognized achievements that demonstrate your capabilities.",
     comingSoon: true,
   },
 ];
@@ -48,20 +63,20 @@ export function Features() {
             Why Choose TekBreed?
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Experience the future of programming education with our innovative
-            features
+            Experience the future of software engineering education with our
+            innovative features
           </p>
         </div>
-        <div className="mx-auto mt-16 grid w-full max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mx-auto mt-16 grid w-full max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <Card key={feature.title} className="text-center">
-              <CardHeader className="mx-auto w-full">
+              <CardHeader>
                 <feature.icon className="mx-auto h-12 w-12 text-primary" />
                 <CardTitle className="text-xl">{feature.title}</CardTitle>
                 {feature.comingSoon ? (
                   <Badge
-                    variant="secondary"
-                    className="flex justify-center text-center text-xs"
+                    // variant="outline"
+                    className="mx-auto text-xs"
                   >
                     Coming Soon
                   </Badge>
@@ -72,10 +87,11 @@ export function Features() {
               </CardContent>
             </Card>
           ))}
-
           <div className="col-span-full flex justify-center">
-            <Button>
-              Learn more <ArrowRight className="ml-4" />
+            <Button asChild>
+              <Link to={"/about"}>
+                Learn more <ArrowRight className="ml-4" />
+              </Link>
             </Button>
           </div>
         </div>

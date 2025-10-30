@@ -1,5 +1,6 @@
 /// <reference types="@vitest/browser/matchers" />
 import { defineProject } from "vitest/config";
+import { playwright } from "@vitest/browser-playwright";
 
 export default defineProject({
   test: {
@@ -8,30 +9,38 @@ export default defineProject({
       "**/dist/**",
       "**/node_modules/**",
       "**/e2e/**",
-      "**/*.e2e.{test,spec}.{ts,tsx,js,jsx}",
+      "**/tests/*.e2e.{test,spec}.{ts,tsx,js,jsx}",
+      "**/tests/e2e/**",
     ],
 
     // setupFiles: ["./vitest.setup.ts"],
+    includeSource: ["**/src/**/*.{ts,tsx}"],
     projects: [
       "apps/*",
       "packages/*",
       {
         test: {
-          name: { label: "browser", color: "blue" },
-          include: ["**/tests/**/*.browser.{test,spec}.{ts,tsx,js,jsx}"],
-          exclude: ["**/e2e/**"],
+          name: "browser",
+          include: [
+            "**/tests/**/*.browser.{test,spec}.{ts,tsx}",
+            "**/__tests__/**/*.browser.{test,spec}.{ts,tsx}",
+          ],
+          exclude: ["**/tests/e2e/**"],
           browser: {
             enabled: true,
-            provider: "playwright",
+            provider: playwright(),
             instances: [{ browser: "chromium" }],
           },
         },
       },
       {
         test: {
-          name: { label: "node", color: "green" },
-          include: ["**/tests/**/*.{node}.test.{ts,js}"],
-          exclude: ["**/e2e/**"],
+          name: "unit",
+          include: [
+            "**/tests/**/*.unit.{test,spec}.ts",
+            "**/__tests__/**/*.unit.{test,spec}.ts",
+          ],
+          exclude: ["**/tests/e2e/**"],
           environment: "node",
         },
       },

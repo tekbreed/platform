@@ -1,5 +1,6 @@
 import {
   type LucideIcon,
+  Trophy,
   Bot,
   UserPen,
   DoorClosed,
@@ -94,6 +95,7 @@ export const Icons = {
       <polyline points="15 18 9 12 15 6" />
     </svg>
   ),
+  trophy: Trophy,
   chevronRight: ChevronRight,
   chevronUp: ChevronUp,
   chevronDown: ChevronDown,

@@ -1,5 +1,4 @@
 import type { Route } from "./+types/root";
-import { data } from "react-router";
 
 import appStyles from "./styles/app.css?url";
 import fontStyles from "./styles/fonts.css?url";

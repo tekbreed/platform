@@ -13,6 +13,7 @@ import type { HoneypotInputProps } from "@repo/utils/honeypot.server";
 
 import { Toaster } from "@repo/ui/components/sonner";
 import { Header } from "@repo/ui/composed/header/index";
+import { Footer } from "@repo/ui/composed/footer";
 
 import { ThemedApp } from "./themed-app";
 
@@ -43,6 +44,7 @@ export function App({
       <main className="min-h-screen">
         <Outlet />
       </main>
+      <Footer />
       <Toaster position="top-right" richColors />
     </Document>
   );

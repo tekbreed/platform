@@ -1,6 +1,5 @@
 import React from "react";
 import { z } from "zod";
-import { motion } from "framer-motion";
 import { useFetcher } from "react-router";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
@@ -46,13 +45,7 @@ export function SubscriptionForm() {
   }, [fetcher.data?.response?.status]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      viewport={{ once: true, amount: 0.1 }}
-      className="rounded-2xl border border-border bg-card p-8 shadow-lg md:p-12"
-    >
+    <div className="rounded-2xl border border-border bg-card p-8 shadow-lg md:p-12">
       <h2 className="mb-4 text-3xl font-bold">Stay Updated</h2>
       <p className="mb-4 text-lg text-muted-foreground">
         Subscribe to get notified about new content.
@@ -101,6 +94,6 @@ export function SubscriptionForm() {
       <p className="mt-4 text-sm text-muted-foreground/80">
         We respect your privacy. Unsubscribe at any time.
       </p>
-    </motion.div>
+    </div>
   );
 }

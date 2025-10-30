@@ -4,7 +4,12 @@ import "dotenv/config";
 const PORT = process.env.PORT || "5173";
 
 export default defineConfig({
-  testDir: "./e2e",
+  testDir: "./tests/e2e",
+  testMatch: ["**/tests/e2e/**/*.{test,spec}.{ts,tsx}"],
+  testIgnore: [
+    "**/tests/**/*.browser.{test,spec}.{ts,tsx}",
+    "**/__tests__/**/*.browser.{test,spec}.{ts,tsx}",
+  ],
   timeout: 120 * 1000, // 15 seconds should be enough but because of cold starts
   expect: {
     timeout: 5 * 1000,

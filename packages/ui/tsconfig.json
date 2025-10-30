@@ -3,7 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@repo/ui/*": ["./src/*"],
       "@/*": ["./src/*"]
     },
     "moduleResolution": "bundler",

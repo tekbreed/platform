@@ -74,7 +74,7 @@
     },
     "test:run": {},
     "test:all": {},
-    "test:node": {},
+    "test:unit": {},
     "test:browser": {},
     "test:coverage": {},
     "test:e2e": {},

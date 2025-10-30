@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import React from "react";
 
 export function HeroBackground() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
