@@ -9,23 +9,32 @@ import { getHomePageContent } from "../utils/content/utils";
 // import { FeaturedTutorials } from "./featured-tutorials";
 // import { FeaturedArticles } from "./featured-articles";
 
+export type Content = {
+  latestFeature: string;
+  features: {
+    icon: string;
+    name: string;
+    released: boolean;
+    description: string;
+  }[];
+};
+
 export async function loader() {
   const content = getHomePageContent();
   return { content };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  const { content } = loaderData;
   return (
     <div className="mx-auto flex flex-col">
-      <Hero content={content} />
-      <ActionVideo />
-      <Features content={content} />
-      <Stats />
+      <Hero content={loaderData.content} />
+      {/* <ActionVideo /> */}
+      <Features content={loaderData.content} />
+      {/* <Stats /> */}
       {/* <FeaturedCourses />
       <FeaturedTutorials />
       <FeaturedArticles /> */}
-      <PricingSection />
+      {/* <PricingSection /> */}
     </div>
   );
 }

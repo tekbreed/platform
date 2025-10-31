@@ -1,7 +1,6 @@
 import { createCookieSessionStorage } from "react-router";
 import { GitHubProvider } from "./auth-providers/github.server";
 import { type AuthProvider } from "./auth-providers/provider";
-import { baseUrl } from "@/constants/config";
 import type { ProviderName } from "./connection";
 
 export const connectionSessionStorage = createCookieSessionStorage({
@@ -14,7 +13,7 @@ export const connectionSessionStorage = createCookieSessionStorage({
     secrets: [process.env.SESSION_SECRET],
     ...(process.env.NODE_ENV === "production"
       ? {
-          domain: baseUrl,
+          domain: ".tekbreed.com",
           secure: true,
         }
       : {}),

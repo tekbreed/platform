@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 79, "column": 0}, "map": {"version":3,"sources":["file:///Users/codingsimba/Desktop/projects/platform/apps/docs/app/docs/page.mdx.tsx"],"sourcesContent":["/*@jsxRuntime automatic*/\n/*@jsxImportSource react*/\nimport {HOC_MDXWrapper} from \"nextra/setup-page\";\nimport {useMDXComponents as _provideComponents} from \"next-mdx-import-source-file\";\nexport const metadata = {\n  \"title\": \"Page\",\n  \"filePath\": \"app/docs/page.mdx\",\n  \"timestamp\": 1761217965794\n};\nexport const sourceCode = \"\";\nfunction useTOC(props) {\n  return [];\n}\nexport const toc = useTOC({});\nfunction _createMdxContent(props) {\n  return <></>;\n}\nexport default HOC_MDXWrapper(_createMdxContent, {\n  metadata,\n  toc,\n  sourceCode\n});\n"],"names":[],"mappings":"AAAA,uBAAuB,GACvB,wBAAwB;;;;;;;;;;;AACxB;;;AAEO,MAAM,WAAW;IACtB,SAAS;IACT,YAAY;IACZ,aAAa;AACf;AACO,MAAM,aAAa;AAC1B,SAAS,OAAO,KAAK;IACnB,OAAO,EAAE;AACX;AACO,MAAM,MAAM,OAAO,CAAC;AAC3B,SAAS,kBAAkB,KAAK;IAC9B,qBAAO;AACT;uCACe,IAAA,2KAAc,EAAC,mBAAmB;IAC/C;IACA;IACA;AACF","debugId":null}},
-    {"offset": {"line": 115, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}}]
-}

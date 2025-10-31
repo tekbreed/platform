@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { DashboardIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { DashboardIcon } from "@sanity/icons";
 
 export const category = defineType({
   name: "category",
@@ -25,4 +25,4 @@ export const category = defineType({
       hidden: ({ document }) => !document?.title,
     }),
   ],
-})
+});

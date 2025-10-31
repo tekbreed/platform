@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { TagsIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { TagsIcon } from "@sanity/icons";
 
 export const tag = defineType({
   name: "tag",
@@ -24,4 +24,4 @@ export const tag = defineType({
       hidden: ({ document }) => !document?.title,
     }),
   ],
-})
+});

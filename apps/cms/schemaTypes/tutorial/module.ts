@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { StackCompactIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { StackCompactIcon } from "@sanity/icons";
 
 export const tutorialModule = defineType({
   name: "tutorialModule",
@@ -80,13 +80,13 @@ export const tutorialModule = defineType({
       tutorial: "tutorial.title",
     },
     prepare(selection) {
-      const { title, order, tutorial } = selection
+      const { title, order, tutorial } = selection;
       return {
         title: title,
         subtitle: tutorial
           ? `${tutorial} - Module ${order}`
           : `Module ${order}`,
-      }
+      };
     },
   },
-})
+});

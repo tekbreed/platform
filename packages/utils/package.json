@@ -13,7 +13,8 @@
     "./env.server": "./src/env.server.ts",
     "./email.server": "./src/email.server.ts",
     "./theme.server": "./src/theme.server.ts",
-    "./toast.server": "./src/toast.server.ts"
+    "./toast.server": "./src/toast.server.ts",
+    "./content/*": "./src/content.server/*.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

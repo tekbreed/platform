@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { StackCompactIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { StackCompactIcon } from "@sanity/icons";
 
 export const subModule = defineType({
   name: "subModule",
@@ -57,4 +57,4 @@ export const subModule = defineType({
       subtitle: "slug.current",
     },
   },
-})
+});

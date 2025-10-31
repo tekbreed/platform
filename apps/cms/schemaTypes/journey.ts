@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { ClockIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { ClockIcon } from "@sanity/icons";
 
 export const journey = defineType({
   name: "journey",
@@ -66,12 +66,12 @@ export const journey = defineType({
       media: "image",
     },
     prepare(selection) {
-      const { title, category, year } = selection
+      const { title, category, year } = selection;
       return {
         title: title,
         subtitle: `${category} - ${year}`,
         media: selection.media,
-      }
+      };
     },
   },
-})
+});

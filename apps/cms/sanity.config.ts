@@ -1,17 +1,22 @@
-import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
-import {visionTool} from '@sanity/vision'
-import {markdownSchema} from 'sanity-plugin-markdown'
-import {schemaTypes} from './schemaTypes'
-import {codeInput} from '@sanity/code-input'
-import {StackCompactIcon, BookIcon, CodeBlockIcon, DashboardIcon} from '@sanity/icons'
+import { defineConfig } from "sanity";
+import { structureTool } from "sanity/structure";
+import { visionTool } from "@sanity/vision";
+import { markdownSchema } from "sanity-plugin-markdown";
+import { schemaTypes } from "./schemaTypes";
+import { codeInput } from "@sanity/code-input";
+import {
+  StackCompactIcon,
+  BookIcon,
+  CodeBlockIcon,
+  DashboardIcon,
+} from "@sanity/icons";
 
 export default defineConfig({
-  name: 'default',
-  title: 'TekBreed',
+  name: "default",
+  title: "TekBreed",
   icon: DashboardIcon,
-  projectId: '3alj5od9',
-  dataset: 'development',
+  projectId: "3alj5od9",
+  dataset: "development",
 
   plugins: [
     structureTool({
@@ -118,4 +123,4 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
-})
+});

@@ -3,6 +3,8 @@ import { invariant } from "./misc";
 import { onboardingSessionKey } from "./onboarding";
 import type { VerifyFunctionArgs } from "./verify";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const verifySessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__tb_verification",
@@ -11,7 +13,12 @@ export const verifySessionStorage = createCookieSessionStorage({
     httpOnly: true,
     maxAge: 60 * 10, // 10 minutes
     secrets: [process.env.SESSION_SECRET],
-    secure: process.env.NODE_ENV === "production",
+    ...(isProduction
+      ? {
+          domain: ".tekbreed.com",
+          secure: true,
+        }
+      : {}),
   },
 });
 

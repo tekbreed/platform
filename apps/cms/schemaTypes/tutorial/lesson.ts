@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { BookIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { BookIcon } from "@sanity/icons";
 
 export const tutorialLesson = defineType({
   name: "tutorialLesson",
@@ -89,11 +89,11 @@ export const tutorialLesson = defineType({
       module: "module.title",
     },
     prepare(selection) {
-      const { title, order, module } = selection
+      const { title, order, module } = selection;
       return {
         title: title,
         subtitle: module ? `${module} - Lesson ${order}` : `Lesson ${order}`,
-      }
+      };
     },
   },
-})
+});

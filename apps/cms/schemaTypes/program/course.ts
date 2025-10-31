@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { BookIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { BookIcon } from "@sanity/icons";
 
 export const course = defineType({
   name: "course",
@@ -57,4 +57,4 @@ export const course = defineType({
       subtitle: "slug.current",
     },
   },
-})
+});

@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { StackCompactIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { StackCompactIcon } from "@sanity/icons";
 
 export const roadmap = defineType({
   name: "roadmap",
@@ -94,11 +94,11 @@ export const roadmap = defineType({
       content: "content",
     },
     prepare(selection) {
-      const { title, startDate, order, published, content } = selection
+      const { title, startDate, order, published, content } = selection;
       return {
         title: title,
         subtitle: `${startDate} - ${order} - ${published ? "Published" : "Draft"} - ${content.slice(0, 50)}`,
-      }
+      };
     },
   },
-})
+});

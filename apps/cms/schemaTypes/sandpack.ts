@@ -1,5 +1,5 @@
-import { defineType, defineField } from "sanity"
-import { CodeBlockIcon } from "@sanity/icons"
+import { defineType, defineField } from "sanity";
+import { CodeBlockIcon } from "@sanity/icons";
 
 export const sandpack = defineType({
   name: "sandpack",
@@ -110,11 +110,11 @@ export const sandpack = defineType({
               subtitle: "code",
             },
             prepare(selection) {
-              const { title, subtitle } = selection
+              const { title, subtitle } = selection;
               return {
                 title: title,
                 subtitle: subtitle?.substring(0, 100) + "...",
-              }
+              };
             },
           },
         }),
@@ -266,12 +266,12 @@ export const sandpack = defineType({
       description: "description",
     },
     prepare(selection) {
-      const { title, subtitle, description } = selection
+      const { title, subtitle, description } = selection;
       return {
         title: title,
         subtitle: `${subtitle} template`,
         description: description,
-      }
+      };
     },
   },
-})
+});

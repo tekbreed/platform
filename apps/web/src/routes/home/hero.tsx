@@ -1,20 +1,34 @@
+import React from "react";
+import type { HomePageContent } from "../utils/content/types";
+import { BackgroundCanvas } from "@repo/ui/composed/background-canvas";
 import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
-import { Link } from "react-router";
-import { HeroBackground } from "./hero-background";
+import { Await, Link } from "react-router";
 import { Icons } from "@repo/ui/composed/icons";
 import { getModuleUrl } from "@repo/utils/constants/client";
 import { SmartLink } from "@repo/ui/composed/smart-link";
 
-export function Hero() {
+export function Hero({ content }: { content: Promise<HomePageContent> }) {
   return (
     <section className="relative min-h-screen overflow-hidden py-24 lg:py-32">
-      <HeroBackground />
+      <BackgroundCanvas />
       <div className="relative z-10 container mx-auto">
         <div className="mx-auto w-full max-w-4xl text-center">
-          <Badge variant="secondary" className="mb-8">
-            🚀 New: AI-Learning Assistant
-          </Badge>
+          <React.Suspense
+            fallback={
+              <Badge variant="secondary" className="mb-8">
+                🚀 In Flight
+              </Badge>
+            }
+          >
+            <Await resolve={content}>
+              {(content) => (
+                <Badge variant="secondary" className="mb-8">
+                  🚀 New: {content.latestFeature}
+                </Badge>
+              )}
+            </Await>
+          </React.Suspense>
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
             Transform your coding skills with{" "}
             <span className="bg-gradient-to-r from-slate-400 to-slate-700 bg-clip-text text-transparent">

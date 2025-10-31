@@ -1,7 +1,7 @@
-import { defineField, defineType } from "sanity"
-import { BookIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { BookIcon } from "@sanity/icons";
 
-export { tutorialModule } from "./module"
+export { tutorialModule } from "./module";
 
 export const tutorial = defineType({
   name: "tutorial",
@@ -103,4 +103,4 @@ export const tutorial = defineType({
       media: "category",
     },
   },
-})
+});

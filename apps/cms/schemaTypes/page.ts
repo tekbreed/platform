@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { DocumentIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { DocumentIcon } from "@sanity/icons";
 
 export const page = defineType({
   name: "page",
@@ -44,11 +44,11 @@ export const page = defineType({
       description: "description",
     },
     prepare(selection) {
-      const { title, description } = selection
+      const { title, description } = selection;
       return {
         title: title,
         subtitle: `${description}`,
-      }
+      };
     },
   },
-})
+});

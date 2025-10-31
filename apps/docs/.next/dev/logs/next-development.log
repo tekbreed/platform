@@ -1,9 +1,0 @@
-[00:00:01.224] Server  LOG     
-[00:00:01.224] Server  LOG        We detected TypeScript in your project and created a tsconfig.json file for you.
-[00:00:01.396] Server  LOG      ✓ Ready in 1080ms
-[00:00:14.583] Server  LOG      ○ Compiling / ...
-[00:00:39.028] Server  LOG      ○ Compiling /_not-found/page ...
-[00:01:22.126] Server  LOG      ✓ Compiled in 1201ms
-[00:02:34.090] Server  ERROR    ⨯ Error: The default export is not a React Component in "/not-found"
-[00:02:34.635] Server  ERROR    ⨯ Error: The default export is not a React Component in "/not-found"
-[00:02:36.518] Server  LOG      ✓ Compiled in 1845ms

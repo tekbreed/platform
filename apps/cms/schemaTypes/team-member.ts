@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { UserIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { UserIcon } from "@sanity/icons";
 
 export const teamMember = defineType({
   name: "teamMember",
@@ -83,12 +83,12 @@ export const teamMember = defineType({
       media: "image",
     },
     prepare(selection) {
-      const { title, role, order } = selection
+      const { title, role, order } = selection;
       return {
         title: title,
         subtitle: `${role} (Order: ${order})`,
         media: selection.media,
-      }
+      };
     },
   },
-})
+});

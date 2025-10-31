@@ -1,22 +1,15 @@
 {
   "name": "docs",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "description": "TekBreed Docs",
   "type": "module",
+  "keywords": [
+    "docs"
+  ],
+  "author": "TekBreed",
   "scripts": {
-    "dev": "next --turbopack",
-    "build": "next build",
-    "start": "next start"
-  },
-  "dependencies": {
-    "next": "^16.0.0",
-    "nextra": "^4.6.0",
-    "nextra-theme-docs": "^4.6.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
   }
 }

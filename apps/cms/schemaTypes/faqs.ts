@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { HelpCircleIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { HelpCircleIcon } from "@sanity/icons";
 
 export const faqs = defineType({
   name: "faqs",
@@ -57,11 +57,11 @@ export const faqs = defineType({
       order: "order",
     },
     prepare(selection) {
-      const { title, category, order } = selection
+      const { title, category, order } = selection;
       return {
         title: title,
         subtitle: `${category} (Order: ${order})`,
-      }
+      };
     },
   },
-})
+});

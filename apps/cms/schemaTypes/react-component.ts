@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { CodeBlockIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { CodeBlockIcon } from "@sanity/icons";
 
 export const reactComponent = defineType({
   name: "component",
@@ -37,4 +37,4 @@ export const reactComponent = defineType({
       media: "image",
     },
   },
-})
+});

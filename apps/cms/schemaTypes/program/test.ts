@@ -1,4 +1,4 @@
-import { defineField, defineType } from "sanity"
+import { defineField, defineType } from "sanity";
 
 export const test = defineType({
   name: "test",
@@ -60,20 +60,20 @@ export const test = defineType({
               validation: (Rule) =>
                 Rule.custom((options, context) => {
                   // @ts-ignore
-                  const type = context?.parent?.type
+                  const type = context?.parent?.type;
                   if (
                     type === "MULTIPLE_CHOICE" &&
                     (!options || options.length < 2)
                   ) {
-                    return "At least two options are required for multiple choice"
+                    return "At least two options are required for multiple choice";
                   }
                   if (
                     type === "TRUE_FALSE" &&
                     (!options || options.length !== 2)
                   ) {
-                    return "Exactly two options (True and False) are required for true/false"
+                    return "Exactly two options (True and False) are required for true/false";
                   }
-                  return true
+                  return true;
                 }),
               description:
                 "Provide options for multiple choice or true/false questions.",
@@ -100,11 +100,11 @@ export const test = defineType({
       module: "module.title",
     },
     prepare(selection) {
-      const { title, module } = selection
+      const { title, module } = selection;
       return {
         title: title,
         subtitle: module ? `Module: ${module}` : undefined,
-      }
+      };
     },
   },
-})
+});

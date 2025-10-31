@@ -3,7 +3,6 @@ import { safeRedirect } from "remix-utils/safe-redirect";
 import { combineResponseInits } from "./misc";
 import { sessionKey } from "./auth.server";
 import { prisma } from "@repo/database";
-import { baseUrl } from "./constants/config";
 
 export const authSessionStorage = createCookieSessionStorage({
   cookie: {
@@ -14,7 +13,7 @@ export const authSessionStorage = createCookieSessionStorage({
     secrets: [process.env.SESSION_SECRET],
     ...(process.env.NODE_ENV === "production"
       ? {
-          domain: `.${baseUrl}`,
+          domain: ".tekbreed.com",
           secure: true,
         }
       : {}),

@@ -1,5 +1,5 @@
-import { defineField, defineType } from "sanity"
-import { BookIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity";
+import { BookIcon } from "@sanity/icons";
 
 export const article = defineType({
   name: "article",
@@ -121,4 +121,4 @@ export const article = defineType({
       media: "image",
     },
   },
-})
+});

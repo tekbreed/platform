@@ -16,10 +16,7 @@ const sessionStorage = createCookieSessionStorage({
           domain: ".tekbreed.com",
           secure: true,
         }
-      : {
-          domain: "localhost",
-          secure: false,
-        }),
+      : {}),
   },
 });
 

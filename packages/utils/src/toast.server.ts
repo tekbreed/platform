@@ -19,6 +19,8 @@ export type OptionalToast = Omit<Toast, "id" | "type"> & {
   type?: z.infer<typeof TypeSchema>;
 };
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const toastSessionStorage = createCookieSessionStorage({
   cookie: {
     name: "__tb_toast",
@@ -26,7 +28,12 @@ export const toastSessionStorage = createCookieSessionStorage({
     path: "/",
     httpOnly: true,
     secrets: [process.env.SESSION_SECRET],
-    secure: process.env.NODE_ENV === "production",
+    ...(isProduction
+      ? {
+          domain: ".tekbreed.com",
+          secure: true,
+        }
+      : {}),
   },
 });
 
