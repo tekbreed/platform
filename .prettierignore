@@ -3,7 +3,8 @@
 **/coverage
 **/node_modules
 **/.react-router/
-**/app/generated/*
+**/src/generated
+**/prisma/migrations
 
 # Ignore files:
 **/README.md
