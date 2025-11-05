@@ -75,7 +75,6 @@ export default function OnboardingProvider({
     shouldValidate: "onSubmit",
     defaultValue: { redirectTo },
   });
-  console.log(actionData);
 
   return (
     <>

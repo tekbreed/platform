@@ -1,8 +1,8 @@
 import { faqQuery, journeyQuery, pageQuery, teamMemberQuery } from "./queries";
 import { client } from "../loader";
 import type { FAQ, Roadmap, Journey, TeamMember, Page } from "./types";
-import { bundleMDX } from "~/utils/mdx.server";
 import { roadmapQuery } from "./queries";
+import { bundleMDX } from "@/mdx.server";
 
 /**
  * Fetches all roadmap items from Sanity CMS.

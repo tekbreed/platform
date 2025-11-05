@@ -1,9 +1,12 @@
 import { type Entity, type Action } from "../src/generated/prisma/client";
-import { prisma } from "../src";
+import { PrismaClient } from "../src/generated/prisma/client";
 
 const { ADMIN_PASSWORD } = process.env;
 const ADMIN_EMAIL = "me@tekbreed.com";
 const ADMIN_NAME = "Christopher S. Aondona";
+
+const prisma = new PrismaClient();
+
 async function seed() {
   await prisma.permission.deleteMany();
   await prisma.role.deleteMany();

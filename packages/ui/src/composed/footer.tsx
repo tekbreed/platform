@@ -1,8 +1,6 @@
 import { Logo } from "./logo";
 import { useLocation } from "react-router";
-import { useOptionalUser } from "@repo/utils/hooks/user";
 import { cn } from "@/lib/utils";
-import { SubscriptionForm } from "./subscription-forms";
 import { slogan } from "@repo/utils/constants/config";
 import {
   content,
@@ -14,20 +12,7 @@ import {
 import { SmartLink } from "./smart-link";
 
 export function Footer() {
-  const pathsToHideSubForm = [
-    "signup",
-    "signin",
-    "forgot-password",
-    "verify",
-    "reset-password",
-  ];
-
   const location = useLocation();
-  const user = useOptionalUser();
-  const hideSubForm = pathsToHideSubForm.some((path) =>
-    location.pathname.includes(path),
-  );
-
   const hideFooter = location.pathname.includes("chat");
 
   return (
@@ -36,18 +21,6 @@ export function Footer() {
         "p hidden": hideFooter,
       })}
     >
-      <section
-        className={cn("relative overflow-hidden bg-background py-24", {
-          "p hidden": user || hideSubForm,
-        })}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-background" />
-        <div className="relative z-10 container mx-auto px-4">
-          <div className="mx-auto max-w-3xl text-center">
-            <SubscriptionForm />
-          </div>
-        </div>
-      </section>
       <footer className={cn("border-t border-border py-12")}>
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-start justify-between md:flex-row">

@@ -9,6 +9,7 @@ import { handlers as bunnyHandlers } from "@repo/tests-config/mocks/bunny";
 import { handlers as voyageHandlers } from "@repo/tests-config/mocks/vogage";
 import { handlers as vectorHandlers } from "@repo/tests-config/mocks/vector";
 import { handlers as discordHandlers } from "@repo/tests-config/mocks/discord";
+import { handlers as youtubeHandlers } from "@repo/tests-config/mocks/youtube";
 
 export const server = setupServer(
   ...miscHandlers,
@@ -20,6 +21,7 @@ export const server = setupServer(
   ...voyageHandlers,
   ...vectorHandlers,
   ...discordHandlers,
+  ...youtubeHandlers,
 );
 server.listen({ onUnhandledRequest: "warn" });
 console.info("🔶 Mock server installed");

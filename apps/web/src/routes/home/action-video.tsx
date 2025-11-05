@@ -1,4 +1,4 @@
-import { Icons } from "@repo/ui/composed/icons";
+import { Iframe } from "@repo/ui/composed/markdown/components/media";
 
 export function ActionVideo() {
   return (
@@ -12,27 +12,7 @@ export function ActionVideo() {
             Watch how our AI-powered platform transforms your learning
             experience
           </p>
-          <div className="relative aspect-video overflow-hidden rounded-lg shadow-2xl">
-            <video
-              className="h-full w-full object-cover"
-              controls
-              poster="/placeholder.svg?height=400&width=800&text=Video+Preview"
-            >
-              <source src="/demo-video.mp4" type="video/mp4" />
-              <source src="/demo-video.webm" type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
-            {/* Fallback for when video is not available */}
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-700">
-              <div className="text-center text-white">
-                <Icons.play className="mx-auto mb-4 h-16 w-16 opacity-80" />
-                <p className="text-lg font-medium">Demo Video Coming Soon</p>
-                <p className="mt-2 text-sm opacity-70">
-                  Experience our AI-powered learning platform
-                </p>
-              </div>
-            </div>
-          </div>
+          <Iframe videoId="pBASqUbZgkY" type="youtube" className="rounded-md" />
         </div>
       </div>
     </section>

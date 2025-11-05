@@ -1,4 +1,4 @@
-import { cn } from "~/utils/misc";
+import { cn } from "@/lib/utils";
 
 export function Ul({
   className,
@@ -7,7 +7,7 @@ export function Ul({
   return (
     <ul
       className={cn(
-        "text-foreground my-6 ml-6 list-disc [&>li]:mt-2",
+        "my-6 ml-6 list-disc text-foreground [&>li]:mt-2",
         className,
       )}
       {...props}
@@ -22,7 +22,7 @@ export function Ol({
   return (
     <ol
       className={cn(
-        "text-foreground my-6 ml-6 list-decimal [&>li]:mt-2",
+        "my-6 ml-6 list-decimal text-foreground [&>li]:mt-2",
         className,
       )}
       {...props}

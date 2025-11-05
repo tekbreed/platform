@@ -17,7 +17,7 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function SignupRoute({ actionData }: Route.ComponentProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="container mx-auto flex min-h-screen items-center justify-center">
       <AuthForm action="signup" actionData={actionData} />
     </div>
   );

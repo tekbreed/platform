@@ -11,6 +11,7 @@ import {
 import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
 import { Await, Link } from "react-router";
+import { Skeleton } from "@repo/ui/components/skeleton";
 
 const iconMap = {
   bot: Icons.bot,
@@ -38,15 +39,13 @@ export function Features({ content }: { content: Promise<HomePageContent> }) {
         </div>
         <div className="mx-auto mt-16 grid w-full max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <React.Suspense
-            fallback={
-              <Badge variant="secondary" className="mb-8">
-                🚀 In Flight
-              </Badge>
-            }
+            fallback={Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="h-65 w-90" />
+            ))}
           >
             <Await resolve={content}>
-              {(content) =>
-                content.features.map((feature) => {
+              {({ features }) =>
+                features.map((feature) => {
                   const IconComponent = iconMap[feature.icon as IconName];
                   return (
                     <Card key={feature.name} className="text-center">
@@ -68,6 +67,7 @@ export function Features({ content }: { content: Promise<HomePageContent> }) {
               }
             </Await>
           </React.Suspense>
+
           <div className="col-span-full flex justify-center">
             <Button asChild>
               <Link prefetch="intent" to={"/about"}>

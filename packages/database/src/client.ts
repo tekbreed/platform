@@ -12,7 +12,7 @@ if (!DATABASE_URL || !TURSO_DATABASE_URL || !TURSO_AUTH_TOKEN) {
 
 const isDev = NODE_ENV !== "production";
 
-const databaseConfig = isDev
+export const databaseConfig = isDev
   ? { url: DATABASE_URL }
   : { url: TURSO_DATABASE_URL, authToken: TURSO_AUTH_TOKEN };
 

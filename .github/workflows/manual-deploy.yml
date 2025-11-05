@@ -14,10 +14,14 @@ on:
           - admin
           - programs
           - coding-challenges
+          - classroom
+          - notes
           - teams
           - job-board
           - store
           - docs
+          - mcps
+          - apis
       environment:
         description: "Deploy to which environment?"
         required: true
@@ -96,6 +100,20 @@ jobs:
                 SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_DEV_SERVICE_ID }}"
               fi
               ;;
+            classroom)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CLASSROOM_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CLASSROOM_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            notes)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_NOTES_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_NOTES_DEV_SERVICE_ID }}"
+              fi
+              ;;
             teams)
               if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_TEAMS_PROD_SERVICE_ID }}"
@@ -124,6 +142,20 @@ jobs:
                 SERVICE_ID="${{ secrets.RAILWAY_DOCS_DEV_SERVICE_ID }}"
               fi
               ;;
+            mcps)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_MCPS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_MCPS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            apis)
+                if [ "${ENVIRONMENT}" = "production" ]; then
+                  SERVICE_ID="${{ secrets.RAILWAY_APIS_PROD_SERVICE_ID }}"
+                else
+                  SERVICE_ID="${{ secrets.RAILWAY_APIS_DEV_SERVICE_ID }}"
+                fi
+                ;;
             *)
               echo "❌ Unknown app: ${APP_NAME}"
               exit 1

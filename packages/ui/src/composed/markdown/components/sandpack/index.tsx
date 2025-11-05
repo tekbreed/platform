@@ -1,7 +1,7 @@
 import React from "react";
 import { autocompletion } from "@codemirror/autocomplete";
 import { Theme, useTheme } from "remix-themes";
-import type { SandpackTemplate } from "~/utils/content.server/articles/types";
+import type { SandpackTemplate } from "@repo/utils/content/articles/types";
 import {
   SandpackProvider,
   SandpackCodeEditor,
@@ -9,9 +9,9 @@ import {
 import { SandpackFileExplorer } from "sandpack-file-explorer";
 import { atomDark, ecoLight } from "@codesandbox/sandpack-themes";
 import { Code, Maximize, Minimize } from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { useMobile } from "~/hooks/use-mobile";
-import { cn } from "~/utils/misc";
+import { Button } from "@/components/button";
+import { useIsMobile } from "@repo/utils/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 import {
   CopyCode,
   SandpackTabs,
@@ -20,7 +20,7 @@ import {
 } from "./sandpack-components";
 import { Preview } from "./preview";
 import { toast } from "sonner";
-import { getErrorMessage } from "~/utils/misc";
+import { getErrorMessage } from "@repo/utils/misc";
 
 /**
  * Template mapping for different Sandpack templates
@@ -49,7 +49,7 @@ interface SandpackProps {
  */
 export function Sandpack({ sandpackTemplate }: SandpackProps) {
   const [theme] = useTheme();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const [activeView, setActiveView] = React.useState<ViewProps>(
     sandpackTemplate?.options?.view ?? "split",
   );

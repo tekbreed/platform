@@ -1,8 +1,8 @@
 generator client {
-  provider      = "prisma-client"
-  output        = "../../src/generated/prisma"
-  moduleFormat  = "esm"
-  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider     = "prisma-client"
+  output       = "../../src/generated/prisma"
+  moduleFormat = "esm"
+  // binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -16,6 +16,8 @@ model User {
   name                     String
   polarCustomerId          String? @unique
   isSubscribedToNewsletter Boolean @default(false)
+
+  accountType AccountType @default(INDIVIDUAL)
 
   totalTokensUsed Int       @default(0)
   monthlyTokens   Int       @default(0)
@@ -66,6 +68,11 @@ model User {
 
   @@index([lastSeenAt])
   @@index([createdAt])
+}
+
+enum AccountType {
+  INDIVIDUAL
+  COMPANY
 }
 
 model Password {

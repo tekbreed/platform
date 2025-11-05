@@ -55,8 +55,6 @@ export function getSeed(name: string = "Tony Max") {
   return name.split(" ")[0];
 }
 
-export const bunnyStorageZone = "https://cdn.tekbreed.com";
-
 /**
  * Gets an image URL either from CDN or generates a random bot avatar
  * @param {string | null | undefined} fileKey - CDN file key
@@ -65,16 +63,27 @@ export const bunnyStorageZone = "https://cdn.tekbreed.com";
 export function getImgSrc({
   seed = "Tony",
   fileKey,
-  storageZone = bunnyStorageZone,
 }: {
   seed?: string;
   fileKey?: string;
-  storageZone?: string;
 }): string {
   if (fileKey) {
-    return `${storageZone}/images/${encodeURIComponent(fileKey)}`;
+    return `/media/${encodeURIComponent(fileKey)}?type=image`;
   }
   return getRandomBotAvatar(getSeed(seed) ?? "Tony");
+}
+
+/**
+ * Gets a video URL from CDN
+ */
+export function getVideoSrc({
+  type,
+  videoId,
+}: {
+  type: string;
+  videoId: string;
+}): string {
+  return `/media/${encodeURIComponent(videoId)}?type=${encodeURIComponent(type)}`;
 }
 
 /**

@@ -137,7 +137,7 @@ export default function VerifyPage({
   return (
     <>
       {/* {metadata} */}
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="container mx-auto flex min-h-screen items-center justify-center p-4">
         <div className="w-full max-w-md rounded-xl bg-card p-8 shadow-lg">
           {/* Back button */}
           <button

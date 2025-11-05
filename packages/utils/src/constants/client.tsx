@@ -73,6 +73,7 @@ export const content = [
   { name: "chat", path: buildUrl("chat") },
   { name: "job board", path: buildUrl("board") },
   { name: "store", path: buildUrl("store") },
+  { name: "docs", path: buildUrl("docs") },
   { name: "roadmap", path: buildUrl(undefined, "roadmap") },
 ];
 

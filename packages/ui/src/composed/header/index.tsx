@@ -10,17 +10,6 @@ export function Header() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none"></div>
           <nav className="flex items-center">
-            {/* {social.map((item) => {
-              const Icon = Icons[item.icon as keyof typeof Icons];
-              return (
-                <Button key={item.name} variant="ghost" size="sm" asChild>
-                  <Link to={item.path} target="_blank" rel="noreferrer">
-                    <Icon className="size-4" aria-hidden />
-                    <VisuallyHidden>{item.name}</VisuallyHidden>
-                  </Link>
-                </Button>
-              );
-            })} */}
             <AuthButtons />
           </nav>
         </div>

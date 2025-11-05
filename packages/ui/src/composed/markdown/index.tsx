@@ -21,7 +21,7 @@ import { Img } from "./components/media";
 import { Ol, Ul } from "./components/lists";
 import { Code } from "./components/code";
 
-import type { SandpackTemplate } from "@repo/utils/content.server/articles/types";
+import type { SandpackTemplate } from "@repo/utils/content/articles/types";
 import {
   Caption,
   Table,

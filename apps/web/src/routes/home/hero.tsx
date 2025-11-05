@@ -3,7 +3,7 @@ import type { HomePageContent } from "../utils/content/types";
 import { BackgroundCanvas } from "@repo/ui/composed/background-canvas";
 import { Badge } from "@repo/ui/components/badge";
 import { Button } from "@repo/ui/components/button";
-import { Await, Link } from "react-router";
+import { Await } from "react-router";
 import { Icons } from "@repo/ui/composed/icons";
 import { getModuleUrl } from "@repo/utils/constants/client";
 import { SmartLink } from "@repo/ui/composed/smart-link";
@@ -22,9 +22,9 @@ export function Hero({ content }: { content: Promise<HomePageContent> }) {
             }
           >
             <Await resolve={content}>
-              {(content) => (
+              {({ latestFeature }) => (
                 <Badge variant="secondary" className="mb-8">
-                  🚀 New: {content.latestFeature}
+                  🚀 New: {latestFeature}
                 </Badge>
               )}
             </Await>

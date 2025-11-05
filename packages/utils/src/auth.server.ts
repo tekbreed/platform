@@ -25,6 +25,15 @@ for (const [providerName, provider] of Object.entries(providers)) {
   }
 }
 
+// export function checkIndexModule(request: Request) {
+//   const isDevelopment = process.env.NODE_ENV === "development";
+//   const url = new URL(request.url);
+//   if (isDevelopment) {
+//     return url.host.split(":")[1] === "5173";
+//   }
+//   return url.hostname?.split(".")?.[0] === "tekbreed";
+// }
+
 export async function getUserId(request: Request) {
   const authSession = await authSessionStorage.getSession(
     request.headers.get("cookie"),
@@ -35,6 +44,7 @@ export async function getUserId(request: Request) {
     select: { userId: true },
     where: { id: sessionId, expirationDate: { gt: new Date() } },
   });
+
   if (!session?.userId) {
     throw redirect("/", {
       headers: {

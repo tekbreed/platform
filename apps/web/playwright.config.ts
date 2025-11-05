@@ -10,7 +10,7 @@ export default defineConfig({
     "**/tests/**/*.browser.{test,spec}.{ts,tsx}",
     "**/__tests__/**/*.browser.{test,spec}.{ts,tsx}",
   ],
-  timeout: 120 * 1000, // 15 seconds should be enough but because of cold starts
+  timeout: 5 * 1000,
   expect: {
     timeout: 5 * 1000,
   },

@@ -1,13 +1,13 @@
 import React from "react";
 import ShikiHighlighter, { type Element } from "react-shiki";
 import { transformerNotationDiff } from "@shikijs/transformers";
-import type { SandpackTemplate } from "~/utils/content.server/articles/types";
-import { Check, Codesandbox, Copy, Youtube } from "lucide-react";
+import type { SandpackTemplate } from "@repo/utils/content/articles/types";
 import { useTheme } from "remix-themes";
-import { cn } from "~/utils/misc";
+import { cn } from "@/lib/utils";
+import { EmptyState } from "@/composed/empty-state";
+import { Icons } from "@/composed/icons";
 import { Sandpack } from "./sandpack";
 import { Iframe } from "./media";
-import { EmptyState } from "~/components/empty-state";
 import { Mermaid } from "./mermaid";
 
 /**
@@ -37,7 +37,7 @@ interface CodeHighlightProps {
 function InvalidSandboxTemplate() {
   return (
     <EmptyState
-      icon={<Codesandbox size={30} className="animate-spin text-red-500" />}
+      icon={<Icons.codesandbox className="size-7 animate-spin text-red-500" />}
       title="Invalid sandbox template"
       className="bg-red-300/60 dark:bg-red-950"
     />
@@ -71,14 +71,14 @@ const CopyButton = React.memo(function CopyButton({ code }: CopyButtonProps) {
   return (
     <button
       onClick={copyToClipboard}
-      className="bg-muted/80 text-destructive hover:bg-muted absolute right-2 top-2 z-10 rounded-md p-2 transition-colors"
+      className="absolute top-2 right-2 z-10 rounded-md bg-muted/80 p-2 text-destructive transition-colors hover:bg-muted"
       aria-label="Copy code"
       disabled={copied}
     >
       {copied ? (
-        <Check size={16} className="text-blue-600" />
+        <Icons.check size={16} className="text-blue-600" />
       ) : (
-        <Copy size={16} className="text-muted-foreground" />
+        <Icons.copy size={16} className="text-muted-foreground" />
       )}
     </button>
   );
@@ -138,13 +138,13 @@ export function Code({
     if (!videoId) {
       return (
         <EmptyState
-          icon={<Youtube size={30} className="animate-pulse text-red-500" />}
+          icon={<Icons.youtube className="size-7 animate-pulse text-red-500" />}
           title="Invalid YouTube ID"
           className="bg-red-300/60 dark:bg-red-950"
         />
       );
     }
-    return <Iframe videoId={code} type={isYoutube ? "youtube" : "bunny"} />;
+    return <Iframe videoId={videoId} type={isYoutube ? "youtube" : "bunny"} />;
   }
 
   // Handle Sandpack content
@@ -164,7 +164,6 @@ export function Code({
     if (!template) {
       return <InvalidSandboxTemplate />;
     }
-    console.log("Rendering Sandpack with template:", template.slug);
     return <Sandpack sandpackTemplate={template} />;
   }
 
@@ -186,7 +185,7 @@ export function Code({
   ) : (
     <span
       className={cn(
-        "bg-muted inline rounded px-1 py-0.5 font-mono text-sm",
+        "inline rounded bg-muted px-1 py-0.5 font-mono text-sm",
         "text-foreground",
         className,
       )}

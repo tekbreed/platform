@@ -1,5 +1,28 @@
-import React from "react";
+import { invariant, invariantResponse } from "@repo/utils/misc";
+import type { Route } from "./+types/legal";
+import { StatusCodes } from "http-status-codes";
+import { getPage } from "@repo/utils/content.server/system/utils";
+import { Header } from "@repo/ui/composed/page-header";
+import { Markdown } from "@repo/ui/composed/markdown";
 
-export default function LegalRoutes() {
-  return <div>legal</div>;
+export async function loader({ params }: Route.LoaderArgs) {
+  invariant(params.pageSlug, "Page slug is required");
+  const pageContent = await getPage(params.pageSlug);
+  invariantResponse(pageContent, `Page ${params.pageSlug} not found`, {
+    status: StatusCodes.NOT_FOUND,
+  });
+  return { pageContent };
+}
+
+export default function LegalRoute({ loaderData }: Route.ComponentProps) {
+  const { pageContent } = loaderData;
+
+  return (
+    <>
+      <Header title={pageContent.title} description={pageContent.description} />
+      <section className="mx-auto mt-6 max-w-3xl">
+        <Markdown source={pageContent.content} className="pt-0" />
+      </section>
+    </>
+  );
 }

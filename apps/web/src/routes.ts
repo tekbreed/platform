@@ -21,6 +21,7 @@ const routesRecord = {
     "sitemap.xml": "routes/seo/sitemap[.]xml.ts",
 
     //Resource routes
+    "media/:fileId": "routes/resources/media.ts",
     // discord: "routes/resources/discord.ts",
     // subscribe: "routes/resources/subscribe.tsx",
     // "content/webhook": "routes/resources/sanity-webhook.ts",
@@ -43,15 +44,15 @@ const routesRecord = {
         "onboarding/:provider": "routes/auth/onboarding/provider.tsx",
       },
     },
-    // profile: {
-    //   index: "routes/profile/index.tsx",
-    //   routes: {
-    //     "password/change": "routes/profile/change-password.tsx",
-    //     "password/create": "routes/profile/create-password.tsx",
-    //     "change-email": "routes/profile/change-email.tsx",
-    //     "change-photo": "routes/profile/change-photo.tsx",
-    //   },
-    // },
+    profile: {
+      index: "routes/profile/index.tsx",
+      routes: {
+        "password/change": "routes/profile/change-password.tsx",
+        "password/create": "routes/profile/create-password.tsx",
+        "change-email": "routes/profile/change-email.tsx",
+        "change-photo": "routes/profile/change-photo.tsx",
+      },
+    },
     // articles: {
     //   index: "routes/articles/index.tsx",
     //   routes: {

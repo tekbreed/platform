@@ -30,6 +30,7 @@
     "DISCORD_BOT_TOKEN",
     "DISCORD_GUILD_ID"
   ],
+
   "tasks": {
     "format": {
       "dependsOn": ["^format"]
@@ -63,7 +64,7 @@
       "cache": false,
       "persistent": true
     },
-    "db:migrate:reset": {
+    "db:reset": {
       "cache": false,
       "persistent": true
     },
@@ -76,10 +77,10 @@
     "db:studio": {
       "cache": false
     },
+    "test": {
+      "persistent": true
+    },
     "test:run": {},
-    "test:all": {},
-    "test:unit": {},
-    "test:browser": {},
     "test:coverage": {},
     "test:e2e": {},
     "test:e2e:run": {},

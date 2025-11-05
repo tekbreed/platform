@@ -5,18 +5,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
+import { Header } from "@repo/ui/composed/page-header";
 import { useChat } from "@repo/utils/providers/chat";
 import { Link } from "react-router";
-// import { Header } from "~/components/page-header";
 
 export default function SupportRoute() {
   const { toggleChat } = useChat();
   return (
     <>
-      {/* <Header
+      <Header
         title="Support Center"
         description="Get help with your account, billing, and technical issues."
-      /> */}
+      />
 
       <div className="container mx-auto my-20 w-full max-w-6xl space-y-12">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

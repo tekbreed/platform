@@ -41,7 +41,7 @@ export function App({
       {!excludedRoutes.some((r) => location.pathname.includes(r)) ? (
         <Header />
       ) : null}
-      <main className="min-h-screen">
+      <main className="relative h-full min-h-full">
         <Outlet />
       </main>
       <Footer />

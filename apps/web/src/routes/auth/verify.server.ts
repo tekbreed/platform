@@ -1,3 +1,4 @@
+import { StatusCodes } from "http-status-codes";
 import { type Submission } from "@conform-to/react";
 import { parseWithZod } from "@conform-to/zod/v4";
 import { data } from "react-router";
@@ -17,7 +18,6 @@ import {
 } from "@repo/utils/verify";
 import { prisma } from "@repo/database";
 import { getDomainUrl } from "@repo/utils/misc";
-import { StatusCodes } from "http-status-codes";
 
 export type VerifyFunctionArgs = {
   request: Request;

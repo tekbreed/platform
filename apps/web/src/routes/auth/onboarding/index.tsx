@@ -22,7 +22,7 @@ import {
   PasswordSchema,
   RememberMeSchema,
 } from "@repo/utils/user-validation";
-import { useIsPending } from "@repo/utils/misc";
+import { getImgSrc, useIsPending } from "@repo/utils/misc";
 // import { generateMetadata } from "~/utils/meta";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
@@ -79,14 +79,16 @@ export default function Onboarding({
   return (
     <>
       {/* {metadata} */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative z-10 w-full max-w-md"
-      >
-        <Card className="border-0 bg-card/80 shadow-xl backdrop-blur-sm">
+      <div className="flex !h-[90%]">
+        <Card className="m-auto w-full max-w-md border-0 bg-card/80 shadow-xl backdrop-blur-sm">
           <CardHeader className="text-center">
+            <div className="mx-auto flex w-full items-center justify-center pb-4">
+              <img
+                src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
+                alt="TekBreed"
+                className="size-10"
+              />
+            </div>
             <CardTitle className="text-xl">Welcome aboard {email}</CardTitle>
             <CardDescription>Please enter your details</CardDescription>
           </CardHeader>
@@ -96,7 +98,6 @@ export default function Onboarding({
               <HoneypotInputs />
               <input
                 {...getInputProps(fields.redirectTo, { type: "hidden" })}
-                // value={redirectTo ?? ""}
               />
               <input
                 {...getInputProps(fields.email, { type: "hidden" })}
@@ -159,7 +160,7 @@ export default function Onboarding({
             </Form>
           </CardContent>
         </Card>
-      </motion.div>
+      </div>
     </>
   );
 }

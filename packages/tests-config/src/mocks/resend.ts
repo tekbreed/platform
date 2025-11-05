@@ -3,12 +3,13 @@ import { http, HttpResponse, type HttpHandler } from "msw";
 import { faker } from "@faker-js/faker";
 import { z } from "zod/v4";
 import { RESEND_URL } from "@repo/utils/email.server";
+import { MarkdownConverter } from "@repo/utils/misc.server";
 
 const EmailSchema = z.object({
   from: z.string(),
   to: z.string(),
   subject: z.string(),
-  react: z.custom<React.ReactNode>().optional(),
+  html: z.string().optional(),
 });
 
 const SubscriptionSchema = z.object({

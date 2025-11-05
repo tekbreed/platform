@@ -1,4 +1,4 @@
-import { cn } from "~/utils/misc";
+import { cn } from "@/lib/utils";
 
 export function Table({
   className,
@@ -8,7 +8,7 @@ export function Table({
     <table
       className={cn(
         "w-full max-w-full caption-bottom text-sm",
-        "border-border border",
+        "border border-border",
         "border-separate border-spacing-0",
         "overflow-hidden rounded-lg",
         className,
@@ -25,7 +25,7 @@ export function Thead({
 }: React.HTMLAttributes<HTMLTableSectionElement>) {
   return (
     <thead
-      className={cn("border-border bg-muted border-b", className)}
+      className={cn("border-b border-border bg-muted", className)}
       {...props}
     />
   );
@@ -49,7 +49,7 @@ export function Tr({
   return (
     <tr
       className={cn(
-        "border-border hover:bg-muted border-b transition-colors",
+        "border-b border-border transition-colors hover:bg-muted",
         className,
       )}
       {...props}
@@ -65,7 +65,7 @@ export function Th({
   return (
     <th
       className={cn(
-        "text-foreground h-12 px-4 text-left align-middle font-medium",
+        "h-12 px-4 text-left align-middle font-medium text-foreground",
         className,
       )}
       {...props}
@@ -80,7 +80,7 @@ export function Td({
 }: React.HTMLAttributes<HTMLTableCellElement>) {
   return (
     <td
-      className={cn("text-foreground p-4 align-middle", className)}
+      className={cn("p-4 align-middle text-foreground", className)}
       {...props}
     />
   );
@@ -93,7 +93,7 @@ export function Caption({
 }: React.HTMLAttributes<HTMLTableCaptionElement>) {
   return (
     <caption
-      className={cn("text-muted-foreground mt-4 text-sm", className)}
+      className={cn("mt-4 text-sm text-muted-foreground", className)}
       {...props}
     />
   );

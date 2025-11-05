@@ -144,7 +144,7 @@ export function AuthForm({
                 </Label>
 
                 <Link
-                  to={"/forgot-password"}
+                  to={"/auth/forgot-password"}
                   className="text-sm text-blue-700 dark:text-blue-500"
                 >
                   Forgot your password?

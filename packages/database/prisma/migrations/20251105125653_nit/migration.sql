@@ -5,6 +5,7 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "polarCustomerId" TEXT,
     "isSubscribedToNewsletter" BOOLEAN NOT NULL DEFAULT false,
+    "accountType" TEXT NOT NULL DEFAULT 'INDIVIDUAL',
     "totalTokensUsed" INTEGER NOT NULL DEFAULT 0,
     "monthlyTokens" INTEGER NOT NULL DEFAULT 0,
     "lastTokenReset" DATETIME,

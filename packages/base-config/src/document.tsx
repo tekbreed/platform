@@ -29,8 +29,8 @@ export function Document({
         )}
         <Links />
       </head>
-      <body className="flex min-h-screen flex-col">
-        <div className="min-h-screen">{children}</div>
+      <body className="min-h-screen">
+        {children}
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{

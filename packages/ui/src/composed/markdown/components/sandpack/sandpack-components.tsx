@@ -10,15 +10,15 @@ import {
   RefreshCw,
   Terminal,
 } from "lucide-react";
-import { Button } from "~/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Button } from "@/components/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/tabs";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components/ui/tooltip";
-import { cn } from "~/utils/misc";
+} from "@/components/tooltip";
+import { cn } from "@/lib/utils";
 
 /**
  * Available view modes for the Sandpack editor
@@ -54,7 +54,7 @@ export function SandpackTabs({
         onValueChange={(value) => setActiveView(value as ViewProps)}
         className="h-7"
       >
-        <TabsList className="bg-muted h-7 p-1">
+        <TabsList className="h-7 bg-muted p-1">
           <TabsTrigger
             value="editor"
             className="h-7 rounded-md px-3 text-xs font-medium data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"

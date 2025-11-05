@@ -112,18 +112,13 @@ export default function ForgotPasswordRoute({
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: ForgotPasswordSchema });
     },
-    shouldValidate: "onBlur",
+    shouldValidate: "onSubmit",
   });
   return (
     <>
       {/* {metadata} */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mx-auto w-full max-w-md"
-      >
-        <Card className="w-full bg-card/80 shadow-xl backdrop-blur-sm">
+      <div className="flex !h-[90%]">
+        <Card className="m-auto max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
           <Form
             {...getFormProps(form)}
             method="post"
@@ -143,7 +138,7 @@ export default function ForgotPasswordRoute({
                 <Input
                   {...getInputProps(fields.email, { type: "email" })}
                   placeholder="johndoe@example.com"
-                  className="h-12 border-border bg-background !text-lg"
+                  className="border-border bg-background"
                 />
                 <FormError errors={fields.email.errors} />
               </div>
@@ -153,7 +148,7 @@ export default function ForgotPasswordRoute({
               <div className="flex w-full justify-end">
                 <div className="flex gap-6">
                   <Button variant={"outline"} asChild>
-                    <Link to={"/signin"}>Cancel</Link>
+                    <Link to={"/auth/signin"}>Cancel</Link>
                   </Button>
                   <Button type="submit" disabled={isSubmitting}>
                     Recover password
@@ -166,7 +161,7 @@ export default function ForgotPasswordRoute({
             </CardFooter>
           </Form>
         </Card>
-      </motion.div>
+      </div>
     </>
   );
 }
