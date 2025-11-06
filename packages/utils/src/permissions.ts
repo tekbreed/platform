@@ -1,5 +1,5 @@
-import type { Entity, Action, RoleName } from "~/generated/prisma/client";
-import { useUser } from "~/hooks/user";
+import type { Action, Entity, RoleName } from "@repo/database";
+import { useUser } from "./hooks/user";
 
 export type Access = "OWN" | "ANY" | "OWN,ANY" | "ANY,OWN";
 export type PermissionString =

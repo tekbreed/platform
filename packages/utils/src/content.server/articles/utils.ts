@@ -12,8 +12,8 @@ import {
   featuredArticleQuery,
   articleIdQuery,
 } from "./queries";
-import { bundleMDX } from "~/utils/mdx.server";
-import { bundleComponents, MarkdownConverter } from "~/utils/misc.server";
+import { bundleComponents, MarkdownConverter } from "@/misc.server";
+import { bundleMDX } from "@/mdx.server";
 
 /**
  * Retrieves the ID of an article by its slug

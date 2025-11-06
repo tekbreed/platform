@@ -48,7 +48,7 @@ const { POLAR_ACCESS_TOKEN, NODE_ENV, POLAR_ORGANIZATION_ID } = process.env;
  */
 export const polar = new Polar({
   accessToken: POLAR_ACCESS_TOKEN,
-  server: NODE_ENV === "development" ? "sandbox" : "production",
+  server: NODE_ENV !== "production" ? "sandbox" : "production",
 });
 
 /**

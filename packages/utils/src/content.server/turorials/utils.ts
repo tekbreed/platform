@@ -12,7 +12,7 @@ import {
 } from "./queries";
 import type { Tutorial, Lesson, ChatBotLesson, ModulesList } from "./types";
 import { bundleMDX } from "mdx-bundler";
-import { bundleComponents } from "~/utils/misc.server";
+import { bundleComponents } from "@/misc.server";
 
 /**
  * Retrieves a list of tutorials based on specified filtering criteria

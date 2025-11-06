@@ -1,7 +1,6 @@
 import { data } from "react-router";
 import { StatusCodes } from "http-status-codes";
-import { prisma } from "@repo/database";
-import type { RoleName } from "~/generated/prisma/client";
+import { prisma, RoleName } from "@repo/database";
 import { type PermissionString, parsePermissionString } from "./permissions";
 import { requireUserId } from "./auth.server";
 

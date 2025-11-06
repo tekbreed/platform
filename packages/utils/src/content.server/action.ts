@@ -1,5 +1,3 @@
-import { invariant, invariantResponse } from "~/utils/misc";
-import { prisma } from "../db.server";
 import type {
   Content,
   ContentType,
@@ -7,8 +5,10 @@ import type {
 } from "~/generated/prisma/client";
 import { MarkdownConverter } from "../misc.server";
 import { StatusCodes } from "http-status-codes";
-import { requireUserWithPermission } from "~/utils/permissions.server";
-import { z } from "zod";
+import { z } from "zod/v4";
+import { invariant, invariantResponse } from "@/misc";
+import { prisma } from "@repo/database";
+import { requireUserWithPermission } from "@/permissions.server";
 
 export const ActionSchema = z.object({
   intent: z.string(),

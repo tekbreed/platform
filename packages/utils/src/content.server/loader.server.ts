@@ -2,7 +2,7 @@ import type { ContentType } from "~/generated/prisma/client";
 import { getArticleIdBySlug } from "./articles/utils";
 import { prisma } from "../db.server";
 import { MarkdownConverter } from "~/utils/misc.server";
-import { bundleMDX } from "mdx-bundler";
+import { bundleMDX } from "@/mdx.server";
 
 /**
  * Retrieves metrics for article or tutorial by slug or id including views, likes, and comment counts

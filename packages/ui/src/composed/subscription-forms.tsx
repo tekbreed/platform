@@ -1,5 +1,5 @@
 import React from "react";
-import { z } from "zod";
+import { z } from "zod/v4";
 import { useFetcher } from "react-router";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";

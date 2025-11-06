@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const schema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"] as const),

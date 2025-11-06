@@ -1,6 +1,6 @@
 import { http, HttpResponse, type HttpHandler } from "msw";
 import { faker } from "@faker-js/faker";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1";
 

@@ -1,6 +1,6 @@
 import { data } from "react-router";
 import type { Route } from "./+types/home";
-import { z } from "zod";
+import { z } from "zod/v4";
 import { StatusCodes } from "http-status-codes";
 import { checkHoneypot } from "@repo/utils/honeypot.server";
 import { parseWithZod } from "@conform-to/zod/v4";
