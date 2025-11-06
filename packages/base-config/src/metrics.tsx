@@ -1,6 +1,7 @@
 export function Metrics({ nonce }: { nonce: string }) {
   return (
     <>
+      {/* Yandex.Metrika counter  */}
       <script
         nonce={nonce}
         dangerouslySetInnerHTML={{
@@ -25,6 +26,7 @@ export function Metrics({ nonce }: { nonce: string }) {
           />
         </div>
       </noscript>
+      {/* Yandex.Metrika counter  */}
     </>
   );
 }
