@@ -17,6 +17,10 @@
  * @requires process.env.BUNNY_ACCESS_KEY - BunnyCDN storage access key
  */
 
+import { redirect, type Params } from "react-router";
+import { invariant } from "./misc";
+import { StatusCodes } from "http-status-codes";
+
 /** BunnyCDN storage zone name from environment variables */
 const { BUNNY_STORAGE_ZONE, BUNNY_ACCESS_KEY } = process.env;
 
@@ -30,7 +34,7 @@ const BASE_HOSTNAME = "storage.bunnycdn.com";
 const HOSTNAME = BASE_HOSTNAME;
 
 /** Complete URL for the BunnyCDN storage zone */
-const URL = `https://${HOSTNAME}/${BUNNY_STORAGE_ZONE}`;
+const BASE_URL = `https://${HOSTNAME}/${BUNNY_STORAGE_ZONE}`;
 
 /**
  * Configuration options for uploading a file to BunnyCDN storage.
@@ -116,7 +120,7 @@ export async function uploadFIleToStorage(
   options: UploadFileToStorageOptions,
 ): Promise<StorageOperationResult> {
   const { file, fileKey, contentType = "application/octet-stream" } = options;
-  const UPLOAD_URL = `${URL}/images/${fileKey}`;
+  const UPLOAD_URL = `${BASE_URL}/images/${fileKey}`;
 
   const response = await fetch(UPLOAD_URL, {
     method: "PUT",
@@ -205,7 +209,7 @@ export async function deleteFileFromStorage(
   options: DeleteFileFromStorageOptions,
 ): Promise<StorageOperationResult> {
   const { fileKey } = options;
-  const DELETE_URL = `${URL}/images/${fileKey}`;
+  const DELETE_URL = `${BASE_URL}/images/${fileKey}`;
   const response = await fetch(DELETE_URL, {
     method: "DELETE",
     headers: {
@@ -218,4 +222,41 @@ export async function deleteFileFromStorage(
   } else {
     return { status: "success", error: null } as const;
   }
+}
+
+export type FileType = "youtube" | "bunny" | "image";
+
+export const bunnyStorageZone = "https://cdn.tekbreed.com";
+export const youtubeBaseUrl = "https://www.youtube.com";
+export const bunnyBaseUrl = "https://iframe.mediadelivery.net";
+export async function retrieveMediaFiles(request: Request, params: Params) {
+  const fileId = params.fileId;
+  invariant(fileId, "File ID is required");
+
+  const url = new URL(request.url);
+  const fileType = url.searchParams.get("type") as FileType;
+  invariant(fileType, "File Type is required");
+
+  let redirectUrl: string;
+
+  switch (fileType) {
+    case "image":
+      redirectUrl = `${bunnyStorageZone}/images/${encodeURIComponent(fileId)}`;
+      break;
+    case "bunny":
+      redirectUrl = `${bunnyBaseUrl}/embed/${process.env.BUNNY_LIBRARY_ID}/${fileId}?autoplay=0`;
+      break;
+    case "youtube":
+      redirectUrl = `${youtubeBaseUrl}/embed/${fileId}?rel=0&showinfo=0&modestbranding=1&iv_load_policy=3`;
+      break;
+    default:
+      throw new Response(`Invalid file type ${fileType}`, {
+        status: StatusCodes.BAD_REQUEST,
+      });
+  }
+  return redirect(redirectUrl, {
+    headers: {
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
+  });
 }

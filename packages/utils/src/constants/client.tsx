@@ -52,14 +52,14 @@ export const learning = [
   },
   {
     name: "courses",
-    prefix: "programs",
-    path: buildUrl("programs", "courses"),
+    prefix: "lms",
+    path: buildUrl("lms", "courses"),
     icon: learningIcons.courses,
   },
   {
     name: "programs",
-    prefix: "programs",
-    path: buildUrl("programs", "programs"),
+    prefix: "lms",
+    path: buildUrl("lms", "programs"),
     icon: learningIcons.programs,
   },
   {
@@ -69,18 +69,21 @@ export const learning = [
   },
 ];
 
-export const content = [
+export const services = [
+  { name: "LMS", path: buildUrl("lms") },
   { name: "chat", path: buildUrl("chat") },
+  { name: "classroom", path: buildUrl("classroom") },
+  { name: "notes", path: buildUrl("notes") },
   { name: "job board", path: buildUrl("board") },
   { name: "store", path: buildUrl("store") },
-  { name: "docs", path: buildUrl("docs") },
-  { name: "roadmap", path: buildUrl(undefined, "roadmap") },
 ];
 
 export const platform = [
   { name: "about", path: buildUrl(undefined, "about") },
   { name: "support", path: buildUrl(undefined, "support") },
   { name: "FAQs", path: buildUrl(undefined, "faqs") },
+  { name: "roadmap", path: buildUrl(undefined, "roadmap") },
+  { name: "docs", path: buildUrl("docs") },
   { name: "sitemap", path: buildUrl(undefined, "sitemap.xml") },
 ];
 

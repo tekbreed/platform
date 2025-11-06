@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import { cn } from "@/lib/utils";
 import { slogan } from "@repo/utils/constants/config";
 import {
-  content,
+  services,
   learning,
   legal,
   platform,
@@ -29,7 +29,7 @@ export function Footer() {
               <p className="mt-2 text-muted-foreground">{slogan}</p>
             </section>
 
-            <section className="grid grid-cols-2 gap-8 md:grid-cols-4 md:gap-12">
+            <section className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-12 lg:grid-cols-5">
               <div>
                 <h3 className="mb-3 font-medium text-foreground">Learning</h3>
                 <ul className="space-y-2">
@@ -47,9 +47,25 @@ export function Footer() {
               </div>
 
               <div>
+                <h3 className="mb-3 font-medium text-foreground">Services</h3>
+                <ul className="space-y-2">
+                  {services.map((item) => (
+                    <li key={item.name}>
+                      <SmartLink
+                        to={item.path}
+                        className="text-sm text-muted-foreground capitalize"
+                      >
+                        {item.name}
+                      </SmartLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
                 <h3 className="mb-3 font-medium text-foreground">Platform</h3>
                 <ul className="space-y-2">
-                  {[...content, ...platform].map((item) => (
+                  {platform.map((item) => (
                     <li key={item.name}>
                       <SmartLink
                         to={item.path}
@@ -97,7 +113,7 @@ export function Footer() {
           </div>
 
           <div className="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            © 2025 - present TekBreed. All rights reserved.
+            © {new Date().getFullYear()} TekBreed. All rights reserved.
           </div>
         </div>
       </footer>

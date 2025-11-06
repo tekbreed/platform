@@ -1,5 +1,6 @@
 import { Links, Meta, Scripts, ScrollRestoration } from "react-router";
 import { PreventFlashOnWrongTheme, type Theme } from "remix-themes";
+import { Metrics } from "./metrics";
 
 type DocumentProps = {
   children: React.ReactNode;
@@ -30,13 +31,14 @@ export function Document({
         <Links />
       </head>
       <body className="min-h-screen">
-        {children}
+        <div className="flex flex-col">{children}</div>
         <script
           nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `window.env = ${JSON.stringify(env)}`,
           }}
         />
+        <Metrics nonce={nonce} />
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>

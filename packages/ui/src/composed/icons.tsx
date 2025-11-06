@@ -1,6 +1,9 @@
 import { cn } from "@/lib/utils";
 import {
   type LucideIcon,
+  FileCheck,
+  NotebookPen,
+  Video,
   RectangleEllipsis,
   LockKeyhole,
   Download,
@@ -254,6 +257,9 @@ export const Icons = {
       />
     </svg>
   ),
+  fileCheck: FileCheck,
+  video: Video,
+  noteBookPen: NotebookPen,
   rectangleEllipsis: RectangleEllipsis,
   lockKeyhole: LockKeyhole,
   download: Download,

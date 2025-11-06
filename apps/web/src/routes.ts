@@ -22,10 +22,10 @@ const routesRecord = {
 
     //Resource routes
     "media/:fileId": "routes/resources/media.ts",
-    // discord: "routes/resources/discord.ts",
-    // subscribe: "routes/resources/subscribe.tsx",
-    // "content/webhook": "routes/resources/sanity-webhook.ts",
-    // "download-user-data": "routes/resources/download-user-data.ts",
+    discord: "routes/resources/discord.ts",
+    subscribe: "routes/resources/subscribe.tsx",
+    "content/webhook": "routes/resources/sanity-webhook.ts",
+    "download-user-data": "routes/resources/download-user-data.ts",
   },
 
   prefixed: {

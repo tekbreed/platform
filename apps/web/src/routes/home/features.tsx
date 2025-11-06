@@ -20,6 +20,9 @@ const iconMap = {
   trophy: Icons.trophy,
   users: Icons.users,
   briefcase: Icons.briefcase,
+  video: Icons.video,
+  fileCheck: Icons.fileCheck,
+  notebookPen: Icons.noteBookPen,
 } as const;
 
 type IconName = keyof typeof iconMap;

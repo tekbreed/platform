@@ -10,9 +10,9 @@ WORKDIR /app
 RUN npm install -g turbo@2.5.8
 COPY . .
 
-# ARG RAILWAY_SERVICE_NAME
+ARG RAILWAY_SERVICE_NAME
 # For Dev
-ENV RAILWAY_SERVICE_NAME="waitlist"
+# ENV RAILWAY_SERVICE_NAME="waitlist"
  
 RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
@@ -35,9 +35,9 @@ RUN npx turbo run build
 FROM base AS runner
 WORKDIR /app
 
-# ARG RAILWAY_SERVICE_NAME
+ARG RAILWAY_SERVICE_NAME
 # For Dev
-ENV RAILWAY_SERVICE_NAME="waitlist"
+# ENV RAILWAY_SERVICE_NAME="waitlist"
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser

@@ -6,9 +6,10 @@ import { Header } from "@repo/ui/composed/page-header";
 import { Markdown } from "@repo/ui/composed/markdown";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  invariant(params.pageSlug, "Page slug is required");
-  const pageContent = await getPage(params.pageSlug);
-  invariantResponse(pageContent, `Page ${params.pageSlug} not found`, {
+  const { pageSlug } = params;
+  invariant(pageSlug, "Page slug is required");
+  const pageContent = await getPage(pageSlug);
+  invariantResponse(pageContent, `Page ${pageSlug} not found`, {
     status: StatusCodes.NOT_FOUND,
   });
   return { pageContent };
@@ -16,7 +17,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function LegalRoute({ loaderData }: Route.ComponentProps) {
   const { pageContent } = loaderData;
-
   return (
     <>
       <Header title={pageContent.title} description={pageContent.description} />
