@@ -47,6 +47,7 @@ USER appuser
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/public ./public
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/build ./build
+COPY --from=installer --chown=appuser:nodejs /app/packages/database ./packages/database
 COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
 
 ENV NODE_ENV=production
