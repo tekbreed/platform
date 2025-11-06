@@ -13,7 +13,7 @@ import { SmartLink } from "./smart-link";
 
 export function Footer() {
   const location = useLocation();
-  const hideFooter = location.pathname.includes("chat");
+  const hideFooter = location.pathname.includes("/");
 
   return (
     <div

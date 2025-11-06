@@ -30,7 +30,7 @@ export function App({
 }) {
   const [currentTheme] = useTheme();
   const location = useLocation();
-  const excludedRoutes = ["auth"];
+  const excludedRoutes = ["auth", "/"];
   const hideHeader = excludedRoutes.some((r) => location.pathname.includes(r));
   return (
     <Document currentTheme={currentTheme} theme={theme} env={env} nonce={nonce}>
