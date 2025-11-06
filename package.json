@@ -32,7 +32,7 @@
     "prettier-plugin-toml": "^2.0.6",
     "tsdown": "^0.15.12",
     "tsx": "^4.20.6",
-    "turbo": "^2.5.8",
+    "turbo": "^2.6.0",
     "typescript": "5.9.2",
     "vite": "^7.1.7",
     "vitepress": "^2.0.0-alpha.12",
