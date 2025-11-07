@@ -1,65 +1,95 @@
+import { randomBytes } from "node:crypto";
 import { PassThrough } from "node:stream";
 
-import type { AppLoadContext, EntryContext } from "react-router";
+import type { HandleDocumentRequestFunction } from "react-router";
 import { createReadableStreamFromReadable } from "@react-router/node";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 import type { RenderToPipeableStreamOptions } from "react-dom/server";
 import { renderToPipeableStream } from "react-dom/server";
+import { contentSecurity } from "@nichtsam/helmet/content";
+import { NonceProvider } from "@repo/utils/providers/nonce";
+import {
+  bunnyBaseUrl,
+  bunnyStorageZone,
+  youtubeBaseUrl,
+} from "@repo/utils/storage.server";
+import { avatarBaseUrl } from "@repo/utils/misc";
 
-// export const streamTimeout = 30_000;
 export const streamTimeout = 5_000;
+const sanityCdnBaseUrl = "*.sanity.io";
+// "https://cdn.sanity.io";
 
-// init()
-// global.env = getEnv()
+type DocRequestArgs = Parameters<HandleDocumentRequestFunction>;
 
-export function handleRequest(
-  request: Request,
-  responseStatusCode: number,
-  responseHeaders: Headers,
-  routerContext: EntryContext,
-  loadContext: AppLoadContext,
-  // If you have middleware enabled:
-  // loadContext: RouterContextProvider
-) {
+export function handleRequest(...args: DocRequestArgs) {
+  // eslint-disable-next-line prefer-const
+  let [request, responseStatusCode, responseHeaders, routerContext] = args;
+  const nonce = randomBytes(16).toString("hex");
   return new Promise((resolve, reject) => {
     let shellRendered = false;
     const userAgent = request.headers.get("user-agent");
-
     const readyOption: keyof RenderToPipeableStreamOptions =
       (userAgent && isbot(userAgent)) || routerContext.isSpaMode
         ? "onAllReady"
         : "onShellReady";
 
-    let timeoutId: ReturnType<typeof setTimeout> | undefined = setTimeout(
-      () => abort(),
-      streamTimeout + 1000,
-    );
-
     const { pipe, abort } = renderToPipeableStream(
-      <ServerRouter context={routerContext} url={request.url} />,
+      <NonceProvider value={nonce}>
+        <ServerRouter nonce={nonce} context={routerContext} url={request.url} />
+      </NonceProvider>,
       {
         [readyOption]() {
           shellRendered = true;
-          const body = new PassThrough({
-            final(callback) {
-              clearTimeout(timeoutId);
-              timeoutId = undefined;
-              callback();
-            },
-          });
+          const body = new PassThrough();
           const stream = createReadableStreamFromReadable(body);
-
           responseHeaders.set("Content-Type", "text/html");
 
-          pipe(body);
-
+          contentSecurity(responseHeaders, {
+            crossOriginEmbedderPolicy: false,
+            contentSecurityPolicy: {
+              reportOnly: true,
+              directives: {
+                fetch: {
+                  "connect-src": [
+                    "'self'",
+                    process.env.SENTRY_DSN ? "*.sentry.io" : undefined,
+                    youtubeBaseUrl,
+                    bunnyBaseUrl,
+                    bunnyStorageZone,
+                    sanityCdnBaseUrl,
+                  ].filter(Boolean),
+                  "font-src": ["'self'"],
+                  "frame-src": ["'self'", youtubeBaseUrl, bunnyBaseUrl],
+                  "img-src": [
+                    "'self'",
+                    // "data:",
+                    avatarBaseUrl,
+                    bunnyStorageZone,
+                    sanityCdnBaseUrl,
+                  ],
+                  "script-src": [
+                    "'strict-dynamic'",
+                    "'self'",
+                    `'nonce-${nonce}'`,
+                    sanityCdnBaseUrl,
+                    process.env.NODE_ENV === "development"
+                      ? "'unsafe-eval'"
+                      : undefined,
+                  ].filter(Boolean),
+                  "script-src-attr": [`'nonce-${nonce}'`],
+                },
+              },
+            },
+          });
           resolve(
             new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
             }),
           );
+
+          pipe(body);
         },
         onShellError(error: unknown) {
           reject(error);
@@ -72,5 +102,7 @@ export function handleRequest(
         },
       },
     );
+
+    setTimeout(abort, streamTimeout + 1000);
   });
 }

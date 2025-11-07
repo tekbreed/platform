@@ -34,11 +34,11 @@ export function App({
   const hideHeader = excludedRoutes.some((r) => location.pathname.includes(r));
   return (
     <Document currentTheme={currentTheme} theme={theme} env={env} nonce={nonce}>
-      {/* {!hideHeader ? <Header /> : null} */}
+      {!hideHeader ? <Header /> : null}
       <main className="h-full min-h-full px-4 md:px-8">
         <Outlet />
       </main>
-      {/* <Footer /> */}
+      <Footer />
       <Toaster position="top-right" richColors />
     </Document>
   );

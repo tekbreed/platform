@@ -14,6 +14,7 @@
     "./email.server": "./src/email.server.ts",
     "./theme.server": "./src/theme.server.ts",
     "./toast.server": "./src/toast.server.ts",
+    "./storage.server": "./src/storage.server.ts",
     "./content/*": "./src/content.server/*.ts"
   },
   "scripts": {

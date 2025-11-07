@@ -1,4 +1,4 @@
-import { PrismaLibSQL } from "@prisma/adapter-libsql/web";
+import { PrismaLibSQL } from "@prisma/adapter-libsql";
 import { remember } from "@epic-web/remember";
 import { styleText } from "node:util";
 import { PrismaClient } from "./generated/prisma/client";
