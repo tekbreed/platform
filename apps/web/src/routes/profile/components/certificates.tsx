@@ -1,76 +1,80 @@
-import React from "react";
-import { motion } from "framer-motion";
 // import { Button } from "~/components/ui/button";
-import { EmptyState } from "@repo/ui/composed/empty-state";
-import { Container } from "./container";
-import { Icons } from "@repo/ui/composed/icons";
+
+import React from "react"
+
+import { motion } from "framer-motion"
+
+import { EmptyState } from "@repo/ui/composed/empty-state"
+import { Icons } from "@repo/ui/composed/icons"
+
+import { Container } from "./container"
 
 export function Certificates() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const user = {
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "/placeholder.svg?height=200&width=200&text=JD",
-    bio: "Frontend developer passionate about React and modern JavaScript.",
-    location: "San Francisco, CA",
-    joinDate: "January 2023",
-    courses: [
-      {
-        id: "modern-react",
-        title: "Modern React Development",
-        progress: 75,
-        lastAccessed: "2 days ago",
-        image: "/placeholder.svg?height=80&width=120&text=React",
-      },
-      {
-        id: "advanced-typescript",
-        title: "Advanced TypeScript",
-        progress: 45,
-        lastAccessed: "1 week ago",
-        image: "/placeholder.svg?height=80&width=120&text=TypeScript",
-      },
-      {
-        id: "fullstack-nextjs",
-        title: "Full-Stack Next.js",
-        progress: 10,
-        lastAccessed: "3 days ago",
-        image: "/placeholder.svg?height=80&width=120&text=Next.js",
-      },
-    ],
-    certificates: [
-      {
-        id: "react-fundamentals",
-        title: "React Fundamentals",
-        issueDate: "March 15, 2023",
-        image: "/placeholder.svg?height=80&width=120&text=Certificate",
-      },
-      {
-        id: "javascript-advanced",
-        title: "Advanced JavaScript",
-        issueDate: "February 10, 2023",
-        image: "/placeholder.svg?height=80&width=120&text=Certificate",
-      },
-    ],
-    subscription: {
-      plan: "Pro",
-      status: "Active",
-      renewDate: "January 15, 2024",
-      price: "$19.99/month",
-    },
-  };
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Container title="My Certificates">
-        <EmptyState
-          icon={<Icons.comingSoon className="size-8" />}
-          title="Coming Soon!"
-          description="We are working to implement this feature."
-        />
-        {/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const user = {
+		name: "John Doe",
+		email: "john@example.com",
+		avatar: "/placeholder.svg?height=200&width=200&text=JD",
+		bio: "Frontend developer passionate about React and modern JavaScript.",
+		location: "San Francisco, CA",
+		joinDate: "January 2023",
+		courses: [
+			{
+				id: "modern-react",
+				title: "Modern React Development",
+				progress: 75,
+				lastAccessed: "2 days ago",
+				image: "/placeholder.svg?height=80&width=120&text=React",
+			},
+			{
+				id: "advanced-typescript",
+				title: "Advanced TypeScript",
+				progress: 45,
+				lastAccessed: "1 week ago",
+				image: "/placeholder.svg?height=80&width=120&text=TypeScript",
+			},
+			{
+				id: "fullstack-nextjs",
+				title: "Full-Stack Next.js",
+				progress: 10,
+				lastAccessed: "3 days ago",
+				image: "/placeholder.svg?height=80&width=120&text=Next.js",
+			},
+		],
+		certificates: [
+			{
+				id: "react-fundamentals",
+				title: "React Fundamentals",
+				issueDate: "March 15, 2023",
+				image: "/placeholder.svg?height=80&width=120&text=Certificate",
+			},
+			{
+				id: "javascript-advanced",
+				title: "Advanced JavaScript",
+				issueDate: "February 10, 2023",
+				image: "/placeholder.svg?height=80&width=120&text=Certificate",
+			},
+		],
+		subscription: {
+			plan: "Pro",
+			status: "Active",
+			renewDate: "January 15, 2024",
+			price: "$19.99/month",
+		},
+	}
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+		>
+			<Container title="My Certificates">
+				<EmptyState
+					icon={<Icons.comingSoon className="size-8" />}
+					title="Coming Soon!"
+					description="We are working to implement this feature."
+				/>
+				{/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {user.certificates.map((certificate) => (
               <div
                 key={certificate.id}
@@ -103,7 +107,7 @@ export function Certificates() {
               </div>
             ))}
           </div> */}
-      </Container>
-    </motion.div>
-  );
+			</Container>
+		</motion.div>
+	)
 }

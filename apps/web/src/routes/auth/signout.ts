@@ -1,12 +1,14 @@
-import { redirect } from "react-router";
-import type { Route } from "./+types/signout";
-import { signout } from "@repo/utils/auth.server";
+import { redirect } from "react-router"
+
+import { signout } from "@repo/utils/auth.server"
+
+import type { Route } from "./+types/signout"
 
 export async function loader() {
-  return redirect("/");
+	return redirect("/")
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  await signout({ request });
-  return {};
+	await signout({ request })
+	return {}
 }

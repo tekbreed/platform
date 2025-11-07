@@ -1,5 +1,5 @@
-import React from "react";
+import React from "react"
 
 export default function AboutRoutes() {
-  return <div>legal</div>;
+	return <div>legal</div>
 }

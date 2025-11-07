@@ -1,21 +1,23 @@
+import { StatusCodes } from "http-status-codes"
+import { z } from "zod/v4"
+
+import { prisma } from "@repo/database"
+
+import { invariant, invariantResponse } from "@/misc"
+import { requireUserWithPermission } from "@/permissions.server"
 import type {
-  Content,
-  ContentType,
-  FlagReason,
-} from "~/generated/prisma/client";
-import { MarkdownConverter } from "../misc.server";
-import { StatusCodes } from "http-status-codes";
-import { z } from "zod/v4";
-import { invariant, invariantResponse } from "@/misc";
-import { prisma } from "@repo/database";
-import { requireUserWithPermission } from "@/permissions.server";
+	Content,
+	ContentType,
+	FlagReason,
+} from "~/generated/prisma/client"
+import { MarkdownConverter } from "../misc.server"
 
 export const ActionSchema = z.object({
-  intent: z.string(),
-  data: z.record(z.union([z.string(), z.null()])),
-});
+	intent: z.string(),
+	data: z.record(z.union([z.string(), z.null()])),
+})
 
-export type ActionPayload = z.infer<typeof ActionSchema>;
+export type ActionPayload = z.infer<typeof ActionSchema>
 
 /**
  * Adds a new comment or reply to an article or tutorial
@@ -28,30 +30,30 @@ export type ActionPayload = z.infer<typeof ActionSchema>;
  * @throws {Error} If comment body is missing
  */
 export async function addComment(data: ActionPayload["data"]) {
-  const { itemId, body, userId, parentId, type } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(body, "Comment body is required to add  a comment");
-  invariant(type, "Type is required");
-  const contentType = type as ContentType;
-  let content: Pick<Content, "id"> | undefined = undefined;
-  if (!parentId) {
-    content = await prisma.content.upsert({
-      where: { sanityId_type: { sanityId: itemId, type: contentType } },
-      create: { sanityId: itemId, type: contentType },
-      update: {},
-      select: { id: true },
-    });
-  }
-  const comment = await prisma.comment.create({
-    data: {
-      authorId: userId,
-      contentId: parentId ? itemId : content!.id,
-      parentId: parentId ?? null,
-      body: MarkdownConverter.toMarkdown(body),
-    },
-    select: { id: true },
-  });
-  return comment;
+	const { itemId, body, userId, parentId, type } = data
+	invariant(itemId, "Item ID is required")
+	invariant(body, "Comment body is required to add  a comment")
+	invariant(type, "Type is required")
+	const contentType = type as ContentType
+	let content: Pick<Content, "id"> | undefined
+	if (!parentId) {
+		content = await prisma.content.upsert({
+			where: { sanityId_type: { sanityId: itemId, type: contentType } },
+			create: { sanityId: itemId, type: contentType },
+			update: {},
+			select: { id: true },
+		})
+	}
+	const comment = await prisma.comment.create({
+		data: {
+			authorId: userId,
+			contentId: parentId ? itemId : content!.id,
+			parentId: parentId ?? null,
+			body: MarkdownConverter.toMarkdown(body),
+		},
+		select: { id: true },
+	})
+	return comment
 }
 
 /**
@@ -63,27 +65,27 @@ export async function addComment(data: ActionPayload["data"]) {
  * @throws {Error} If comment not found, body is missing, or user lacks UPDATE:COMMENT:OWN permission
  */
 export async function updateComment(
-  request: Request,
-  { itemId, body }: ActionPayload["data"],
+	request: Request,
+	{ itemId, body }: ActionPayload["data"],
 ) {
-  invariant(body, "Comment body is required");
-  invariant(itemId, "Item ID is required");
-  const comment = await prisma.comment.findUnique({
-    where: { id: itemId },
-    select: { id: true },
-  });
-  invariant(comment, "Comment not found");
-  invariantResponse(
-    await requireUserWithPermission(request, "UPDATE:COMMENT:OWN"),
-    "Unauthorized: You don't have permission to update this comment",
-    { status: StatusCodes.FORBIDDEN },
-  );
-  const updatedComment = await prisma.comment.update({
-    where: { id: itemId },
-    data: { body: MarkdownConverter.toMarkdown(body) },
-    select: { id: true },
-  });
-  return updatedComment;
+	invariant(body, "Comment body is required")
+	invariant(itemId, "Item ID is required")
+	const comment = await prisma.comment.findUnique({
+		where: { id: itemId },
+		select: { id: true },
+	})
+	invariant(comment, "Comment not found")
+	invariantResponse(
+		await requireUserWithPermission(request, "UPDATE:COMMENT:OWN"),
+		"Unauthorized: You don't have permission to update this comment",
+		{ status: StatusCodes.FORBIDDEN },
+	)
+	const updatedComment = await prisma.comment.update({
+		where: { id: itemId },
+		data: { body: MarkdownConverter.toMarkdown(body) },
+		select: { id: true },
+	})
+	return updatedComment
 }
 
 /**
@@ -95,29 +97,29 @@ export async function updateComment(
  * @throws {Error} If comment not found, user ID is missing, or user lacks DELETE:COMMENT:OWN permission
  */
 export async function deleteComment(
-  request: Request,
-  { itemId, userId }: ActionPayload["data"],
+	request: Request,
+	{ itemId, userId }: ActionPayload["data"],
 ) {
-  invariant(userId, "User ID is required");
-  invariant(itemId, "Item ID is required");
-  const comment = await prisma.comment.findUnique({
-    where: { id: itemId },
-    select: { id: true },
-  });
-  invariantResponse(comment, "Comment not found", {
-    status: StatusCodes.NOT_FOUND,
-  });
-  invariantResponse(
-    await requireUserWithPermission(request, "DELETE:COMMENT:OWN"),
-    "Unauthorized: You don't have permission to delete this comment",
-    { status: StatusCodes.FORBIDDEN },
-  );
+	invariant(userId, "User ID is required")
+	invariant(itemId, "Item ID is required")
+	const comment = await prisma.comment.findUnique({
+		where: { id: itemId },
+		select: { id: true },
+	})
+	invariantResponse(comment, "Comment not found", {
+		status: StatusCodes.NOT_FOUND,
+	})
+	invariantResponse(
+		await requireUserWithPermission(request, "DELETE:COMMENT:OWN"),
+		"Unauthorized: You don't have permission to delete this comment",
+		{ status: StatusCodes.FORBIDDEN },
+	)
 
-  await prisma.comment.delete({
-    where: { id: itemId },
-  });
+	await prisma.comment.delete({
+		where: { id: itemId },
+	})
 
-  return { success: true };
+	return { success: true }
 }
 
 /**
@@ -128,16 +130,16 @@ export async function deleteComment(
  * @throws {Error} If item ID is missing
  */
 export async function upvoteContent(data: ActionPayload["data"]) {
-  const { itemId, userId } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(userId, "User ID is required");
-  const upsertLike = await prisma.like.upsert({
-    where: { contentId_userId: { contentId: itemId, userId } },
-    update: { count: { increment: 1 } },
-    create: { contentId: itemId, userId, count: 1 },
-    select: { id: true },
-  });
-  return upsertLike;
+	const { itemId, userId } = data
+	invariant(itemId, "Item ID is required")
+	invariant(userId, "User ID is required")
+	const upsertLike = await prisma.like.upsert({
+		where: { contentId_userId: { contentId: itemId, userId } },
+		update: { count: { increment: 1 } },
+		create: { contentId: itemId, userId, count: 1 },
+		select: { id: true },
+	})
+	return upsertLike
 }
 
 /**
@@ -148,16 +150,16 @@ export async function upvoteContent(data: ActionPayload["data"]) {
  * @throws {Error} If item ID is missing
  */
 export async function upvoteComment(data: ActionPayload["data"]) {
-  const { itemId, userId } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(userId, "User ID is required");
-  const upsertLike = await prisma.like.upsert({
-    where: { commentId_userId: { commentId: itemId, userId } },
-    update: { count: { increment: 1 } },
-    create: { commentId: itemId, userId, count: 1 },
-    select: { id: true },
-  });
-  return upsertLike;
+	const { itemId, userId } = data
+	invariant(itemId, "Item ID is required")
+	invariant(userId, "User ID is required")
+	const upsertLike = await prisma.like.upsert({
+		where: { commentId_userId: { commentId: itemId, userId } },
+		update: { count: { increment: 1 } },
+		create: { commentId: itemId, userId, count: 1 },
+		select: { id: true },
+	})
+	return upsertLike
 }
 
 /**
@@ -168,17 +170,17 @@ export async function upvoteComment(data: ActionPayload["data"]) {
  * @description Creates a new content record if it doesn't exist, otherwise increments the view count
  */
 export async function trackPageView(data: ActionPayload["data"]) {
-  const { pageId, type } = data;
-  invariant(pageId, "Page ID is required");
-  invariant(type, "Type is required");
-  const contentType = type as ContentType;
-  const content = await prisma.content.upsert({
-    where: { sanityId: pageId },
-    create: { sanityId: pageId, type: contentType, views: 1 },
-    update: { views: { increment: 1 } },
-    select: { id: true },
-  });
-  return content;
+	const { pageId, type } = data
+	invariant(pageId, "Page ID is required")
+	invariant(type, "Type is required")
+	const contentType = type as ContentType
+	const content = await prisma.content.upsert({
+		where: { sanityId: pageId },
+		create: { sanityId: pageId, type: contentType, views: 1 },
+		update: { views: { increment: 1 } },
+		select: { id: true },
+	})
+	return content
 }
 
 /**
@@ -191,20 +193,20 @@ export async function trackPageView(data: ActionPayload["data"]) {
  * @throws {Error} If page ID or user ID is missing
  */
 export async function reportContent(data: ActionPayload["data"]) {
-  const { itemId: pageId, userId, reason, details } = data;
-  invariant(pageId, "Page ID is required");
-  invariant(userId, "User ID is required");
-  invariant(reason, "Reason is required");
-  const reportReason = reason.toUpperCase() as FlagReason;
-  const content = await prisma.content.findUniqueOrThrow({
-    where: { sanityId: pageId },
-    select: { id: true },
-  });
-  const report = await prisma.contentReport.create({
-    data: { contentId: content.id, userId, reason: reportReason, details },
-    select: { id: true },
-  });
-  return report;
+	const { itemId: pageId, userId, reason, details } = data
+	invariant(pageId, "Page ID is required")
+	invariant(userId, "User ID is required")
+	invariant(reason, "Reason is required")
+	const reportReason = reason.toUpperCase() as FlagReason
+	const content = await prisma.content.findUniqueOrThrow({
+		where: { sanityId: pageId },
+		select: { id: true },
+	})
+	const report = await prisma.contentReport.create({
+		data: { contentId: content.id, userId, reason: reportReason, details },
+		select: { id: true },
+	})
+	return report
 }
 
 /**
@@ -217,16 +219,16 @@ export async function reportContent(data: ActionPayload["data"]) {
  * @throws {Error} If item ID or user ID is missing
  */
 export async function reportComment(data: ActionPayload["data"]) {
-  const { itemId, userId, reason, details } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(userId, "User ID is required");
-  invariant(reason, "Reason is required");
-  const reportReason = reason.toUpperCase() as FlagReason;
-  const report = await prisma.contentReport.create({
-    data: { commentId: itemId, userId, reason: reportReason, details },
-    select: { id: true },
-  });
-  return report;
+	const { itemId, userId, reason, details } = data
+	invariant(itemId, "Item ID is required")
+	invariant(userId, "User ID is required")
+	invariant(reason, "Reason is required")
+	const reportReason = reason.toUpperCase() as FlagReason
+	const report = await prisma.contentReport.create({
+		data: { commentId: itemId, userId, reason: reportReason, details },
+		select: { id: true },
+	})
+	return report
 }
 
 /**
@@ -237,18 +239,18 @@ export async function reportComment(data: ActionPayload["data"]) {
  * @throws {Error} If item ID or user ID is missing
  */
 export async function deleteReport(data: ActionPayload["data"]) {
-  const { itemId, userId } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(userId, "User ID is required");
-  await prisma.contentReport.deleteMany({
-    where: {
-      OR: [
-        { contentId: itemId, userId },
-        { commentId: itemId, userId },
-      ],
-    },
-  });
-  return { success: true };
+	const { itemId, userId } = data
+	invariant(itemId, "Item ID is required")
+	invariant(userId, "User ID is required")
+	await prisma.contentReport.deleteMany({
+		where: {
+			OR: [
+				{ contentId: itemId, userId },
+				{ commentId: itemId, userId },
+			],
+		},
+	})
+	return { success: true }
 }
 
 /**
@@ -259,30 +261,30 @@ export async function deleteReport(data: ActionPayload["data"]) {
  * @throws {Error} If page ID or user ID is missing
  */
 export async function bookmarkContent(data: ActionPayload["data"]) {
-  const { itemId: pageId, userId, tags, notes } = data;
-  invariant(pageId, "Item ID is required");
-  invariant(userId, "User ID is required");
+	const { itemId: pageId, userId, tags, notes } = data
+	invariant(pageId, "Item ID is required")
+	invariant(userId, "User ID is required")
 
-  const tagNames = cleanTags(tags);
-  const content = await prisma.content.findUniqueOrThrow({
-    where: { sanityId: pageId },
-    select: { id: true },
-  });
-  const bookmark = await prisma.bookmark.create({
-    data: {
-      contentId: content.id,
-      userId,
-      notes,
-      bookmarkTags: {
-        create: createBookmarkTags(tagNames, userId),
-      },
-    },
-    select: { id: true },
-  });
-  if (!bookmark) {
-    return { success: false };
-  }
-  return { success: true };
+	const tagNames = cleanTags(tags)
+	const content = await prisma.content.findUniqueOrThrow({
+		where: { sanityId: pageId },
+		select: { id: true },
+	})
+	const bookmark = await prisma.bookmark.create({
+		data: {
+			contentId: content.id,
+			userId,
+			notes,
+			bookmarkTags: {
+				create: createBookmarkTags(tagNames, userId),
+			},
+		},
+		select: { id: true },
+	})
+	if (!bookmark) {
+		return { success: false }
+	}
+	return { success: true }
 }
 
 /**
@@ -295,27 +297,27 @@ export async function bookmarkContent(data: ActionPayload["data"]) {
  * @throws {Error} If item ID or user ID is missing
  */
 export async function updateBookmark(data: ActionPayload["data"]) {
-  const { itemId, userId, tags, notes } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(userId, "User ID is required");
-  const tagNames = cleanTags(tags);
+	const { itemId, userId, tags, notes } = data
+	invariant(itemId, "Item ID is required")
+	invariant(userId, "User ID is required")
+	const tagNames = cleanTags(tags)
 
-  const bookmark = await prisma.bookmark.update({
-    where: { id: itemId, userId },
-    data: {
-      userId,
-      notes,
-      bookmarkTags: {
-        deleteMany: {},
-        create: createBookmarkTags(tagNames, userId),
-      },
-    },
-    select: { id: true },
-  });
-  if (!bookmark) {
-    return { success: false };
-  }
-  return { success: true };
+	const bookmark = await prisma.bookmark.update({
+		where: { id: itemId, userId },
+		data: {
+			userId,
+			notes,
+			bookmarkTags: {
+				deleteMany: {},
+				create: createBookmarkTags(tagNames, userId),
+			},
+		},
+		select: { id: true },
+	})
+	if (!bookmark) {
+		return { success: false }
+	}
+	return { success: true }
 }
 
 /**
@@ -324,12 +326,12 @@ export async function updateBookmark(data: ActionPayload["data"]) {
  * @returns The cleaned tags
  */
 function cleanTags(tags: string | null): string[] {
-  return (
-    tags
-      ?.split(",")
-      .map((t) => t.trim())
-      .filter(Boolean) ?? []
-  );
+	return (
+		tags
+			?.split(",")
+			.map((t) => t.trim())
+			.filter(Boolean) ?? []
+	)
 }
 
 /**
@@ -339,14 +341,14 @@ function cleanTags(tags: string | null): string[] {
  * @returns The created tags
  */
 function createBookmarkTags(tags: string[], userId: string) {
-  return tags.map((tagName) => ({
-    tag: {
-      connectOrCreate: {
-        where: { name_userId: { name: tagName, userId } },
-        create: { name: tagName, userId },
-      },
-    },
-  }));
+	return tags.map((tagName) => ({
+		tag: {
+			connectOrCreate: {
+				where: { name_userId: { name: tagName, userId } },
+				create: { name: tagName, userId },
+			},
+		},
+	}))
 }
 
 /**
@@ -357,11 +359,11 @@ function createBookmarkTags(tags: string[], userId: string) {
  * @throws {Error} If item ID or user ID is missing
  */
 export async function deleteBookmark(data: ActionPayload["data"]) {
-  const { itemId, userId } = data;
-  invariant(itemId, "Item ID is required");
-  invariant(userId, "User ID is required");
-  await prisma.bookmark.delete({
-    where: { id: itemId, userId },
-  });
-  return { success: true };
+	const { itemId, userId } = data
+	invariant(itemId, "Item ID is required")
+	invariant(userId, "User ID is required")
+	await prisma.bookmark.delete({
+		where: { id: itemId, userId },
+	})
+	return { success: true }
 }

@@ -17,24 +17,26 @@
  * @requires process.env.BUNNY_ACCESS_KEY - BunnyCDN storage access key
  */
 
-import { redirect, type Params } from "react-router";
-import { invariant } from "./misc";
-import { StatusCodes } from "http-status-codes";
+import { type Params, redirect } from "react-router"
+
+import { StatusCodes } from "http-status-codes"
+
+import { invariant } from "./misc"
 
 /** BunnyCDN storage zone name from environment variables */
-const { BUNNY_STORAGE_ZONE, BUNNY_ACCESS_KEY } = process.env;
+const { BUNNY_STORAGE_ZONE, BUNNY_ACCESS_KEY } = process.env
 
 /** Base hostname for BunnyCDN storage API */
-const BASE_HOSTNAME = "storage.bunnycdn.com";
+const BASE_HOSTNAME = "storage.bunnycdn.com"
 
 /**
  * Current hostname for storage operations
  * Note: Currently no region specified, may change in future updates
  */
-const HOSTNAME = BASE_HOSTNAME;
+const HOSTNAME = BASE_HOSTNAME
 
 /** Complete URL for the BunnyCDN storage zone */
-const BASE_URL = `https://${HOSTNAME}/${BUNNY_STORAGE_ZONE}`;
+const BASE_URL = `https://${HOSTNAME}/${BUNNY_STORAGE_ZONE}`
 
 /**
  * Configuration options for uploading a file to BunnyCDN storage.
@@ -43,18 +45,18 @@ const BASE_URL = `https://${HOSTNAME}/${BUNNY_STORAGE_ZONE}`;
  * Files are uploaded to the 'images/' directory within the storage zone.
  */
 interface UploadFileToStorageOptions {
-  /** The file object to upload (browser File API or similar) */
-  file: File;
-  /**
-   * The destination path/filename within the storage zone
-   * Will be prefixed with 'images/' automatically
-   */
-  fileKey: string;
-  /**
-   * MIME type of the file being uploaded
-   * @default 'application/octet-stream'
-   */
-  contentType?: string;
+	/** The file object to upload (browser File API or similar) */
+	file: File
+	/**
+	 * The destination path/filename within the storage zone
+	 * Will be prefixed with 'images/' automatically
+	 */
+	fileKey: string
+	/**
+	 * MIME type of the file being uploaded
+	 * @default 'application/octet-stream'
+	 */
+	contentType?: string
 }
 
 /**
@@ -63,10 +65,10 @@ interface UploadFileToStorageOptions {
  * Provides consistent status and error reporting across all storage functions.
  */
 interface StorageOperationResult {
-  /** Operation status - 'success' if completed successfully, 'error' if failed */
-  status: "success" | "error";
-  /** Error message if operation failed, null if successful */
-  error: string | null;
+	/** Operation status - 'success' if completed successfully, 'error' if failed */
+	status: "success" | "error"
+	/** Error message if operation failed, null if successful */
+	error: string | null
 }
 
 /**
@@ -117,25 +119,25 @@ interface StorageOperationResult {
  * ```
  */
 export async function uploadFIleToStorage(
-  options: UploadFileToStorageOptions,
+	options: UploadFileToStorageOptions,
 ): Promise<StorageOperationResult> {
-  const { file, fileKey, contentType = "application/octet-stream" } = options;
-  const UPLOAD_URL = `${BASE_URL}/images/${fileKey}`;
+	const { file, fileKey, contentType = "application/octet-stream" } = options
+	const UPLOAD_URL = `${BASE_URL}/images/${fileKey}`
 
-  const response = await fetch(UPLOAD_URL, {
-    method: "PUT",
-    headers: {
-      AccessKey: BUNNY_ACCESS_KEY,
-      "Content-Type": contentType,
-    },
-    body: file,
-  });
+	const response = await fetch(UPLOAD_URL, {
+		method: "PUT",
+		headers: {
+			AccessKey: BUNNY_ACCESS_KEY,
+			"Content-Type": contentType,
+		},
+		body: file,
+	})
 
-  if (!response.ok) {
-    return { status: "error", error: "Failed to upload file" } as const;
-  } else {
-    return { status: "success", error: null } as const;
-  }
+	if (!response.ok) {
+		return { status: "error", error: "Failed to upload file" } as const
+	} else {
+		return { status: "success", error: null } as const
+	}
 }
 
 /**
@@ -145,11 +147,11 @@ export async function uploadFIleToStorage(
  * Files are deleted from the 'images/' directory within the storage zone.
  */
 interface DeleteFileFromStorageOptions {
-  /**
-   * The file path/filename to delete from the storage zone
-   * Will be prefixed with 'images/' automatically
-   */
-  fileKey: string;
+	/**
+	 * The file path/filename to delete from the storage zone
+	 * Will be prefixed with 'images/' automatically
+	 */
+	fileKey: string
 }
 
 /**
@@ -206,57 +208,57 @@ interface DeleteFileFromStorageOptions {
  * ```
  */
 export async function deleteFileFromStorage(
-  options: DeleteFileFromStorageOptions,
+	options: DeleteFileFromStorageOptions,
 ): Promise<StorageOperationResult> {
-  const { fileKey } = options;
-  const DELETE_URL = `${BASE_URL}/images/${fileKey}`;
-  const response = await fetch(DELETE_URL, {
-    method: "DELETE",
-    headers: {
-      AccessKey: BUNNY_ACCESS_KEY,
-    },
-  });
+	const { fileKey } = options
+	const DELETE_URL = `${BASE_URL}/images/${fileKey}`
+	const response = await fetch(DELETE_URL, {
+		method: "DELETE",
+		headers: {
+			AccessKey: BUNNY_ACCESS_KEY,
+		},
+	})
 
-  if (!response.ok) {
-    return { status: "error", error: "Failed to delete file" } as const;
-  } else {
-    return { status: "success", error: null } as const;
-  }
+	if (!response.ok) {
+		return { status: "error", error: "Failed to delete file" } as const
+	} else {
+		return { status: "success", error: null } as const
+	}
 }
 
-export type FileType = "youtube" | "bunny" | "image";
+export type FileType = "youtube" | "bunny" | "image"
 
-export const bunnyStorageZone = "https://cdn.tekbreed.com";
-export const youtubeBaseUrl = "https://www.youtube.com";
-export const bunnyBaseUrl = "https://iframe.mediadelivery.net";
+export const bunnyStorageZone = "https://cdn.tekbreed.com"
+export const youtubeBaseUrl = "https://www.youtube.com"
+export const bunnyBaseUrl = "https://iframe.mediadelivery.net"
 export async function retrieveMediaFiles(request: Request, params: Params) {
-  const fileId = params.fileId;
-  invariant(fileId, "File ID is required");
+	const fileId = params.fileId
+	invariant(fileId, "File ID is required")
 
-  const url = new URL(request.url);
-  const fileType = url.searchParams.get("type") as FileType;
-  invariant(fileType, "File Type is required");
+	const url = new URL(request.url)
+	const fileType = url.searchParams.get("type") as FileType
+	invariant(fileType, "File Type is required")
 
-  let redirectUrl: string;
+	let redirectUrl: string
 
-  switch (fileType) {
-    case "image":
-      redirectUrl = `${bunnyStorageZone}/images/${encodeURIComponent(fileId)}`;
-      break;
-    case "bunny":
-      redirectUrl = `${bunnyBaseUrl}/embed/${process.env.BUNNY_LIBRARY_ID}/${fileId}?autoplay=0`;
-      break;
-    case "youtube":
-      redirectUrl = `${youtubeBaseUrl}/embed/${fileId}?rel=0&showinfo=0&modestbranding=1&iv_load_policy=3`;
-      break;
-    default:
-      throw new Response(`Invalid file type ${fileType}`, {
-        status: StatusCodes.BAD_REQUEST,
-      });
-  }
-  return redirect(redirectUrl, {
-    headers: {
-      "Cache-Control": "public, max-age=31536000, immutable",
-    },
-  });
+	switch (fileType) {
+		case "image":
+			redirectUrl = `${bunnyStorageZone}/images/${encodeURIComponent(fileId)}`
+			break
+		case "bunny":
+			redirectUrl = `${bunnyBaseUrl}/embed/${process.env.BUNNY_LIBRARY_ID}/${fileId}?autoplay=0`
+			break
+		case "youtube":
+			redirectUrl = `${youtubeBaseUrl}/embed/${fileId}?rel=0&showinfo=0&modestbranding=1&iv_load_policy=3`
+			break
+		default:
+			throw new Response(`Invalid file type ${fileType}`, {
+				status: StatusCodes.BAD_REQUEST,
+			})
+	}
+	return redirect(redirectUrl, {
+		headers: {
+			"Cache-Control": "public, max-age=31536000, immutable",
+		},
+	})
 }

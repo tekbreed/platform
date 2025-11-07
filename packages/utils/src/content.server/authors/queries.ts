@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from "groq"
 
 /**
  * GROQ query to fetch detailed information about a specific author
@@ -20,7 +20,7 @@ export const authorDetailsQuery = groq`*[_type == "author" && slug.current == $s
   socialLinks,
   isActive,
   createdAt,
-}`;
+}`
 
 /**
  * GROQ query to fetch articles by a specific author
@@ -49,4 +49,4 @@ export const authorArticlesQuery = groq`*[_type == "article" && published == tru
   "image": image.asset->url,
   excerpt,
   content,
-}`;
+}`

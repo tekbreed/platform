@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from "groq"
 
 /**
  * GROQ query to fetch the ID of an article by its slug
@@ -6,7 +6,7 @@ import groq from "groq";
  */
 export const articleIdQuery = groq`*[_type == "article" && slug.current == $slug][0] {
   "id": _id,
-}`;
+}`
 
 /**
  * Generates a GROQ query for fetching articles with filtering, search, and pagination
@@ -24,19 +24,19 @@ export const articleIdQuery = groq`*[_type == "article" && slug.current == $slug
  * });
  */
 export function articlesQuery({
-  search,
-  filters,
-  order,
+	search,
+	filters,
+	order,
 }: {
-  search: string;
-  filters: string;
-  order: string;
+	search: string
+	filters: string
+	order: string
 }) {
-  const searchCondition = search
-    ? `&& (title match $search || excerpt match $search || content match $search)`
-    : "";
-  const publishedCondition = `&& published == true`;
-  return groq`{
+	const searchCondition = search
+		? `&& (title match $search || excerpt match $search || content match $search)`
+		: ""
+	const publishedCondition = `&& published == true`
+	return groq`{
     "articles": *[${filters} ${publishedCondition} ${searchCondition}] | order(${order}) [$start...$end] {
       "id": _id,
       title,
@@ -65,14 +65,14 @@ export function articlesQuery({
       content,
     },
     "total": count(*[${filters}])
-  }`;
+  }`
 }
 
 /**
  * GROQ query to count total number of published articles
  * @returns {string} GROQ query string that returns a count
  */
-export const countQuery = `count(*[_type == "article" && published == true])`;
+export const countQuery = `count(*[_type == "article" && published == true])`
 
 /**
  * GROQ query to fetch detailed information about a specific article
@@ -130,7 +130,7 @@ export const articleDetailsQuery = groq`*[_type == "article" && slug.current == 
     title,
     file
   }
-}`;
+}`
 
 /**
  * GROQ query to fetch articles related to a specific article
@@ -158,7 +158,7 @@ export const relatedQuery = groq`
       slug
     }
   }
-`;
+`
 
 /**
  * GROQ query to fetch popular tags with their usage count
@@ -173,7 +173,7 @@ export const tagQuery = groq`*[_type == "tag"] {
   title,
   "slug": slug.current,
   "count": count(*[_type == "article" && references(^._id)]) 
-} | order(count desc) [0...$limit]`;
+} | order(count desc) [0...$limit]`
 
 /**
  * Generates a GROQ query for fetching recent articles
@@ -186,7 +186,7 @@ export const tagQuery = groq`*[_type == "tag"] {
  * - Limited to specified number of articles
  */
 export function recentArticlesQuery() {
-  return groq`*[_type == "article" && published == true] | order(createdAt desc) [0...$limit] {
+	return groq`*[_type == "article" && published == true] | order(createdAt desc) [0...$limit] {
     "id": _id,
     title,
     "slug": slug.current,
@@ -206,7 +206,7 @@ export function recentArticlesQuery() {
     "image": image.asset->url,
     excerpt,
     content
-  }`;
+  }`
 }
 
 export const featuredArticleQuery = `*[_type == "article" && published == true && featured == true][0] {
@@ -232,4 +232,4 @@ export const featuredArticleQuery = `*[_type == "article" && published == true &
     bio
   },
   "image": image.asset->url
-}`;
+}`

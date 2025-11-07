@@ -1,3 +1,3 @@
 export function FeaturedCourses() {
-  return <div>featured-courses</div>;
+	return <div>featured-courses</div>
 }

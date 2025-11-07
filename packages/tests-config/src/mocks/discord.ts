@@ -1,9 +1,9 @@
-import { http, passthrough, type HttpHandler } from "msw";
+import { type HttpHandler, http, passthrough } from "msw"
 
-const DISCORD_BASE_URL = "https://gateway.discord.gg";
+const DISCORD_BASE_URL = "https://gateway.discord.gg"
 
 export const handlers: HttpHandler[] = [
-  http.all(`${DISCORD_BASE_URL}/*`, async () => {
-    return passthrough();
-  }),
-];
+	http.all(`${DISCORD_BASE_URL}/*`, async () => {
+		return passthrough()
+	}),
+]

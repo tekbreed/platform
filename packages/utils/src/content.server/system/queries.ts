@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from "groq"
 
 /**
  * GROQ query to fetch all roadmap items from Sanity CMS.
@@ -17,7 +17,7 @@ export const roadmapQuery = groq`
     order,
     content,
   }
-`;
+`
 
 /**
  * GROQ query to fetch all journey items from Sanity CMS.
@@ -35,7 +35,7 @@ export const journeyQuery = groq`
     published,
     content,
   }
-`;
+`
 
 /**
  * GROQ query to fetch all FAQ items from Sanity CMS.
@@ -51,7 +51,7 @@ export const faqQuery = groq`
     published,
     order
   }
-`;
+`
 
 /**
  * GROQ query to fetch all team member profiles from Sanity CMS.
@@ -69,7 +69,7 @@ export const teamMemberQuery = groq`
     order,
     social,
   }
-`;
+`
 
 /**
  * GROQ query to fetch a single page by slug from Sanity CMS.
@@ -85,4 +85,4 @@ export const pageQuery = groq`
     description,
     content,
   }
-`;
+`

@@ -1,6 +1,6 @@
-import TurndownService from "turndown";
-import DOMPurify from "isomorphic-dompurify";
-import { marked } from "marked";
+import DOMPurify from "isomorphic-dompurify"
+import { marked } from "marked"
+import TurndownService from "turndown"
 
 /**
  * Validates and sanitizes component code for security
@@ -8,26 +8,26 @@ import { marked } from "marked";
  * @returns {boolean} Whether the code is safe to execute
  */
 function validateComponentCode(code: string): boolean {
-  // Block dangerous patterns
-  const dangerousPatterns = [
-    /eval\s*\(/,
-    /Function\s*\(/,
-    // /setTimeout\s*\([^,]*,\s*[^)]*\)/,
-    // /setInterval\s*\([^,]*,\s*[^)]*\)/,
-    /fetch\s*\(/,
-    /XMLHttpRequest/,
-    /localStorage/,
-    /sessionStorage/,
-    /document\.cookie/,
-    /window\./,
-    /process\./,
-    /require\s*\(/,
-    /import\s*\(/,
-    /__dirname/,
-    /__filename/,
-  ];
+	// Block dangerous patterns
+	const dangerousPatterns = [
+		/eval\s*\(/,
+		/Function\s*\(/,
+		// /setTimeout\s*\([^,]*,\s*[^)]*\)/,
+		// /setInterval\s*\([^,]*,\s*[^)]*\)/,
+		/fetch\s*\(/,
+		/XMLHttpRequest/,
+		/localStorage/,
+		/sessionStorage/,
+		/document\.cookie/,
+		/window\./,
+		/process\./,
+		/require\s*\(/,
+		/import\s*\(/,
+		/__dirname/,
+		/__filename/,
+	]
 
-  return !dangerousPatterns.some((pattern) => pattern.test(code));
+	return !dangerousPatterns.some((pattern) => pattern.test(code))
 }
 
 /**
@@ -36,18 +36,18 @@ function validateComponentCode(code: string): boolean {
  * @returns {string} Sanitized code
  */
 function sanitizeComponentCode(code: string): string {
-  // Remove any eval-like patterns
-  return code
-    .replace(/eval\s*\([^)]*\)/g, "// eval() removed for security")
-    .replace(/Function\s*\([^)]*\)/g, "// Function() removed for security")
-    .replace(
-      /setTimeout\s*\([^,]*,\s*[^)]*\)/g,
-      "// setTimeout() removed for security",
-    )
-    .replace(
-      /setInterval\s*\([^,]*,\s*[^)]*\)/g,
-      "// setInterval() removed for security",
-    );
+	// Remove any eval-like patterns
+	return code
+		.replace(/eval\s*\([^)]*\)/g, "// eval() removed for security")
+		.replace(/Function\s*\([^)]*\)/g, "// Function() removed for security")
+		.replace(
+			/setTimeout\s*\([^,]*,\s*[^)]*\)/g,
+			"// setTimeout() removed for security",
+		)
+		.replace(
+			/setInterval\s*\([^,]*,\s*[^)]*\)/g,
+			"// setInterval() removed for security",
+		)
 }
 
 /**
@@ -68,31 +68,31 @@ function sanitizeComponentCode(code: string): string {
  * ```
  */
 export function bundleComponents(
-  components: Array<{ file: { filename: string; code: string } }>,
+	components: Array<{ file: { filename: string; code: string } }>,
 ): Record<string, string> {
-  if (!components?.length) {
-    return {};
-  }
+	if (!components?.length) {
+		return {}
+	}
 
-  return components.reduce<Record<string, string>>((acc, component) => {
-    const componentName = component.file.filename
-      .split(/[-_]/)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join("");
-    const fileKey = `./${component.file.filename}.tsx`;
+	return components.reduce<Record<string, string>>((acc, component) => {
+		const componentName = component.file.filename
+			.split(/[-_]/)
+			.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+			.join("")
+		const fileKey = `./${component.file.filename}.tsx`
 
-    // Security validation
-    if (!validateComponentCode(component.file.code)) {
-      console.warn(
-        `Component ${componentName} contains potentially dangerous code and will be skipped`,
-      );
-      return acc;
-    }
+		// Security validation
+		if (!validateComponentCode(component.file.code)) {
+			console.warn(
+				`Component ${componentName} contains potentially dangerous code and will be skipped`,
+			)
+			return acc
+		}
 
-    // Sanitize the code
-    const sanitizedCode = sanitizeComponentCode(component.file.code);
+		// Sanitize the code
+		const sanitizedCode = sanitizeComponentCode(component.file.code)
 
-    acc[fileKey] = `
+		acc[fileKey] = `
     import React, { useState } from 'react';
     ${sanitizedCode}
     export default function Embedded(props) {
@@ -102,21 +102,21 @@ export function bundleComponents(
         </div>
       );
     }
-    `;
-    return acc;
-  }, {});
+    `
+		return acc
+	}, {})
 }
 
 const turndownService = new TurndownService({
-  headingStyle: "atx", // Use # for headings
-  bulletListMarker: "-", // Use - for lists
-  codeBlockStyle: "fenced", // Use ``` for code blocks
-});
+	headingStyle: "atx", // Use # for headings
+	bulletListMarker: "-", // Use - for lists
+	codeBlockStyle: "fenced", // Use ``` for code blocks
+})
 
 marked.setOptions({
-  breaks: true, // Convert line breaks to <br/>
-  gfm: true, // GitHub Flavored Markdown
-});
+	breaks: true, // Convert line breaks to <br/>
+	gfm: true, // GitHub Flavored Markdown
+})
 
 /**
  * Service for converting between Markdown and HTML formats.
@@ -124,33 +124,33 @@ marked.setOptions({
  * Includes sanitization of input using DOMPurify.
  */
 export class MarkdownConverter {
-  /**
-   * Converts Markdown to sanitized HTML.
-   * @param markdown - The Markdown string to convert
-   * @returns Promise<string> - The sanitized HTML output
-   * @example
-   * ```ts
-   * const html = await MarkdownConverter.toHtml("# Hello World");
-   * // Returns: "<h1>Hello World</h1>"
-   * ```
-   */
-  static async toHtml(markdown: string) {
-    return marked.parse(DOMPurify.sanitize(markdown));
-  }
+	/**
+	 * Converts Markdown to sanitized HTML.
+	 * @param markdown - The Markdown string to convert
+	 * @returns Promise<string> - The sanitized HTML output
+	 * @example
+	 * ```ts
+	 * const html = await MarkdownConverter.toHtml("# Hello World");
+	 * // Returns: "<h1>Hello World</h1>"
+	 * ```
+	 */
+	static async toHtml(markdown: string) {
+		return marked.parse(DOMPurify.sanitize(markdown))
+	}
 
-  /**
-   * Converts HTML to Markdown format.
-   * @param html - The HTML string to convert
-   * @returns string - The Markdown output
-   * @example
-   * ```ts
-   * const markdown = MarkdownConverter.toMarkdown("<h1>Hello World</h1>");
-   * // Returns: "# Hello World"
-   * ```
-   */
-  static toMarkdown(html: string) {
-    return turndownService.turndown(html);
-  }
+	/**
+	 * Converts HTML to Markdown format.
+	 * @param html - The HTML string to convert
+	 * @returns string - The Markdown output
+	 * @example
+	 * ```ts
+	 * const markdown = MarkdownConverter.toMarkdown("<h1>Hello World</h1>");
+	 * // Returns: "# Hello World"
+	 * ```
+	 */
+	static toMarkdown(html: string) {
+		return turndownService.turndown(html)
+	}
 }
 
 /**
@@ -175,33 +175,33 @@ export class MarkdownConverter {
  */
 
 export async function withRetry<T>(
-  operation: () => Promise<T>,
-  operationName: string,
-  options: {
-    maxRetries?: number;
-    retryDelays?: number[];
-  } = {},
+	operation: () => Promise<T>,
+	operationName: string,
+	options: {
+		maxRetries?: number
+		retryDelays?: number[]
+	} = {},
 ): Promise<T> {
-  const {
-    maxRetries = 3,
-    retryDelays = [6e4, 6e5, 18e5, 36e5, 43e5, 864e5, 1728e5], // [one minute, ten minutes, thirty minutes, one hour, twelve hours, one day, two days]
-  } = options;
-  let lastError: unknown;
+	const {
+		maxRetries = 3,
+		retryDelays = [6e4, 6e5, 18e5, 36e5, 43e5, 864e5, 1728e5], // [one minute, ten minutes, thirty minutes, one hour, twelve hours, one day, two days]
+	} = options
+	let lastError: unknown
 
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      lastError = error;
+	for (let attempt = 0; attempt <= maxRetries; attempt++) {
+		try {
+			return await operation()
+		} catch (error) {
+			lastError = error
 
-      if (attempt === maxRetries) {
-        lastError = error;
-      }
-      await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]));
-      console.warn(
-        `Retrying ${operationName}, attempt ${attempt + 1}/${maxRetries + 1}`,
-      );
-    }
-  }
-  throw lastError;
+			if (attempt === maxRetries) {
+				lastError = error
+			}
+			await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]))
+			console.warn(
+				`Retrying ${operationName}, attempt ${attempt + 1}/${maxRetries + 1}`,
+			)
+		}
+	}
+	throw lastError
 }

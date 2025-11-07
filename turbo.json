@@ -1,90 +1,90 @@
 {
-  "$schema": "https://turborepo.com/schema.json",
-  "ui": "tui",
-  "globalDependencies": [".env", "PLAYWRIGHT_*"],
-  "globalEnv": [
-    "PORT",
-    "NODE_ENV",
-    "SANITY_STUDIO_PROJECT_ID",
-    "SANITY_STUDIO_DATASET",
-    "SESSION_SECRET",
-    "POLAR_ACCESS_TOKEN",
-    "POLAR_WEBHOOK_SECRET",
-    "POLAR_ORGANIZATION_ID",
-    "TURSO_DATABASE_URL",
-    "TURSO_AUTH_TOKEN",
-    "DATABASE_URL",
-    "ANTHROPIC_API_KEY",
-    "VOYAGE_API_KEY",
-    "UPSTASH_VECTOR_REST_URL",
-    "UPSTASH_VECTOR_REST_TOKEN",
-    "HONEYPOT_SECRET",
-    "RESEND_API_KEY",
-    "RESEND_AUDIENCE_ID",
-    "BUNNY_LIBRARY_ID",
-    "BUNNY_STORAGE_ZONE",
-    "BUNNY_ACCESS_KEY",
-    "GITHUB_CLIENT_ID",
-    "GITHUB_CLIENT_SECRET",
-    "GITHUB_REDIRECT_URI",
-    "DISCORD_BOT_TOKEN",
-    "DISCORD_GUILD_ID"
-  ],
+	"$schema": "https://turborepo.com/schema.json",
+	"ui": "tui",
+	"globalDependencies": [".env", "PLAYWRIGHT_*"],
+	"globalEnv": [
+		"PORT",
+		"NODE_ENV",
+		"SANITY_STUDIO_PROJECT_ID",
+		"SANITY_STUDIO_DATASET",
+		"SESSION_SECRET",
+		"POLAR_ACCESS_TOKEN",
+		"POLAR_WEBHOOK_SECRET",
+		"POLAR_ORGANIZATION_ID",
+		"TURSO_DATABASE_URL",
+		"TURSO_AUTH_TOKEN",
+		"DATABASE_URL",
+		"ANTHROPIC_API_KEY",
+		"VOYAGE_API_KEY",
+		"UPSTASH_VECTOR_REST_URL",
+		"UPSTASH_VECTOR_REST_TOKEN",
+		"HONEYPOT_SECRET",
+		"RESEND_API_KEY",
+		"RESEND_AUDIENCE_ID",
+		"BUNNY_LIBRARY_ID",
+		"BUNNY_STORAGE_ZONE",
+		"BUNNY_ACCESS_KEY",
+		"GITHUB_CLIENT_ID",
+		"GITHUB_CLIENT_SECRET",
+		"GITHUB_REDIRECT_URI",
+		"DISCORD_BOT_TOKEN",
+		"DISCORD_GUILD_ID"
+	],
 
-  "tasks": {
-    "format": {
-      "dependsOn": ["^format"]
-    },
-    "typecheck": {
-      "dependsOn": ["^typecheck"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "lint:fix": {
-      "dependsOn": ["^lint:fix"]
-    },
-    "build": {
-      "dependsOn": ["^build", "^db:generate"],
-      "outputs": ["build/**"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"]
-    },
-    "start": {
-      "dependsOn": ["build"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true,
-      "dependsOn": ["^db:generate", "^dev"]
-    },
-    "db:generate": {
-      "cache": false
-    },
-    "db:migrate": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:reset": {
-      "cache": false,
-      "persistent": true
-    },
-    "db:deploy": {
-      "cache": false
-    },
-    "db:seed": {
-      "cache": false
-    },
-    "db:studio": {
-      "cache": false
-    },
-    "test": {
-      "persistent": true
-    },
-    "test:run": {},
-    "test:coverage": {},
-    "test:e2e": {},
-    "test:e2e:run": {},
-    "test:e2e:ui": {},
-    "test:e2e:report": {}
-  }
+	"tasks": {
+		"//#format-and-lint": {},
+		"//#format-and-lint:fix": {
+			"cache": false
+		},
+		"typecheck": {
+			"dependsOn": ["^typecheck"]
+		},
+		"lint:fix": {
+			"dependsOn": ["^lint:fix"]
+		},
+		"build": {
+			"dependsOn": ["^build", "^db:generate"],
+			"outputs": ["build/**"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"]
+		},
+		"start": {
+			"dependsOn": ["build"]
+		},
+		"dev": {
+			"with": ["cms#dev"],
+			"cache": false,
+			"persistent": true,
+			"dependsOn": ["^db:generate", "^dev"]
+		},
+		"db:generate": {
+			"cache": false
+		},
+		"db:migrate": {
+			"cache": false
+		},
+		"db:reset": {
+			"cache": false
+		},
+		"db:deploy": {
+			"cache": false
+		},
+		"db:seed": {
+			"cache": false
+		},
+		"db:studio": {
+			"cache": false,
+			"persistent": false
+		},
+		"test": {
+			"persistent": true
+		},
+		"test:run": {
+			"persistent": true
+		},
+
+		"test:e2e": {},
+		"test:e2e:run": {},
+		"test:e2e:ui": {},
+		"test:e2e:report": {}
+	}
 }

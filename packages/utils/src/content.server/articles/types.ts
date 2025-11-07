@@ -1,11 +1,12 @@
-import { z } from "zod/v4";
-import { AuthorSchema } from "../authors/types";
+import { z } from "zod/v4"
+
+import { AuthorSchema } from "../authors/types"
 import {
-  CategorySchema,
-  ComponentSchema,
-  SandpackTemplateSchema,
-  TagsSchema,
-} from "../shared-types";
+	CategorySchema,
+	ComponentSchema,
+	SandpackTemplateSchema,
+	TagsSchema,
+} from "../shared-types"
 
 /**
  * Schema for related articles
@@ -19,20 +20,20 @@ import {
  * @property {string} excerpt - Short description of the related article
  */
 const RelatedArticlesSchema = z
-  .array(
-    z.object({
-      id: z.string(),
-      title: z.string(),
-      slug: z.string(),
-      createdAt: z.string(),
-      category: CategorySchema,
-      author: AuthorSchema,
-      image: z.string().url(),
-      excerpt: z.string(),
-      content: z.string(),
-    }),
-  )
-  .default([]);
+	.array(
+		z.object({
+			id: z.string(),
+			title: z.string(),
+			slug: z.string(),
+			createdAt: z.string(),
+			category: CategorySchema,
+			author: AuthorSchema,
+			image: z.string().url(),
+			excerpt: z.string(),
+			content: z.string(),
+		}),
+	)
+	.default([])
 
 /**
  * Schema for a complete article
@@ -55,42 +56,42 @@ const RelatedArticlesSchema = z
  * @property {ComponentSchema[]} reactComponents - Array of React components used in the article
  */
 export const ArticleSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  slug: z.string(),
-  createdAt: z.string().datetime({ offset: true }),
-  updatedAt: z.string().datetime({ offset: true }),
-  category: CategorySchema,
-  tags: TagsSchema,
-  author: AuthorSchema,
-  image: z.string(),
-  featured: z.boolean().nullable(),
-  published: z.boolean().nullable(),
-  excerpt: z.string(),
-  content: z.string(),
-  markdown: z.string(),
-  html: z.string(),
-  relatedArticles: RelatedArticlesSchema,
-  sandpackTemplates: z.array(SandpackTemplateSchema),
-  reactComponents: z.array(ComponentSchema),
-});
+	id: z.string(),
+	title: z.string(),
+	slug: z.string(),
+	createdAt: z.string().datetime({ offset: true }),
+	updatedAt: z.string().datetime({ offset: true }),
+	category: CategorySchema,
+	tags: TagsSchema,
+	author: AuthorSchema,
+	image: z.string(),
+	featured: z.boolean().nullable(),
+	published: z.boolean().nullable(),
+	excerpt: z.string(),
+	content: z.string(),
+	markdown: z.string(),
+	html: z.string(),
+	relatedArticles: RelatedArticlesSchema,
+	sandpackTemplates: z.array(SandpackTemplateSchema),
+	reactComponents: z.array(ComponentSchema),
+})
 
 /**
  * Type representing a complete article
  */
-export type Article = z.infer<typeof ArticleSchema>;
+export type Article = z.infer<typeof ArticleSchema>
 
 /**
  * Type representing an array of related articles
  */
-export type RelatedArticles = z.infer<typeof RelatedArticlesSchema>;
+export type RelatedArticles = z.infer<typeof RelatedArticlesSchema>
 
 /**
  * Type representing a Sandpack template
  */
-export type SandpackTemplate = z.infer<typeof SandpackTemplateSchema>;
+export type SandpackTemplate = z.infer<typeof SandpackTemplateSchema>
 
 /**
  * Type representing a React component
  */
-export type Component = z.infer<typeof ComponentSchema>;
+export type Component = z.infer<typeof ComponentSchema>

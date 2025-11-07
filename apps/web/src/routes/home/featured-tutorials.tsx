@@ -1,3 +1,3 @@
 export function FeaturedTutorials() {
-  return <div>featured-tutorials</div>;
+	return <div>featured-tutorials</div>
 }

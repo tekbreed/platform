@@ -1,25 +1,25 @@
 {
-  "name": "@repo/database",
-  "version": "0.0.0",
-  "scripts": {
-    "db:generate": "prisma generate",
-    "db:migrate": "prisma migrate dev --skip-generate",
-    "db:reset": "prisma migrate reset",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
-  },
-  "exports": {
-    ".": "./src/index.ts"
-  },
-  "dependencies": {
-    "@prisma/adapter-libsql": "^6.19.0",
-    "@prisma/client": "^6.18.0"
-  },
-  "devDependencies": {
-    "@epic-web/remember": "^1.1.0",
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "prisma": "^6.18.0"
-  }
+	"name": "@repo/database",
+	"version": "0.0.0",
+	"scripts": {
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev --skip-generate",
+		"db:reset": "prisma migrate reset",
+		"db:deploy": "prisma migrate deploy",
+		"db:seed": "prisma db seed",
+		"db:studio": "prisma studio"
+	},
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"dependencies": {
+		"@prisma/adapter-libsql": "^6.19.0",
+		"@prisma/client": "^6.18.0"
+	},
+	"devDependencies": {
+		"@epic-web/remember": "^1.1.0",
+		"@repo/eslint-config": "*",
+		"@repo/typescript-config": "*",
+		"prisma": "^6.18.0"
+	}
 }

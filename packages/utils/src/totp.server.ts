@@ -1,1 +1,1 @@
-export * as TOTP from "@epic-web/totp";
+export * as TOTP from "@epic-web/totp"

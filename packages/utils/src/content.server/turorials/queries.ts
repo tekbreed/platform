@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from "groq"
 
 /**
  * Generates a GROQ query for fetching tutorials with filtering, search, and pagination
@@ -16,17 +16,17 @@ import groq from "groq";
  * });
  */
 export function tutorialsQuery({
-  search,
-  filters,
-  order,
+	search,
+	filters,
+	order,
 }: {
-  search: string;
-  filters: string;
-  order: string;
+	search: string
+	filters: string
+	order: string
 }) {
-  const searchCondition = search ? `&& (title match $search)` : "";
-  const publishedCondition = `&& published == true`;
-  return groq`{
+	const searchCondition = search ? `&& (title match $search)` : ""
+	const publishedCondition = `&& published == true`
+	return groq`{
     "tutorials": *[${filters} ${publishedCondition} ${searchCondition}] | order(${order}) [$start...$end] {
       "id": _id,
       title,
@@ -56,14 +56,14 @@ export function tutorialsQuery({
       "lessonsCount": count(*[_type == "lesson" && references(^._id)])
     },
     "total": count(*[${filters}])
-  }`;
+  }`
 }
 
 /**
  * GROQ query to count total number of published tutorials
  * @returns {string} GROQ query string that returns a count
  */
-export const countQuery = `count(*[_type == "tutorial" && published == true])`;
+export const countQuery = `count(*[_type == "tutorial" && published == true])`
 
 /**
  * GROQ query to fetch detailed information about a specific tutorial
@@ -99,7 +99,7 @@ export const tutorialDetailsQuery = groq`*[_type == "tutorial" && _id == $tutori
     createdAt,
     bio
   }
-}`;
+}`
 
 /**
  * GROQ query to fetch modules for a specific tutorial
@@ -116,7 +116,7 @@ export const modulesQuery = groq`*[_type == "tutorialModule" && tutorial._ref ==
     title,
     "slug": slug.current
   }
-}`;
+}`
 
 /**
  * GROQ query to fetch lessons for a specific tutorial (legacy - now lessons are fetched through modules)
@@ -126,7 +126,7 @@ export const lessonsQuery = groq`*[_type == "lesson" && tutorial._ref == $tutori
   "id": _id,
   title,
   "slug": slug.current
-}`;
+}`
 
 /**
  * GROQ query to fetch lesson details
@@ -149,7 +149,7 @@ export const lessonDetailsQuery = groq`*[_type == "lesson" && _id == $lessonId][
     title,
     file
   }
-}`;
+}`
 
 /**
  * GROQ query to fetch chat bot lesson details
@@ -158,7 +158,7 @@ export const lessonDetailsQuery = groq`*[_type == "lesson" && _id == $lessonId][
 export const chatbotLessonQuery = groq`*[_type == "lesson" && _id == $lessonId][0] {
   "id": _id,
   title
-}`;
+}`
 
 /**
  * GROQ query to fetch popular tags with their usage count for tutorials
@@ -173,7 +173,7 @@ export const tagQuery = groq`*[_type == "tag"] {
   title,
   "slug": slug.current,
   "count": count(*[_type == "tutorial" && references(^._id)]) 
-} | order(count desc) [0...$limit]`;
+} | order(count desc) [0...$limit]`
 
 /**
  * GROQ query to fetch all categories
@@ -185,4 +185,4 @@ export const categoryQuery = groq`*[_type == "category"] {
   "id": _id,
   title,
   "slug": slug.current
-}`;
+}`

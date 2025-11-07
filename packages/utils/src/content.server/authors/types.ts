@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod/v4"
 
 /**
  * Schema for social media links
@@ -10,11 +10,11 @@ import { z } from "zod/v4";
  * @property {string} [website] - Personal website URL
  */
 const SocialLinksSchema = z.object({
-  github: z.string().url().optional(),
-  linkedin: z.string().url().optional(),
-  twitter: z.string().url().optional(),
-  website: z.string().url().optional(),
-});
+	github: z.string().url().optional(),
+	linkedin: z.string().url().optional(),
+	twitter: z.string().url().optional(),
+	website: z.string().url().optional(),
+})
 
 /**
  * Schema for a complete author
@@ -32,24 +32,24 @@ const SocialLinksSchema = z.object({
  * @property {string} createdAt - Creation timestamp
  */
 export const AuthorSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  slug: z.string(),
-  image: z.string(),
-  bio: z.string(),
-  skills: z.array(z.string()),
-  supportUrl: z.string().url().optional(),
-  socialLinks: SocialLinksSchema.optional(),
-  isActive: z.boolean(),
-  createdAt: z.string().datetime({ offset: true }),
-});
+	id: z.string(),
+	name: z.string(),
+	slug: z.string(),
+	image: z.string(),
+	bio: z.string(),
+	skills: z.array(z.string()),
+	supportUrl: z.string().url().optional(),
+	socialLinks: SocialLinksSchema.optional(),
+	isActive: z.boolean(),
+	createdAt: z.string().datetime({ offset: true }),
+})
 
 /**
  * Type representing a complete author
  */
-export type Author = z.infer<typeof AuthorSchema>;
+export type Author = z.infer<typeof AuthorSchema>
 
 /**
  * Type representing social media links
  */
-export type SocialLinks = z.infer<typeof SocialLinksSchema>;
+export type SocialLinks = z.infer<typeof SocialLinksSchema>

@@ -1,69 +1,73 @@
-import React from "react";
-import { format } from "date-fns";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router";
-import { Button } from "@repo/ui/components/button";
-import { Input } from "@repo/ui/components/input";
-import { Badge } from "@repo/ui/components/badge";
-import { Card, CardContent, CardHeader } from "@repo/ui/components/card";
-import { EmptyState } from "@repo/ui/composed/empty-state";
-import { Container } from "./container";
+import React from "react"
+
+import { Link, useNavigate } from "react-router"
+
+import { format } from "date-fns"
+import { motion } from "framer-motion"
+
+import { Badge } from "@repo/ui/components/badge"
+import { Button } from "@repo/ui/components/button"
+import { Card, CardContent, CardHeader } from "@repo/ui/components/card"
+import { Input } from "@repo/ui/components/input"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/components/select";
-import { Icons } from "@repo/ui/composed/icons";
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@repo/ui/components/select"
+import { EmptyState } from "@repo/ui/composed/empty-state"
+import { Icons } from "@repo/ui/composed/icons"
+
+import { Container } from "./container"
 
 /**
  * Tag information associated with a bookmark
  */
 export interface BookmarkTag {
-  /** Tag data with name and optional color */
-  tag: {
-    /** Display name of the tag */
-    name: string;
-    /** Optional color for the tag (hex or named color) */
-    color?: string | null;
-  };
+	/** Tag data with name and optional color */
+	tag: {
+		/** Display name of the tag */
+		name: string
+		/** Optional color for the tag (hex or named color) */
+		color?: string | null
+	}
 }
 
 /**
  * Content information associated with a bookmark
  */
 export interface BookmarkContent {
-  /** Unique identifier for the content */
-  id: string;
-  /** Type of bookmarked content */
-  type: "ARTICLE" | "TUTORIAL";
-  /** Number of views the content has received */
-  views: number;
+	/** Unique identifier for the content */
+	id: string
+	/** Type of bookmarked content */
+	type: "ARTICLE" | "TUTORIAL"
+	/** Number of views the content has received */
+	views: number
 }
 
 /**
  * Complete bookmark data structure
  */
 export interface Bookmark {
-  /** Unique identifier for the bookmark */
-  id: string;
-  /** Optional personal notes about the bookmark */
-  notes?: string | null;
-  /** Date when the bookmark was created */
-  createdAt: Date;
-  /** Content information for the bookmarked item */
-  content: BookmarkContent;
-  /** Array of tags associated with this bookmark */
-  bookmarkTags: BookmarkTag[];
+	/** Unique identifier for the bookmark */
+	id: string
+	/** Optional personal notes about the bookmark */
+	notes?: string | null
+	/** Date when the bookmark was created */
+	createdAt: Date
+	/** Content information for the bookmarked item */
+	content: BookmarkContent
+	/** Array of tags associated with this bookmark */
+	bookmarkTags: BookmarkTag[]
 }
 
 /**
  * Props for the Bookmarks component
  */
 export interface BookmarksProps {
-  /** Array of user bookmarks with content and tag information */
-  bookmarks: Bookmark[];
+	/** Array of user bookmarks with content and tag information */
+	bookmarks: Bookmark[]
 }
 
 /**
@@ -90,52 +94,52 @@ export interface BookmarksProps {
  * @returns {JSX.Element} A bookmarks management interface
  */
 export function Bookmarks({ bookmarks }: BookmarksProps) {
-  const {
-    searchQuery,
-    setSearchQuery,
-    contentTypeFilter,
-    setContentTypeFilter,
-    tagFilter,
-    setTagFilter,
-    allTags,
-    filteredBookmarks,
-  } = useBookmarkFilters(bookmarks);
+	const {
+		searchQuery,
+		setSearchQuery,
+		contentTypeFilter,
+		setContentTypeFilter,
+		tagFilter,
+		setTagFilter,
+		allTags,
+		filteredBookmarks,
+	} = useBookmarkFilters(bookmarks)
 
-  if (bookmarks.length === 0) {
-    return <BookmarksEmptyState />;
-  }
+	if (bookmarks.length === 0) {
+		return <BookmarksEmptyState />
+	}
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Container title="Bookmarks">
-        <div className="mb-6 space-y-4">
-          <BookmarkSearchBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+		>
+			<Container title="Bookmarks">
+				<div className="mb-6 space-y-4">
+					<BookmarkSearchBar
+						searchQuery={searchQuery}
+						onSearchChange={setSearchQuery}
+					/>
 
-          <BookmarkFilters
-            contentTypeFilter={contentTypeFilter}
-            onContentTypeChange={setContentTypeFilter}
-            tagFilter={tagFilter}
-            onTagChange={setTagFilter}
-            availableTags={allTags}
-          />
-        </div>
+					<BookmarkFilters
+						contentTypeFilter={contentTypeFilter}
+						onContentTypeChange={setContentTypeFilter}
+						tagFilter={tagFilter}
+						onTagChange={setTagFilter}
+						availableTags={allTags}
+					/>
+				</div>
 
-        <BookmarkResultsHeader
-          filteredCount={filteredBookmarks.length}
-          totalCount={bookmarks.length}
-        />
+				<BookmarkResultsHeader
+					filteredCount={filteredBookmarks.length}
+					totalCount={bookmarks.length}
+				/>
 
-        <BookmarkGrid bookmarks={filteredBookmarks} />
-      </Container>
-    </motion.div>
-  );
+				<BookmarkGrid bookmarks={filteredBookmarks} />
+			</Container>
+		</motion.div>
+	)
 }
 
 /**
@@ -160,67 +164,67 @@ export function Bookmarks({ bookmarks }: BookmarksProps) {
  * @returns {Bookmark[]} returns.filteredBookmarks - Filtered array of bookmarks
  */
 export function useBookmarkFilters(bookmarks: Bookmark[]) {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [contentTypeFilter, setContentTypeFilter] =
-    React.useState<string>("all");
-  const [tagFilter, setTagFilter] = React.useState<string>("all");
+	const [searchQuery, setSearchQuery] = React.useState("")
+	const [contentTypeFilter, setContentTypeFilter] =
+		React.useState<string>("all")
+	const [tagFilter, setTagFilter] = React.useState<string>("all")
 
-  // Get unique tags for filtering
-  const allTags = React.useMemo(() => {
-    const tags = new Set<string>();
-    bookmarks.forEach((bookmark) => {
-      bookmark.bookmarkTags.forEach((bt) => {
-        tags.add(bt.tag.name);
-      });
-    });
-    return Array.from(tags).sort();
-  }, [bookmarks]);
+	// Get unique tags for filtering
+	const allTags = React.useMemo(() => {
+		const tags = new Set<string>()
+		bookmarks.forEach((bookmark) => {
+			bookmark.bookmarkTags.forEach((bt) => {
+				tags.add(bt.tag.name)
+			})
+		})
+		return Array.from(tags).sort()
+	}, [bookmarks])
 
-  // Filter bookmarks based on search and filters
-  const filteredBookmarks = React.useMemo(() => {
-    return bookmarks.filter((bookmark) => {
-      const matchesSearch =
-        searchQuery === "" ||
-        bookmark.notes?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        bookmark.content.type
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        bookmark.bookmarkTags.some((bt) =>
-          bt.tag.name.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
+	// Filter bookmarks based on search and filters
+	const filteredBookmarks = React.useMemo(() => {
+		return bookmarks.filter((bookmark) => {
+			const matchesSearch =
+				searchQuery === "" ||
+				bookmark.notes?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				bookmark.content.type
+					.toLowerCase()
+					.includes(searchQuery.toLowerCase()) ||
+				bookmark.bookmarkTags.some((bt) =>
+					bt.tag.name.toLowerCase().includes(searchQuery.toLowerCase()),
+				)
 
-      const matchesContentType =
-        contentTypeFilter === "all" ||
-        bookmark.content.type.toLowerCase() === contentTypeFilter;
+			const matchesContentType =
+				contentTypeFilter === "all" ||
+				bookmark.content.type.toLowerCase() === contentTypeFilter
 
-      const matchesTag =
-        tagFilter === "all" ||
-        bookmark.bookmarkTags.some((bt) => bt.tag.name === tagFilter);
+			const matchesTag =
+				tagFilter === "all" ||
+				bookmark.bookmarkTags.some((bt) => bt.tag.name === tagFilter)
 
-      return matchesSearch && matchesContentType && matchesTag;
-    });
-  }, [bookmarks, searchQuery, contentTypeFilter, tagFilter]);
+			return matchesSearch && matchesContentType && matchesTag
+		})
+	}, [bookmarks, searchQuery, contentTypeFilter, tagFilter])
 
-  return {
-    searchQuery,
-    setSearchQuery,
-    contentTypeFilter,
-    setContentTypeFilter,
-    tagFilter,
-    setTagFilter,
-    allTags,
-    filteredBookmarks,
-  };
+	return {
+		searchQuery,
+		setSearchQuery,
+		contentTypeFilter,
+		setContentTypeFilter,
+		tagFilter,
+		setTagFilter,
+		allTags,
+		filteredBookmarks,
+	}
 }
 
 /**
  * Props for the BookmarkSearchBar component
  */
 interface BookmarkSearchBarProps {
-  /** Current search query value */
-  searchQuery: string;
-  /** Handler called when search query changes */
-  onSearchChange: (query: string) => void;
+	/** Current search query value */
+	searchQuery: string
+	/** Handler called when search query changes */
+	onSearchChange: (query: string) => void
 }
 
 /**
@@ -235,36 +239,36 @@ interface BookmarkSearchBarProps {
  * @returns {JSX.Element} Search input with icon
  */
 export function BookmarkSearchBar({
-  searchQuery,
-  onSearchChange,
+	searchQuery,
+	onSearchChange,
 }: BookmarkSearchBarProps) {
-  return (
-    <div className="relative">
-      <Icons.search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input
-        placeholder="Search bookmarks by notes, content type, or tags..."
-        value={searchQuery}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="pl-10"
-      />
-    </div>
-  );
+	return (
+		<div className="relative">
+			<Icons.search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+			<Input
+				placeholder="Search bookmarks by notes, content type, or tags..."
+				value={searchQuery}
+				onChange={(e) => onSearchChange(e.target.value)}
+				className="pl-10"
+			/>
+		</div>
+	)
 }
 
 /**
  * Props for the BookmarkFilters component
  */
 interface BookmarkFiltersProps {
-  /** Current content type filter value */
-  contentTypeFilter: string;
-  /** Handler called when content type filter changes */
-  onContentTypeChange: (value: string) => void;
-  /** Current tag filter value */
-  tagFilter: string;
-  /** Handler called when tag filter changes */
-  onTagChange: (value: string) => void;
-  /** Array of available tag names for filtering */
-  availableTags: string[];
+	/** Current content type filter value */
+	contentTypeFilter: string
+	/** Handler called when content type filter changes */
+	onContentTypeChange: (value: string) => void
+	/** Current tag filter value */
+	tagFilter: string
+	/** Handler called when tag filter changes */
+	onTagChange: (value: string) => void
+	/** Array of available tag names for filtering */
+	availableTags: string[]
 }
 
 /**
@@ -283,55 +287,55 @@ interface BookmarkFiltersProps {
  * @returns {JSX.Element} Filter controls with dropdowns
  */
 export function BookmarkFilters({
-  contentTypeFilter,
-  onContentTypeChange,
-  tagFilter,
-  onTagChange,
-  availableTags,
+	contentTypeFilter,
+	onContentTypeChange,
+	tagFilter,
+	onTagChange,
+	availableTags,
 }: BookmarkFiltersProps) {
-  return (
-    <div className="flex flex-wrap gap-4">
-      <div className="flex items-center gap-2">
-        <Icons.filter className="size-4" />
-        <span className="text-sm font-medium">Filter by:</span>
-      </div>
+	return (
+		<div className="flex flex-wrap gap-4">
+			<div className="flex items-center gap-2">
+				<Icons.filter className="size-4" />
+				<span className="text-sm font-medium">Filter by:</span>
+			</div>
 
-      <Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue placeholder="Content type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All content</SelectItem>
-          <SelectItem value="article">Articles</SelectItem>
-          <SelectItem value="tutorial">Tutorials</SelectItem>
-        </SelectContent>
-      </Select>
+			<Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
+				<SelectTrigger className="w-40">
+					<SelectValue placeholder="Content type" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="all">All content</SelectItem>
+					<SelectItem value="article">Articles</SelectItem>
+					<SelectItem value="tutorial">Tutorials</SelectItem>
+				</SelectContent>
+			</Select>
 
-      <Select value={tagFilter} onValueChange={onTagChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue placeholder="Tag" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All tags</SelectItem>
-          {availableTags.map((tag) => (
-            <SelectItem key={tag} value={tag}>
-              {tag}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
-  );
+			<Select value={tagFilter} onValueChange={onTagChange}>
+				<SelectTrigger className="w-40">
+					<SelectValue placeholder="Tag" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="all">All tags</SelectItem>
+					{availableTags.map((tag) => (
+						<SelectItem key={tag} value={tag}>
+							{tag}
+						</SelectItem>
+					))}
+				</SelectContent>
+			</Select>
+		</div>
+	)
 }
 
 /**
  * Props for the BookmarkResultsHeader component
  */
 interface BookmarkResultsHeaderProps {
-  /** Number of bookmarks after filtering */
-  filteredCount: number;
-  /** Total number of bookmarks before filtering */
-  totalCount: number;
+	/** Number of bookmarks after filtering */
+	filteredCount: number
+	/** Total number of bookmarks before filtering */
+	totalCount: number
 }
 
 /**
@@ -346,22 +350,22 @@ interface BookmarkResultsHeaderProps {
  * @returns {JSX.Element} Results count text
  */
 export function BookmarkResultsHeader({
-  filteredCount,
-  totalCount,
+	filteredCount,
+	totalCount,
 }: BookmarkResultsHeaderProps) {
-  return (
-    <div className="mb-4 text-sm text-muted-foreground">
-      Showing {filteredCount} of {totalCount} bookmarks
-    </div>
-  );
+	return (
+		<div className="mb-4 text-sm text-muted-foreground">
+			Showing {filteredCount} of {totalCount} bookmarks
+		</div>
+	)
 }
 
 /**
  * Props for the BookmarkGrid component
  */
 interface BookmarkGridProps {
-  /** Array of bookmarks to display */
-  bookmarks: Bookmark[];
+	/** Array of bookmarks to display */
+	bookmarks: Bookmark[]
 }
 
 /**
@@ -376,31 +380,31 @@ interface BookmarkGridProps {
  * @returns {JSX.Element} Grid of bookmark cards or empty state
  */
 export function BookmarkGrid({ bookmarks }: BookmarkGridProps) {
-  if (bookmarks.length === 0) {
-    return (
-      <EmptyState
-        icon={<Icons.search className="size-10 text-muted-foreground" />}
-        title="No bookmarks found"
-        description="Try adjusting your search or filters to find what you're looking for."
-      />
-    );
-  }
+	if (bookmarks.length === 0) {
+		return (
+			<EmptyState
+				icon={<Icons.search className="size-10 text-muted-foreground" />}
+				title="No bookmarks found"
+				description="Try adjusting your search or filters to find what you're looking for."
+			/>
+		)
+	}
 
-  return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {bookmarks.map((bookmark) => (
-        <BookmarkCard key={bookmark.id} bookmark={bookmark} />
-      ))}
-    </div>
-  );
+	return (
+		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+			{bookmarks.map((bookmark) => (
+				<BookmarkCard key={bookmark.id} bookmark={bookmark} />
+			))}
+		</div>
+	)
 }
 
 /**
  * Props for the BookmarkCard component
  */
 interface BookmarkCardProps {
-  /** The bookmark data to display */
-  bookmark: Bookmark;
+	/** The bookmark data to display */
+	bookmark: Bookmark
 }
 
 /**
@@ -415,19 +419,19 @@ interface BookmarkCardProps {
  * @returns {JSX.Element} A bookmark card with complete information
  */
 export function BookmarkCard({ bookmark }: BookmarkCardProps) {
-  const contentType = bookmark.content.type.toLowerCase();
-  const contentTypePath = contentType === "article" ? "articles" : "tutorials";
+	const contentType = bookmark.content.type.toLowerCase()
+	const contentTypePath = contentType === "article" ? "articles" : "tutorials"
 
-  return (
-    <Card className="transition-shadow hover:shadow-md">
-      <BookmarkCardHeader bookmark={bookmark} />
-      <BookmarkCardContent
-        bookmark={bookmark}
-        contentType={contentType}
-        contentTypePath={contentTypePath}
-      />
-    </Card>
-  );
+	return (
+		<Card className="transition-shadow hover:shadow-md">
+			<BookmarkCardHeader bookmark={bookmark} />
+			<BookmarkCardContent
+				bookmark={bookmark}
+				contentType={contentType}
+				contentTypePath={contentTypePath}
+			/>
+		</Card>
+	)
 }
 
 /**
@@ -441,40 +445,40 @@ export function BookmarkCard({ bookmark }: BookmarkCardProps) {
  * @returns {JSX.Element} Bookmark card header
  */
 function BookmarkCardHeader({ bookmark }: { bookmark: Bookmark }) {
-  const contentType = bookmark.content.type.toLowerCase();
+	const contentType = bookmark.content.type.toLowerCase()
 
-  return (
-    <CardHeader className="pb-3">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          {bookmark.content.type === "ARTICLE" ? (
-            <Icons.fileText className="size-4 text-blue-500" />
-          ) : (
-            <Icons.play className="size-4 text-green-500" />
-          )}
-          <Badge variant="outline" className="text-xs capitalize">
-            {contentType}
-          </Badge>
-        </div>
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <Icons.calendar className="size-3" />
-          {format(bookmark.createdAt, "MMM d, yyyy")}
-        </div>
-      </div>
-    </CardHeader>
-  );
+	return (
+		<CardHeader className="pb-3">
+			<div className="flex items-start justify-between">
+				<div className="flex items-center gap-2">
+					{bookmark.content.type === "ARTICLE" ? (
+						<Icons.fileText className="size-4 text-blue-500" />
+					) : (
+						<Icons.play className="size-4 text-green-500" />
+					)}
+					<Badge variant="outline" className="text-xs capitalize">
+						{contentType}
+					</Badge>
+				</div>
+				<div className="flex items-center gap-1 text-xs text-muted-foreground">
+					<Icons.calendar className="size-3" />
+					{format(bookmark.createdAt, "MMM d, yyyy")}
+				</div>
+			</div>
+		</CardHeader>
+	)
 }
 
 /**
  * Props for the BookmarkCardContent component
  */
 interface BookmarkCardContentProps {
-  /** The bookmark data */
-  bookmark: Bookmark;
-  /** Lowercase content type string */
-  contentType: string;
-  /** URL path for the content type */
-  contentTypePath: string;
+	/** The bookmark data */
+	bookmark: Bookmark
+	/** Lowercase content type string */
+	contentType: string
+	/** URL path for the content type */
+	contentTypePath: string
 }
 
 /**
@@ -490,26 +494,26 @@ interface BookmarkCardContentProps {
  * @returns {JSX.Element} Bookmark card content section
  */
 function BookmarkCardContent({
-  bookmark,
-  contentType,
-  contentTypePath,
+	bookmark,
+	contentType,
+	contentTypePath,
 }: BookmarkCardContentProps) {
-  return (
-    <CardContent className="pt-0">
-      {bookmark.notes ? <BookmarkNotes notes={bookmark.notes} /> : null}
+	return (
+		<CardContent className="pt-0">
+			{bookmark.notes ? <BookmarkNotes notes={bookmark.notes} /> : null}
 
-      {bookmark.bookmarkTags.length > 0 && (
-        <BookmarkTags tags={bookmark.bookmarkTags} />
-      )}
+			{bookmark.bookmarkTags.length > 0 && (
+				<BookmarkTags tags={bookmark.bookmarkTags} />
+			)}
 
-      <BookmarkFooter
-        views={bookmark.content.views}
-        contentType={contentType}
-        contentTypePath={contentTypePath}
-        itemId={bookmark.content.id}
-      />
-    </CardContent>
-  );
+			<BookmarkFooter
+				views={bookmark.content.views}
+				contentType={contentType}
+				contentTypePath={contentTypePath}
+				itemId={bookmark.content.id}
+			/>
+		</CardContent>
+	)
 }
 
 /**
@@ -523,9 +527,9 @@ function BookmarkCardContent({
  * @returns {JSX.Element} Notes paragraph with line clamping
  */
 function BookmarkNotes({ notes }: { notes: string }) {
-  return (
-    <p className="mb-3 line-clamp-2 text-sm text-muted-foreground">{notes}</p>
-  );
+	return (
+		<p className="mb-3 line-clamp-2 text-sm text-muted-foreground">{notes}</p>
+	)
 }
 
 /**
@@ -539,38 +543,38 @@ function BookmarkNotes({ notes }: { notes: string }) {
  * @returns {JSX.Element} Flexbox container with tag badges
  */
 function BookmarkTags({ tags }: { tags: Bookmark["bookmarkTags"] }) {
-  return (
-    <div className="mb-3 flex flex-wrap gap-1">
-      {tags.map((bt) => (
-        <Badge
-          key={bt.tag.name}
-          variant="secondary"
-          className="text-xs"
-          style={{
-            backgroundColor: bt.tag.color ?? undefined,
-            color: bt.tag.color ? "white" : undefined,
-          }}
-        >
-          <Icons.tag className="mr-1 size-3" />
-          {bt.tag.name}
-        </Badge>
-      ))}
-    </div>
-  );
+	return (
+		<div className="mb-3 flex flex-wrap gap-1">
+			{tags.map((bt) => (
+				<Badge
+					key={bt.tag.name}
+					variant="secondary"
+					className="text-xs"
+					style={{
+						backgroundColor: bt.tag.color ?? undefined,
+						color: bt.tag.color ? "white" : undefined,
+					}}
+				>
+					<Icons.tag className="mr-1 size-3" />
+					{bt.tag.name}
+				</Badge>
+			))}
+		</div>
+	)
 }
 
 /**
  * Props for the BookmarkFooter component
  */
 interface BookmarkFooterProps {
-  /** Number of views for the content */
-  views: number;
-  /** Content type for the button label */
-  contentType: string;
-  /** URL path for the content type */
-  contentTypePath: string;
-  /** Unique identifier for the content */
-  itemId: string;
+	/** Number of views for the content */
+	views: number
+	/** Content type for the button label */
+	contentType: string
+	/** URL path for the content type */
+	contentTypePath: string
+	/** Unique identifier for the content */
+	itemId: string
 }
 
 /**
@@ -587,21 +591,21 @@ interface BookmarkFooterProps {
  * @returns {JSX.Element} Footer with view count and action button
  */
 function BookmarkFooter({
-  views,
-  contentType,
-  contentTypePath,
-  itemId,
+	views,
+	contentType,
+	contentTypePath,
+	itemId,
 }: BookmarkFooterProps) {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="text-xs text-muted-foreground">
-        {views.toLocaleString()} views
-      </div>
-      <Button asChild size="sm" variant="outline">
-        <Link to={`/${contentTypePath}/${itemId}`}>View {contentType}</Link>
-      </Button>
-    </div>
-  );
+	return (
+		<div className="flex items-center justify-between">
+			<div className="text-xs text-muted-foreground">
+				{views.toLocaleString()} views
+			</div>
+			<Button asChild size="sm" variant="outline">
+				<Link to={`/${contentTypePath}/${itemId}`}>View {contentType}</Link>
+			</Button>
+		</div>
+	)
 }
 
 /**
@@ -613,25 +617,25 @@ function BookmarkFooter({
  * @returns {JSX.Element} Empty state with animation and call-to-action
  */
 export function BookmarksEmptyState() {
-  const navigate = useNavigate();
+	const navigate = useNavigate()
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Container title="Bookmarks">
-        <EmptyState
-          icon={<Icons.bookmark className="size-10 text-muted-foreground" />}
-          title="No bookmarks yet"
-          description="Start bookmarking articles and tutorials to see them here. You can add tags and notes to organize your content."
-          action={{
-            label: "Browse Content",
-            onClick: () => navigate("/articles"),
-          }}
-        />
-      </Container>
-    </motion.div>
-  );
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+		>
+			<Container title="Bookmarks">
+				<EmptyState
+					icon={<Icons.bookmark className="size-10 text-muted-foreground" />}
+					title="No bookmarks yet"
+					description="Start bookmarking articles and tutorials to see them here. You can add tags and notes to organize your content."
+					action={{
+						label: "Browse Content",
+						onClick: () => navigate("/articles"),
+					}}
+				/>
+			</Container>
+		</motion.div>
+	)
 }

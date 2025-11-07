@@ -12,10 +12,11 @@
  * @see {@link https://github.com/polarsource/polar-js} Polar JavaScript SDK
  */
 
-import { Polar } from "@polar-sh/sdk";
+import { Polar } from "@polar-sh/sdk"
+
 // import { prisma } from "./db.server";
 
-const { POLAR_ACCESS_TOKEN, NODE_ENV, POLAR_ORGANIZATION_ID } = process.env;
+const { POLAR_ACCESS_TOKEN, NODE_ENV, POLAR_ORGANIZATION_ID } = process.env
 
 /**
  * Polar SDK instance configured with environment-based access token
@@ -47,9 +48,9 @@ const { POLAR_ACCESS_TOKEN, NODE_ENV, POLAR_ORGANIZATION_ID } = process.env;
  * @throws {Error} If POLAR_ACCESS_TOKEN is not configured in environment variables
  */
 export const polar = new Polar({
-  accessToken: POLAR_ACCESS_TOKEN,
-  server: NODE_ENV !== "production" ? "sandbox" : "production",
-});
+	accessToken: POLAR_ACCESS_TOKEN,
+	server: NODE_ENV !== "production" ? "sandbox" : "production",
+})
 
 /**
  * Creates a new checkout session for subscription or one-time payments
@@ -78,38 +79,38 @@ export const polar = new Polar({
  * @throws {Error} If Polar API request fails or required parameters are missing
  */
 export async function createCheckoutSession({
-  userId,
-  teamId,
-  products,
-  successUrl,
-  discountId,
-  customerEmail,
-  customerName,
-  isBusinessCustomer,
+	userId,
+	teamId,
+	products,
+	successUrl,
+	discountId,
+	customerEmail,
+	customerName,
+	isBusinessCustomer,
 }: {
-  userId?: string;
-  teamId?: string;
-  products: string[];
-  successUrl: string;
-  discountId?: string;
-  customerEmail: string;
-  customerName: string;
-  isBusinessCustomer: boolean;
+	userId?: string
+	teamId?: string
+	products: string[]
+	successUrl: string
+	discountId?: string
+	customerEmail: string
+	customerName: string
+	isBusinessCustomer: boolean
 }) {
-  return polar.checkouts.create({
-    products,
-    successUrl,
-    customerEmail,
-    customerName,
-    isBusinessCustomer,
-    externalCustomerId: userId ?? teamId,
-    allowDiscountCodes: true,
-    discountId,
-    metadata: {
-      ...(userId && { userId }),
-      ...(teamId && { teamId }),
-    },
-  });
+	return polar.checkouts.create({
+		products,
+		successUrl,
+		customerEmail,
+		customerName,
+		isBusinessCustomer,
+		externalCustomerId: userId ?? teamId,
+		allowDiscountCodes: true,
+		discountId,
+		metadata: {
+			...(userId && { userId }),
+			...(teamId && { teamId }),
+		},
+	})
 }
 
 /**
@@ -134,7 +135,7 @@ export async function createCheckoutSession({
  * @throws {Error} If checkout session is not found or Polar API request fails
  */
 export async function getCheckoutSession(checkoutId: string) {
-  return polar.checkouts.get({ id: checkoutId });
+	return polar.checkouts.get({ id: checkoutId })
 }
 
 /**
@@ -157,11 +158,11 @@ export async function getCheckoutSession(checkoutId: string) {
  * @throws {Error} If Polar API request fails or access token is invalid
  */
 export async function listProducts() {
-  return polar.products.list({
-    limit: 6,
-    isArchived: false,
-    organizationId: POLAR_ORGANIZATION_ID,
-  });
+	return polar.products.list({
+		limit: 6,
+		isArchived: false,
+		organizationId: POLAR_ORGANIZATION_ID,
+	})
 }
 
 /**
@@ -184,10 +185,10 @@ export async function listProducts() {
  * @throws {Error} If customer is not found or Polar API request fails
  */
 export async function createCustomerSession(customerId: string) {
-  return polar.customerSessions.create({
-    externalCustomerId: customerId,
-    // customerId,
-  });
+	return polar.customerSessions.create({
+		externalCustomerId: customerId,
+		// customerId,
+	})
 }
 
 /**
@@ -211,7 +212,7 @@ export async function createCustomerSession(customerId: string) {
  * @throws {Error} If customer is not found or Polar API request fails
  */
 export async function getCustomer(customerId: string) {
-  return polar.customers.getExternal({ externalId: customerId });
+	return polar.customers.getExternal({ externalId: customerId })
 }
 
 /**
@@ -236,7 +237,7 @@ export async function getCustomer(customerId: string) {
  * @throws {Error} If customer has active subscriptions or Polar API request fails
  */
 export async function deleteCustomer(customerId: string) {
-  return polar.customers.deleteExternal({ externalId: customerId });
+	return polar.customers.deleteExternal({ externalId: customerId })
 }
 
 /**
@@ -260,7 +261,7 @@ export async function deleteCustomer(customerId: string) {
  * @throws {Error} If subscription is not found or Polar API request fails
  */
 export async function getSubscription(subscriptionId: string) {
-  return polar.subscriptions.get({ id: subscriptionId });
+	return polar.subscriptions.get({ id: subscriptionId })
 }
 /**
  * Cancels a subscription and stops future billing
@@ -286,17 +287,17 @@ export async function getSubscription(subscriptionId: string) {
  * @throws {Error} If subscription is not found, already cancelled, or Polar API request fails
  */
 export async function cancelSubscription(subscriptionId: string) {
-  return polar.subscriptions.revoke({ id: subscriptionId });
+	return polar.subscriptions.revoke({ id: subscriptionId })
 }
 
 export async function getUserActiveSubscription(userId: string | null) {
-  if (!userId) return null;
-  // const userTeams = await prisma.team.findMany({ where: {} });
-  // const subscription = await prisma.subscription.findFirst({
-  //   where: {
-  //     userId,
-  //     status: "active",
-  //   },
-  // });
-  return null;
+	if (!userId) return null
+	// const userTeams = await prisma.team.findMany({ where: {} });
+	// const subscription = await prisma.subscription.findFirst({
+	//   where: {
+	//     userId,
+	//     status: "active",
+	//   },
+	// });
+	return null
 }

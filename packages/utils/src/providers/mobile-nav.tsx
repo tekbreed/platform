@@ -1,37 +1,37 @@
-import React from "react";
+import React from "react"
 
 type MobileNavContextType = {
-  open: boolean;
-  openMobileNav: () => void;
-  closeMobileNav: () => void;
-};
+	open: boolean
+	openMobileNav: () => void
+	closeMobileNav: () => void
+}
 
 const MobileNavContext = React.createContext<MobileNavContextType | undefined>(
-  undefined,
-);
+	undefined,
+)
 
 function MobileNavProvider(props: React.PropsWithChildren) {
-  const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = React.useState(false)
 
-  const contextValue = React.useMemo(
-    () => ({
-      open,
-      openMobileNav: () => setOpen(true),
-      closeMobileNav: () => setOpen(false),
-      toggleMobileNav: () => setOpen((prev) => !prev),
-    }),
-    [open],
-  );
+	const contextValue = React.useMemo(
+		() => ({
+			open,
+			openMobileNav: () => setOpen(true),
+			closeMobileNav: () => setOpen(false),
+			toggleMobileNav: () => setOpen((prev) => !prev),
+		}),
+		[open],
+	)
 
-  return <MobileNavContext.Provider value={contextValue} {...props} />;
+	return <MobileNavContext.Provider value={contextValue} {...props} />
 }
 
 function useMobileNav() {
-  const context = React.use(MobileNavContext);
-  if (context === undefined) {
-    throw new Error("useMobileNav must be used within an MobileNavProvider");
-  }
-  return context;
+	const context = React.use(MobileNavContext)
+	if (context === undefined) {
+		throw new Error("useMobileNav must be used within an MobileNavProvider")
+	}
+	return context
 }
 
-export { useMobileNav, MobileNavProvider };
+export { useMobileNav, MobileNavProvider }

@@ -1,21 +1,23 @@
-"use client";
-import React from "react";
-import { ThemeProvider, type Theme } from "remix-themes";
+"use client"
+
+import type React from "react"
+
+import { type Theme, ThemeProvider } from "remix-themes"
 
 export function ThemedApp({
-  children,
-  theme,
+	children,
+	theme,
 }: {
-  children: React.ReactNode;
-  theme: Theme | null;
+	children: React.ReactNode
+	theme: Theme | null
 }) {
-  return (
-    <ThemeProvider
-      specifiedTheme={theme}
-      themeAction="/set-theme"
-      disableTransitionOnThemeChange={true}
-    >
-      {children}
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider
+			specifiedTheme={theme}
+			themeAction="/set-theme"
+			disableTransitionOnThemeChange={true}
+		>
+			{children}
+		</ThemeProvider>
+	)
 }

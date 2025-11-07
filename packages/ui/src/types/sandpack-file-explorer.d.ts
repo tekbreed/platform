@@ -1,9 +1,9 @@
 declare module "sandpack-file-explorer" {
-  import React from "react";
+	import React from "react"
 
-  export interface SandpackFileExplorerProps {
-    className?: string;
-  }
+	export interface SandpackFileExplorerProps {
+		className?: string
+	}
 
-  export const SandpackFileExplorer: React.FC<SandpackFileExplorerProps>;
+	export const SandpackFileExplorer: React.FC<SandpackFileExplorerProps>
 }

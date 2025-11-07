@@ -1,1 +1,1 @@
-export const onboardingSessionKey = "onboardingEmail";
+export const onboardingSessionKey = "onboardingEmail"

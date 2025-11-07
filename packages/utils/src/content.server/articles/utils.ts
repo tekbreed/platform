@@ -1,19 +1,20 @@
-import type { Article, RelatedArticles } from "./types";
-import type { QueryParams } from "@sanity/client";
-import type { Args, Tag } from "../shared-types";
-import { client } from "../loader";
+import type { QueryParams } from "@sanity/client"
+
+import { bundleMDX } from "@/mdx.server"
+import { bundleComponents, MarkdownConverter } from "@/misc.server"
+import { client } from "../loader"
+import type { Args, Tag } from "../shared-types"
 import {
-  articleDetailsQuery,
-  articlesQuery,
-  countQuery,
-  recentArticlesQuery,
-  relatedQuery,
-  tagQuery,
-  featuredArticleQuery,
-  articleIdQuery,
-} from "./queries";
-import { bundleComponents, MarkdownConverter } from "@/misc.server";
-import { bundleMDX } from "@/mdx.server";
+	articleDetailsQuery,
+	articleIdQuery,
+	articlesQuery,
+	countQuery,
+	featuredArticleQuery,
+	recentArticlesQuery,
+	relatedQuery,
+	tagQuery,
+} from "./queries"
+import type { Article, RelatedArticles } from "./types"
 
 /**
  * Retrieves the ID of an article by its slug
@@ -25,10 +26,10 @@ import { bundleMDX } from "@/mdx.server";
  * console.log(id); // "1234567890"
  */
 export async function getArticleIdBySlug(slug: string) {
-  return client
-    .fetch<{ id: string }>(articleIdQuery, { slug })
-    .then((article) => article.id)
-    .catch(() => undefined);
+	return client
+		.fetch<{ id: string }>(articleIdQuery, { slug })
+		.then((article) => article.id)
+		.catch(() => undefined)
 }
 
 /**
@@ -50,44 +51,44 @@ export async function getArticleIdBySlug(slug: string) {
  * });
  */
 export async function getArticles(args: Args) {
-  const {
-    search = "",
-    category = "",
-    tag = "",
-    order = "createdAt desc",
-    start,
-    end,
-  } = args;
+	const {
+		search = "",
+		category = "",
+		tag = "",
+		order = "createdAt desc",
+		start,
+		end,
+	} = args
 
-  const queryParams = {
-    ...(search && { search: `*${search}*` }),
-    ...(category && { category }),
-    ...(tag && { tag }),
-    start,
-    end,
-  } as QueryParams;
+	const queryParams = {
+		...(search && { search: `*${search}*` }),
+		...(category && { category }),
+		...(tag && { tag }),
+		start,
+		end,
+	} as QueryParams
 
-  let filters = `_type == "article" && published == true`;
-  if (category) filters += ` && category->slug.current == $category`;
-  if (tag) filters += ` && $tag in tags[]->slug.current`;
+	let filters = `_type == "article" && published == true`
+	if (category) filters += ` && category->slug.current == $category`
+	if (tag) filters += ` && $tag in tags[]->slug.current`
 
-  const response = await client.fetch<{
-    articles: Article[];
-    total: number;
-  }>(articlesQuery({ search, filters, order }), queryParams);
+	const response = await client.fetch<{
+		articles: Article[]
+		total: number
+	}>(articlesQuery({ search, filters, order }), queryParams)
 
-  const transformedData = await Promise.all(
-    (response.articles ?? []).map(async (article) => ({
-      ...article,
-      markdown: article.content,
-      html: await MarkdownConverter.toHtml(article.content),
-    })),
-  );
+	const transformedData = await Promise.all(
+		(response.articles ?? []).map(async (article) => ({
+			...article,
+			markdown: article.content,
+			html: await MarkdownConverter.toHtml(article.content),
+		})),
+	)
 
-  return {
-    articles: transformedData,
-    total: response.total ?? 0,
-  };
+	return {
+		articles: transformedData,
+		total: response.total ?? 0,
+	}
 }
 
 /**
@@ -99,7 +100,7 @@ export async function getArticles(args: Args) {
  * console.log(`Total articles: ${count}`);
  */
 export async function countArticles() {
-  return client.fetch<number>(countQuery);
+	return client.fetch<number>(countQuery)
 }
 
 /**
@@ -113,38 +114,38 @@ export async function countArticles() {
  * console.log(article.title); // "Complete Guide to React Hooks"
  */
 export async function getArticleDetails(slug: string) {
-  const article = await client.fetch<Article>(articleDetailsQuery, { slug });
-  const relatedArticles = await client.fetch<RelatedArticles>(relatedQuery, {
-    slug,
-    tagIds: article.tags?.map((tag) => tag.id),
-    categoryId: article.category?.id,
-  });
+	const article = await client.fetch<Article>(articleDetailsQuery, { slug })
+	const relatedArticles = await client.fetch<RelatedArticles>(relatedQuery, {
+		slug,
+		tagIds: article.tags?.map((tag) => tag.id),
+		categoryId: article.category?.id,
+	})
 
-  const refinedComponents = bundleComponents(article.reactComponents);
+	const refinedComponents = bundleComponents(article.reactComponents)
 
-  const { code } = await bundleMDX({
-    source: article.content,
-    files: refinedComponents,
-  });
+	const { code } = await bundleMDX({
+		source: article.content,
+		files: refinedComponents,
+	})
 
-  /**
-   * Tiptap editor needs html
-   * MDX previewer needs bundled markdown
-   */
-  return {
-    ...article,
-    content: code,
-    markdown: article.content,
-    html: await MarkdownConverter.toHtml(article.content),
-    relatedArticles:
-      (await Promise.all(
-        (relatedArticles ?? []).map(async (a) => ({
-          ...a,
-          markdown: a.content,
-        })),
-      )) || [],
-    sandpackTemplates: article.sandpackTemplates || [],
-  };
+	/**
+	 * Tiptap editor needs html
+	 * MDX previewer needs bundled markdown
+	 */
+	return {
+		...article,
+		content: code,
+		markdown: article.content,
+		html: await MarkdownConverter.toHtml(article.content),
+		relatedArticles:
+			(await Promise.all(
+				(relatedArticles ?? []).map(async (a) => ({
+					...a,
+					markdown: a.content,
+				})),
+			)) || [],
+		sandpackTemplates: article.sandpackTemplates || [],
+	}
 }
 
 /**
@@ -157,7 +158,7 @@ export async function getArticleDetails(slug: string) {
  * popularTags.forEach(tag => console.log(tag.title));
  */
 export async function getPopularTags(limit = 10) {
-  return client.fetch<Tag[]>(tagQuery, { limit });
+	return client.fetch<Tag[]>(tagQuery, { limit })
 }
 
 /**
@@ -170,17 +171,17 @@ export async function getPopularTags(limit = 10) {
  * recentArticles.forEach(article => console.log(article.title));
  */
 export async function getRecentArticles(limit = 2) {
-  const articles =
-    (await client.fetch<RelatedArticles>(recentArticlesQuery(), { limit })) ??
-    [];
-  return (
-    (await Promise.all(
-      articles.map(async (a) => ({
-        ...a,
-        markdown: a.content,
-      })),
-    )) || []
-  );
+	const articles =
+		(await client.fetch<RelatedArticles>(recentArticlesQuery(), { limit })) ??
+		[]
+	return (
+		(await Promise.all(
+			articles.map(async (a) => ({
+				...a,
+				markdown: a.content,
+			})),
+		)) || []
+	)
 }
 
 /**
@@ -194,10 +195,10 @@ export async function getRecentArticles(limit = 2) {
  * }
  */
 export async function getFeaturedArticle() {
-  const article = await client.fetch<Article | null>(featuredArticleQuery);
-  if (!article) return null;
-  return {
-    ...article,
-    markdown: article.content,
-  };
+	const article = await client.fetch<Article | null>(featuredArticleQuery)
+	if (!article) return null
+	return {
+		...article,
+		markdown: article.content,
+	}
 }

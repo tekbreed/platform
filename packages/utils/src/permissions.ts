@@ -1,10 +1,11 @@
-import type { Action, Entity, RoleName } from "@repo/database";
-import { useUser } from "./hooks/user";
+import type { Action, Entity, RoleName } from "@repo/database"
 
-export type Access = "OWN" | "ANY" | "OWN,ANY" | "ANY,OWN";
+import type { useUser } from "./hooks/user"
+
+export type Access = "OWN" | "ANY" | "OWN,ANY" | "ANY,OWN"
 export type PermissionString =
-  | `${Action}:${Entity}`
-  | `${Action}:${Entity}:${Access}`;
+	| `${Action}:${Entity}`
+	| `${Action}:${Entity}:${Access}`
 
 /**
  * Parses a permission string into its components (action, entity, and access level).
@@ -26,16 +27,16 @@ export type PermissionString =
  * ```
  */
 export function parsePermissionString(permissionString: PermissionString) {
-  const [action, entity, access] = permissionString.split(":") as [
-    Action,
-    Entity,
-    Access | undefined,
-  ];
-  return {
-    action,
-    entity,
-    access: access ? (access.split(",") as Access[]) : undefined,
-  };
+	const [action, entity, access] = permissionString.split(":") as [
+		Action,
+		Entity,
+		Access | undefined,
+	]
+	return {
+		action,
+		entity,
+		access: access ? (access.split(",") as Access[]) : undefined,
+	}
 }
 
 /**
@@ -56,19 +57,19 @@ export function parsePermissionString(permissionString: PermissionString) {
  * ```
  */
 export function userHasPermission(
-  user: Pick<ReturnType<typeof useUser>, "roles"> | null | undefined,
-  permission: PermissionString,
+	user: Pick<ReturnType<typeof useUser>, "roles"> | null | undefined,
+	permission: PermissionString,
 ) {
-  if (!user) return false;
-  const { action, entity, access } = parsePermissionString(permission);
-  return user.roles.some((role) =>
-    role.permissions.some(
-      (permission) =>
-        permission.entity === entity &&
-        permission.action === action &&
-        (!access || access.includes(permission.access as Access)),
-    ),
-  );
+	if (!user) return false
+	const { action, entity, access } = parsePermissionString(permission)
+	return user.roles.some((role) =>
+		role.permissions.some(
+			(permission) =>
+				permission.entity === entity &&
+				permission.action === action &&
+				(!access || access.includes(permission.access as Access)),
+		),
+	)
 }
 
 /**
@@ -89,9 +90,9 @@ export function userHasPermission(
  * ```
  */
 export function userHasRole(
-  user: Pick<ReturnType<typeof useUser>, "roles"> | null,
-  role: RoleName,
+	user: Pick<ReturnType<typeof useUser>, "roles"> | null,
+	role: RoleName,
 ) {
-  if (!user) return false;
-  return user.roles.some((r) => r.name === role);
+	if (!user) return false
+	return user.roles.some((r) => r.name === role)
 }

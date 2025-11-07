@@ -1,13 +1,16 @@
+import { useEffect, useMemo, useRef, useState } from "react"
+
 import {
-  useFormAction,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useSpinDelay } from "spin-delay";
-import { StatusCodes } from "http-status-codes";
-import { useOptionalUser } from "./hooks/user";
+	useFormAction,
+	useLocation,
+	useNavigate,
+	useNavigation,
+} from "react-router"
+
+import { StatusCodes } from "http-status-codes"
+import { useSpinDelay } from "spin-delay"
+
+import { useOptionalUser } from "./hooks/user"
 // const vitest: undefined | typeof import('vitest') = import.meta.vitest
 
 /**
@@ -33,9 +36,9 @@ import { useOptionalUser } from "./hooks/user";
  * // Returns: "https://api.dicebear.com/9.x/avataaars/svg?seed=john-doe&backgroundColor=b6e3f4,c0aede"
  * ```
  */
-export const avatarBaseUrl = "https://api.dicebear.com";
+export const avatarBaseUrl = "https://api.dicebear.com"
 export function getRandomBotAvatar(seed: string) {
-  return `${avatarBaseUrl}/9.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede`;
+	return `${avatarBaseUrl}/9.x/avataaars/svg?seed=${seed}&backgroundColor=b6e3f4,c0aede`
 }
 
 /**
@@ -52,7 +55,7 @@ export function getRandomBotAvatar(seed: string) {
  * ```
  */
 export function getSeed(name: string = "Tony Max") {
-  return name.split(" ")[0];
+	return name.split(" ")[0]
 }
 
 /**
@@ -61,29 +64,29 @@ export function getSeed(name: string = "Tony Max") {
  * @returns {string} Image URL
  */
 export function getImgSrc({
-  seed = "Tony",
-  fileKey,
+	seed = "Tony",
+	fileKey,
 }: {
-  seed?: string;
-  fileKey?: string;
+	seed?: string
+	fileKey?: string
 }): string {
-  if (fileKey) {
-    return `/media/${encodeURIComponent(fileKey)}?type=image`;
-  }
-  return getRandomBotAvatar(getSeed(seed) ?? "Tony");
+	if (fileKey) {
+		return `/media/${encodeURIComponent(fileKey)}?type=image`
+	}
+	return getRandomBotAvatar(getSeed(seed) ?? "Tony")
 }
 
 /**
  * Gets a video URL from CDN
  */
 export function getVideoSrc({
-  type,
-  videoId,
+	type,
+	videoId,
 }: {
-  type: string;
-  videoId: string;
+	type: string
+	videoId: string
 }): string {
-  return `/media/${encodeURIComponent(videoId)}?type=${encodeURIComponent(type)}`;
+	return `/media/${encodeURIComponent(videoId)}?type=${encodeURIComponent(type)}`
 }
 
 /**
@@ -104,17 +107,17 @@ export function getVideoSrc({
  * ```
  */
 export function getErrorMessage(error: unknown) {
-  if (typeof error === "string") return error;
-  if (
-    error &&
-    typeof error === "object" &&
-    "message" in error &&
-    typeof error.message === "string"
-  ) {
-    return error.message;
-  }
-  console.error("Unable to get error message for error", error);
-  return "Unknown Error";
+	if (typeof error === "string") return error
+	if (
+		error &&
+		typeof error === "object" &&
+		"message" in error &&
+		typeof error.message === "string"
+	) {
+		return error.message
+	}
+	console.error("Unable to get error message for error", error)
+	return "Unknown Error"
 }
 
 // if (vitest) {
@@ -159,20 +162,20 @@ export function getErrorMessage(error: unknown) {
  * ```
  */
 export function invariantResponse(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  condition: any,
-  message?: string | (() => string),
-  responseInit?: ResponseInit,
+	// biome-ignore lint/suspicious/noExplicitAny: allow any
+	condition: any,
+	message?: string | (() => string),
+	responseInit?: ResponseInit,
 ): asserts condition {
-  if (!condition) {
-    throw new Response(
-      typeof message === "function"
-        ? message()
-        : message ||
-          "An invariant failed, please provide a message to explain why.",
-      { status: StatusCodes.BAD_REQUEST, ...responseInit },
-    );
-  }
+	if (!condition) {
+		throw new Response(
+			typeof message === "function"
+				? message()
+				: message ||
+						"An invariant failed, please provide a message to explain why.",
+			{ status: StatusCodes.BAD_REQUEST, ...responseInit },
+		)
+	}
 }
 
 /**
@@ -192,13 +195,13 @@ export function invariantResponse(
  * ```
  */
 export function invariant(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  condition: any,
-  message: string | (() => string),
+	// biome-ignore lint/suspicious/noExplicitAny: allow any
+	condition: any,
+	message: string | (() => string),
 ): asserts condition {
-  if (!condition) {
-    throw new Error(typeof message === "function" ? message() : message);
-  }
+	if (!condition) {
+		throw new Error(typeof message === "function" ? message() : message)
+	}
 }
 
 /**
@@ -220,25 +223,25 @@ export function invariant(
  * ```
  */
 export function useIsPending({
-  formAction,
-  formMethod = "POST",
-  state = "non-idle",
+	formAction,
+	formMethod = "POST",
+	state = "non-idle",
 }: {
-  formAction?: string;
-  formMethod?: "POST" | "GET" | "PUT" | "PATCH" | "DELETE";
-  state?: "submitting" | "loading" | "non-idle";
+	formAction?: string
+	formMethod?: "POST" | "GET" | "PUT" | "PATCH" | "DELETE"
+	state?: "submitting" | "loading" | "non-idle"
 } = {}) {
-  const contextualFormAction = useFormAction();
-  const navigation = useNavigation();
-  const isPendingState =
-    state === "non-idle"
-      ? navigation.state !== "idle"
-      : navigation.state === state;
-  return (
-    isPendingState &&
-    navigation.formAction === (formAction ?? contextualFormAction) &&
-    navigation.formMethod === formMethod
-  );
+	const contextualFormAction = useFormAction()
+	const navigation = useNavigation()
+	const isPendingState =
+		state === "non-idle"
+			? navigation.state !== "idle"
+			: navigation.state === state
+	return (
+		isPendingState &&
+		navigation.formAction === (formAction ?? contextualFormAction) &&
+		navigation.formMethod === formMethod
+	)
 }
 
 /**
@@ -259,18 +262,18 @@ export function useIsPending({
  * ```
  */
 export function useDelayedIsPending({
-  formAction,
-  formMethod,
-  delay = 400,
-  minDuration = 300,
+	formAction,
+	formMethod,
+	delay = 400,
+	minDuration = 300,
 }: Parameters<typeof useIsPending>[0] &
-  Parameters<typeof useSpinDelay>[1] = {}) {
-  const isPending = useIsPending({ formAction, formMethod });
-  const delayedIsPending = useSpinDelay(isPending, {
-    delay,
-    minDuration,
-  });
-  return delayedIsPending;
+	Parameters<typeof useSpinDelay>[1] = {}) {
+	const isPending = useIsPending({ formAction, formMethod })
+	const delayedIsPending = useSpinDelay(isPending, {
+		delay,
+		minDuration,
+	})
+	return delayedIsPending
 }
 
 /**
@@ -295,16 +298,16 @@ export function useDelayedIsPending({
  * ```
  */
 function debounce<Callback extends (...args: Parameters<Callback>) => void>(
-  fn: Callback,
-  delay: number,
+	fn: Callback,
+	delay: number,
 ) {
-  let timer: ReturnType<typeof setTimeout> | null = null;
-  return (...args: Parameters<Callback>) => {
-    if (timer) clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn(...args);
-    }, delay);
-  };
+	let timer: ReturnType<typeof setTimeout> | null = null
+	return (...args: Parameters<Callback>) => {
+		if (timer) clearTimeout(timer)
+		timer = setTimeout(() => {
+			fn(...args)
+		}, delay)
+	}
 }
 
 /**
@@ -327,9 +330,10 @@ function debounce<Callback extends (...args: Parameters<Callback>) => void>(
  * ```
  */
 function callAll<Args extends Array<unknown>>(
-  ...fns: Array<((...args: Args) => unknown) | undefined>
+	...fns: Array<((...args: Args) => unknown) | undefined>
 ) {
-  return (...args: Args) => fns.forEach((fn) => fn?.(...args));
+	// biome-ignore lint/suspicious/useIterableCallbackReturn: allow the return value
+	return (...args: Args) => fns.forEach((fn) => fn?.(...args))
 }
 
 /**
@@ -348,20 +352,20 @@ function callAll<Args extends Array<unknown>>(
  * ```
  */
 export function useDebounce<
-  Callback extends (...args: Parameters<Callback>) => ReturnType<Callback>,
+	Callback extends (...args: Parameters<Callback>) => ReturnType<Callback>,
 >(callback: Callback, delay: number) {
-  const callbackRef = useRef(callback);
-  useEffect(() => {
-    callbackRef.current = callback;
-  });
-  return useMemo(
-    () =>
-      debounce(
-        (...args: Parameters<Callback>) => callbackRef.current(...args),
-        delay,
-      ),
-    [delay],
-  );
+	const callbackRef = useRef(callback)
+	useEffect(() => {
+		callbackRef.current = callback
+	})
+	return useMemo(
+		() =>
+			debounce(
+				(...args: Parameters<Callback>) => callbackRef.current(...args),
+				delay,
+			),
+		[delay],
+	)
 }
 
 /**
@@ -380,16 +384,16 @@ export function useDebounce<
  * ```
  */
 export function combineHeaders(
-  ...headers: Array<ResponseInit["headers"] | null>
+	...headers: Array<ResponseInit["headers"] | null>
 ) {
-  const combined = new Headers();
-  for (const header of headers) {
-    if (!header) continue;
-    for (const [key, value] of new Headers(header).entries()) {
-      combined.append(key, value);
-    }
-  }
-  return combined;
+	const combined = new Headers()
+	for (const header of headers) {
+		if (!header) continue
+		for (const [key, value] of new Headers(header).entries()) {
+			combined.append(key, value)
+		}
+	}
+	return combined
 }
 
 /**
@@ -408,16 +412,16 @@ export function combineHeaders(
  * ```
  */
 export function combineResponseInits(
-  ...responseInits: Array<ResponseInit | undefined>
+	...responseInits: Array<ResponseInit | undefined>
 ) {
-  let combined: ResponseInit = {};
-  for (const responseInit of responseInits) {
-    combined = {
-      ...responseInit,
-      headers: combineHeaders(combined.headers, responseInit?.headers),
-    };
-  }
-  return combined;
+	let combined: ResponseInit = {}
+	for (const responseInit of responseInits) {
+		combined = {
+			...responseInit,
+			headers: combineHeaders(combined.headers, responseInit?.headers),
+		}
+	}
+	return combined
 }
 
 /**
@@ -439,39 +443,39 @@ export function combineResponseInits(
  * ```
  */
 export function useDoubleCheck() {
-  const [doubleCheck, setDoubleCheck] = useState(false);
+	const [doubleCheck, setDoubleCheck] = useState(false)
 
-  function getButtonProps(
-    props?: React.ButtonHTMLAttributes<HTMLButtonElement>,
-  ) {
-    const onBlur: React.ButtonHTMLAttributes<HTMLButtonElement>["onBlur"] =
-      () => setDoubleCheck(false);
+	function getButtonProps(
+		props?: React.ButtonHTMLAttributes<HTMLButtonElement>,
+	) {
+		const onBlur: React.ButtonHTMLAttributes<HTMLButtonElement>["onBlur"] =
+			() => setDoubleCheck(false)
 
-    const onClick: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"] =
-      doubleCheck
-        ? undefined
-        : (e) => {
-            e.preventDefault();
-            setDoubleCheck(true);
-          };
+		const onClick: React.ButtonHTMLAttributes<HTMLButtonElement>["onClick"] =
+			doubleCheck
+				? undefined
+				: (e) => {
+						e.preventDefault()
+						setDoubleCheck(true)
+					}
 
-    const onKeyUp: React.ButtonHTMLAttributes<HTMLButtonElement>["onKeyUp"] = (
-      e,
-    ) => {
-      if (e.key === "Escape") {
-        setDoubleCheck(false);
-      }
-    };
+		const onKeyUp: React.ButtonHTMLAttributes<HTMLButtonElement>["onKeyUp"] = (
+			e,
+		) => {
+			if (e.key === "Escape") {
+				setDoubleCheck(false)
+			}
+		}
 
-    return {
-      ...props,
-      onBlur: callAll(onBlur, props?.onBlur),
-      onClick: callAll(onClick, props?.onClick),
-      onKeyUp: callAll(onKeyUp, props?.onKeyUp),
-    };
-  }
+		return {
+			...props,
+			onBlur: callAll(onBlur, props?.onBlur),
+			onClick: callAll(onClick, props?.onClick),
+			onKeyUp: callAll(onKeyUp, props?.onKeyUp),
+		}
+	}
 
-  return { doubleCheck, getButtonProps };
+	return { doubleCheck, getButtonProps }
 }
 
 /**
@@ -489,14 +493,14 @@ export function useDoubleCheck() {
  * ```
  */
 export function getDomainUrl(request: Request) {
-  const host =
-    request.headers.get("X-Forwarded-Host") ?? request.headers.get("host");
-  if (!host) {
-    throw new Error("Could not determine domain URL.");
-  }
-  const protocol =
-    host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https";
-  return `${protocol}://${host}`;
+	const host =
+		request.headers.get("X-Forwarded-Host") ?? request.headers.get("host")
+	if (!host) {
+		throw new Error("Could not determine domain URL.")
+	}
+	const protocol =
+		host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https"
+	return `${protocol}://${host}`
 }
 
 /**
@@ -513,18 +517,18 @@ export function getDomainUrl(request: Request) {
  * ```
  */
 export function getReferrerRoute(request: Request) {
-  // spelling errors and whatever makes this annoyingly inconsistent
-  // in my own testing, `referer` returned the right value, but 🤷‍♂️
-  const referrer =
-    request.headers.get("referer") ??
-    request.headers.get("referrer") ??
-    request.referrer;
-  const domain = getDomainUrl(request);
-  if (referrer?.startsWith(domain)) {
-    return referrer.slice(domain.length);
-  } else {
-    return "/";
-  }
+	// spelling errors and whatever makes this annoyingly inconsistent
+	// in my own testing, `referer` returned the right value, but 🤷‍♂️
+	const referrer =
+		request.headers.get("referer") ??
+		request.headers.get("referrer") ??
+		request.referrer
+	const domain = getDomainUrl(request)
+	if (referrer?.startsWith(domain)) {
+		return referrer.slice(domain.length)
+	} else {
+		return "/"
+	}
 }
 
 /**
@@ -542,23 +546,23 @@ export function getReferrerRoute(request: Request) {
  * ```
  */
 export function getInitials(name: string): string {
-  if (!name || typeof name !== "string") return "";
+	if (!name || typeof name !== "string") return ""
 
-  // Match words that are NOT 2-character abbreviations ending with a period
-  const validWords = name.match(/(?!\S{2}\.\s|\S{2}$)\S+/g);
-  if (!validWords || validWords.length === 0) return "";
+	// Match words that are NOT 2-character abbreviations ending with a period
+	const validWords = name.match(/(?!\S{2}\.\s|\S{2}$)\S+/g)
+	if (!validWords || validWords.length === 0) return ""
 
-  if (validWords.length === 1) {
-    return validWords[0].toUpperCase() ?? "";
-  }
+	if (validWords.length === 1) {
+		return validWords[0].toUpperCase() ?? ""
+	}
 
-  const firstWord = validWords[0];
-  const lastWord = validWords[validWords.length - 1];
+	const firstWord = validWords[0]
+	const lastWord = validWords[validWords.length - 1]
 
-  const firstInitial = firstWord?.[0]?.toUpperCase();
-  const lastInitial = lastWord?.[0]?.toUpperCase();
+	const firstInitial = firstWord?.[0]?.toUpperCase()
+	const lastInitial = lastWord?.[0]?.toUpperCase()
 
-  return `${firstInitial}${lastInitial}`;
+	return `${firstInitial}${lastInitial}`
 }
 /**
  * Capitalizes each word in a name string.
@@ -574,15 +578,15 @@ export function getInitials(name: string): string {
  * ```
  */
 export function capitalizeName(name: string): string {
-  if (!name || typeof name !== "string") return "";
+	if (!name || typeof name !== "string") return ""
 
-  const trimmed = name.trim();
-  if (!trimmed) return "";
+	const trimmed = name.trim()
+	if (!trimmed) return ""
 
-  return trimmed.replace(
-    /\b(\w)(\w*)/g,
-    (_, first, rest) => first.toUpperCase() + rest.toLowerCase(),
-  );
+	return trimmed.replace(
+		/\b(\w)(\w*)/g,
+		(_, first, rest) => first.toUpperCase() + rest.toLowerCase(),
+	)
 }
 
 /**
@@ -592,20 +596,20 @@ export function capitalizeName(name: string): string {
  * @returns A function that takes a callback and executes it only if authenticated
  */
 export function useRequireAuth() {
-  const user = useOptionalUser();
-  const navigate = useNavigate();
-  const location = useLocation();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return async <T extends (...args: unknown[]) => any>(
-    fn: T,
-    ...args: Parameters<T>
-  ): Promise<Awaited<ReturnType<T>> | undefined> => {
-    if (!user) {
-      const params = new URLSearchParams();
-      params.set("redirectTo", `${location.pathname}${location.search}`);
-      navigate(`/auth/signin?${params.toString()}`);
-      return undefined;
-    }
-    return await fn(...args);
-  };
+	const user = useOptionalUser()
+	const navigate = useNavigate()
+	const location = useLocation()
+	// biome-ignore lint/suspicious/noExplicitAny: allow any
+	return async <T extends (...args: unknown[]) => any>(
+		fn: T,
+		...args: Parameters<T>
+	): Promise<Awaited<ReturnType<T>> | undefined> => {
+		if (!user) {
+			const params = new URLSearchParams()
+			params.set("redirectTo", `${location.pathname}${location.search}`)
+			navigate(`/auth/signin?${params.toString()}`)
+			return undefined
+		}
+		return await fn(...args)
+	}
 }

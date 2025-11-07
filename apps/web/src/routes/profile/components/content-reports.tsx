@@ -1,90 +1,90 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router";
-import { Button } from "@repo/ui/components/button";
-import { Input } from "@repo/ui/components/input";
-import { Badge } from "@repo/ui/components/badge";
-import { Card, CardContent, CardHeader } from "@repo/ui/components/card";
-import { EmptyState } from "@repo/ui/composed/empty-state";
-import { Container } from "./container";
+import React from "react"
+
+import { Link } from "react-router"
+
+import { motion } from "framer-motion"
+
+import { Badge } from "@repo/ui/components/badge"
+import { Button } from "@repo/ui/components/button"
+import { Card, CardContent, CardHeader } from "@repo/ui/components/card"
+import { Input } from "@repo/ui/components/input"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@repo/ui/components/select";
-import { Icons } from "@repo/ui/composed/icons";
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@repo/ui/components/select"
+import { EmptyState } from "@repo/ui/composed/empty-state"
+import { Icons } from "@repo/ui/composed/icons"
+
+import { Container } from "./container"
 
 /**
  * Possible status values for a content report
  */
-export type ReportStatus =
-  | "PENDING"
-  | "UNDER_REVIEW"
-  | "RESOLVED"
-  | "DISMISSED";
+export type ReportStatus = "PENDING" | "UNDER_REVIEW" | "RESOLVED" | "DISMISSED"
 
 /**
  * Content information associated with a report
  */
 export interface ReportContent {
-  /** Unique identifier for the content */
-  id: string;
-  /** Type of content being reported */
-  type: "ARTICLE" | "TUTORIAL";
+	/** Unique identifier for the content */
+	id: string
+	/** Type of content being reported */
+	type: "ARTICLE" | "TUTORIAL"
 }
 
 /**
  * Comment information associated with a report
  */
 export interface ReportComment {
-  /** Unique identifier for the comment */
-  id: string;
-  /** Text content of the comment */
-  body: string;
+	/** Unique identifier for the comment */
+	id: string
+	/** Text content of the comment */
+	body: string
 }
 
 /**
  * Complete report data structure
  */
 export interface Report {
-  /** Unique identifier for the report */
-  id: string;
-  /** Reason for the report (e.g., spam, inappropriate_content) */
-  reason: string;
-  /** Optional additional details provided by the reporter */
-  details?: string | null;
-  /** Current status of the report */
-  status: ReportStatus;
-  /** Date when the report was created */
-  createdAt: Date;
-  /** Date when the report was resolved (if applicable) */
-  resolvedAt?: Date | null;
-  /** Content being reported (if applicable) */
-  content?: ReportContent | null;
-  /** Comment being reported (if applicable) */
-  comment?: ReportComment | null;
+	/** Unique identifier for the report */
+	id: string
+	/** Reason for the report (e.g., spam, inappropriate_content) */
+	reason: string
+	/** Optional additional details provided by the reporter */
+	details?: string | null
+	/** Current status of the report */
+	status: ReportStatus
+	/** Date when the report was created */
+	createdAt: Date
+	/** Date when the report was resolved (if applicable) */
+	resolvedAt?: Date | null
+	/** Content being reported (if applicable) */
+	content?: ReportContent | null
+	/** Comment being reported (if applicable) */
+	comment?: ReportComment | null
 }
 
 /**
  * Props for the ContentReports component
  */
 export interface ContentReportsProps {
-  /** Array of user content reports with status and details */
-  reports: Report[];
+	/** Array of user content reports with status and details */
+	reports: Report[]
 }
 
 /**
  * Configuration object for report status display
  */
 export interface StatusConfig {
-  /** Icon component to display for this status */
-  icon: React.ComponentType<{ className?: string }>;
-  /** CSS classes for styling the status badge */
-  color: string;
-  /** Human-readable label for the status */
-  label: string;
+	/** Icon component to display for this status */
+	icon: React.ComponentType<{ className?: string }>
+	/** CSS classes for styling the status badge */
+	color: string
+	/** Human-readable label for the status */
+	label: string
 }
 
 /**
@@ -112,52 +112,52 @@ export interface StatusConfig {
  * @returns {JSX.Element} A content reports management interface
  */
 export function ContentReports({ reports }: ContentReportsProps) {
-  const {
-    searchQuery,
-    setSearchQuery,
-    statusFilter,
-    setStatusFilter,
-    contentTypeFilter,
-    setContentTypeFilter,
-    filteredReports,
-  } = useReportFilters(reports);
+	const {
+		searchQuery,
+		setSearchQuery,
+		statusFilter,
+		setStatusFilter,
+		contentTypeFilter,
+		setContentTypeFilter,
+		filteredReports,
+	} = useReportFilters(reports)
 
-  if (reports.length === 0) {
-    return <ContentReportsEmptyState />;
-  }
+	if (reports.length === 0) {
+		return <ContentReportsEmptyState />
+	}
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Container title="Content Reports">
-        <ReportPageHeader totalReports={reports.length} hasReports={true} />
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+		>
+			<Container title="Content Reports">
+				<ReportPageHeader totalReports={reports.length} hasReports={true} />
 
-        <div className="mb-6 space-y-4">
-          <ReportSearchBar
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-          />
+				<div className="mb-6 space-y-4">
+					<ReportSearchBar
+						searchQuery={searchQuery}
+						onSearchChange={setSearchQuery}
+					/>
 
-          <ReportFilters
-            statusFilter={statusFilter}
-            onStatusChange={setStatusFilter}
-            contentTypeFilter={contentTypeFilter}
-            onContentTypeChange={setContentTypeFilter}
-          />
-        </div>
+					<ReportFilters
+						statusFilter={statusFilter}
+						onStatusChange={setStatusFilter}
+						contentTypeFilter={contentTypeFilter}
+						onContentTypeChange={setContentTypeFilter}
+					/>
+				</div>
 
-        <ReportResultsHeader
-          filteredCount={filteredReports.length}
-          totalCount={reports.length}
-        />
+				<ReportResultsHeader
+					filteredCount={filteredReports.length}
+					totalCount={reports.length}
+				/>
 
-        <ReportsList reports={filteredReports} />
-      </Container>
-    </motion.div>
-  );
+				<ReportsList reports={filteredReports} />
+			</Container>
+		</motion.div>
+	)
 }
 
 /**
@@ -180,41 +180,41 @@ export function ContentReports({ reports }: ContentReportsProps) {
  * @returns {Report[]} returns.filteredReports - Filtered array of reports
  */
 export function useReportFilters(reports: Report[]) {
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [statusFilter, setStatusFilter] = React.useState<string>("all");
-  const [contentTypeFilter, setContentTypeFilter] =
-    React.useState<string>("all");
+	const [searchQuery, setSearchQuery] = React.useState("")
+	const [statusFilter, setStatusFilter] = React.useState<string>("all")
+	const [contentTypeFilter, setContentTypeFilter] =
+		React.useState<string>("all")
 
-  // Filter reports based on search and filters
-  const filteredReports = React.useMemo(() => {
-    return reports.filter((report) => {
-      const matchesSearch =
-        searchQuery === "" ||
-        report.reason.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        report.details?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        report.comment?.body.toLowerCase().includes(searchQuery.toLowerCase());
+	// Filter reports based on search and filters
+	const filteredReports = React.useMemo(() => {
+		return reports.filter((report) => {
+			const matchesSearch =
+				searchQuery === "" ||
+				report.reason.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				report.details?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				report.comment?.body.toLowerCase().includes(searchQuery.toLowerCase())
 
-      const matchesStatus =
-        statusFilter === "all" || report.status.toLowerCase() === statusFilter;
+			const matchesStatus =
+				statusFilter === "all" || report.status.toLowerCase() === statusFilter
 
-      const matchesContentType =
-        contentTypeFilter === "all" ||
-        report.content?.type.toLowerCase() === contentTypeFilter ||
-        (contentTypeFilter === "comment" && report.comment);
+			const matchesContentType =
+				contentTypeFilter === "all" ||
+				report.content?.type.toLowerCase() === contentTypeFilter ||
+				(contentTypeFilter === "comment" && report.comment)
 
-      return matchesSearch && matchesStatus && matchesContentType;
-    });
-  }, [reports, searchQuery, statusFilter, contentTypeFilter]);
+			return matchesSearch && matchesStatus && matchesContentType
+		})
+	}, [reports, searchQuery, statusFilter, contentTypeFilter])
 
-  return {
-    searchQuery,
-    setSearchQuery,
-    statusFilter,
-    setStatusFilter,
-    contentTypeFilter,
-    setContentTypeFilter,
-    filteredReports,
-  };
+	return {
+		searchQuery,
+		setSearchQuery,
+		statusFilter,
+		setStatusFilter,
+		contentTypeFilter,
+		setContentTypeFilter,
+		filteredReports,
+	}
 }
 
 /**
@@ -227,48 +227,48 @@ export function useReportFilters(reports: Report[]) {
  * @returns {StatusConfig} Configuration object with icon, color, and label
  */
 export function getStatusConfig(status: ReportStatus): StatusConfig {
-  const configs: Record<ReportStatus, StatusConfig> = {
-    PENDING: {
-      icon: Icons.clock,
-      color:
-        "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
-      label: "Pending",
-    },
-    UNDER_REVIEW: {
-      icon: Icons.alertCircle,
-      color: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-      label: "Under Review",
-    },
-    RESOLVED: {
-      icon: Icons.checkCircle,
-      color:
-        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-      label: "Resolved",
-    },
-    DISMISSED: {
-      icon: Icons.xCircle,
-      color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
-      label: "Dismissed",
-    },
-  };
+	const configs: Record<ReportStatus, StatusConfig> = {
+		PENDING: {
+			icon: Icons.clock,
+			color:
+				"bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400",
+			label: "Pending",
+		},
+		UNDER_REVIEW: {
+			icon: Icons.alertCircle,
+			color: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+			label: "Under Review",
+		},
+		RESOLVED: {
+			icon: Icons.checkCircle,
+			color:
+				"bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+			label: "Resolved",
+		},
+		DISMISSED: {
+			icon: Icons.xCircle,
+			color: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+			label: "Dismissed",
+		},
+	}
 
-  return (
-    configs[status] || {
-      icon: Icons.clock,
-      color: "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400",
-      label: status,
-    }
-  );
+	return (
+		configs[status] || {
+			icon: Icons.clock,
+			color: "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400",
+			label: status,
+		}
+	)
 }
 
 /**
  * Props for the ReportSearchBar component
  */
 interface ReportSearchBarProps {
-  /** Current search query value */
-  searchQuery: string;
-  /** Handler called when search query changes */
-  onSearchChange: (query: string) => void;
+	/** Current search query value */
+	searchQuery: string
+	/** Handler called when search query changes */
+	onSearchChange: (query: string) => void
 }
 
 /**
@@ -283,34 +283,34 @@ interface ReportSearchBarProps {
  * @returns {JSX.Element} Search input with icon
  */
 export function ReportSearchBar({
-  searchQuery,
-  onSearchChange,
+	searchQuery,
+	onSearchChange,
 }: ReportSearchBarProps) {
-  return (
-    <div className="relative">
-      <Icons.search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-      <Input
-        placeholder="Search reports by reason, details, or comment content..."
-        value={searchQuery}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="pl-10"
-      />
-    </div>
-  );
+	return (
+		<div className="relative">
+			<Icons.search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+			<Input
+				placeholder="Search reports by reason, details, or comment content..."
+				value={searchQuery}
+				onChange={(e) => onSearchChange(e.target.value)}
+				className="pl-10"
+			/>
+		</div>
+	)
 }
 
 /**
  * Props for the ReportFilters component
  */
 interface ReportFiltersProps {
-  /** Current status filter value */
-  statusFilter: string;
-  /** Handler called when status filter changes */
-  onStatusChange: (value: string) => void;
-  /** Current content type filter value */
-  contentTypeFilter: string;
-  /** Handler called when content type filter changes */
-  onContentTypeChange: (value: string) => void;
+	/** Current status filter value */
+	statusFilter: string
+	/** Handler called when status filter changes */
+	onStatusChange: (value: string) => void
+	/** Current content type filter value */
+	contentTypeFilter: string
+	/** Handler called when content type filter changes */
+	onContentTypeChange: (value: string) => void
 }
 
 /**
@@ -328,54 +328,54 @@ interface ReportFiltersProps {
  * @returns {JSX.Element} Filter controls with dropdowns
  */
 export function ReportFilters({
-  statusFilter,
-  onStatusChange,
-  contentTypeFilter,
-  onContentTypeChange,
+	statusFilter,
+	onStatusChange,
+	contentTypeFilter,
+	onContentTypeChange,
 }: ReportFiltersProps) {
-  return (
-    <div className="flex flex-wrap gap-4">
-      <div className="flex items-center gap-2">
-        <Icons.filter className="size-4" />
-        <span className="text-sm font-medium">Filter by:</span>
-      </div>
+	return (
+		<div className="flex flex-wrap gap-4">
+			<div className="flex items-center gap-2">
+				<Icons.filter className="size-4" />
+				<span className="text-sm font-medium">Filter by:</span>
+			</div>
 
-      <Select value={statusFilter} onValueChange={onStatusChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue placeholder="Status" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All statuses</SelectItem>
-          <SelectItem value="pending">Pending</SelectItem>
-          <SelectItem value="under_review">Under Review</SelectItem>
-          <SelectItem value="resolved">Resolved</SelectItem>
-          <SelectItem value="dismissed">Dismissed</SelectItem>
-        </SelectContent>
-      </Select>
+			<Select value={statusFilter} onValueChange={onStatusChange}>
+				<SelectTrigger className="w-40">
+					<SelectValue placeholder="Status" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="all">All statuses</SelectItem>
+					<SelectItem value="pending">Pending</SelectItem>
+					<SelectItem value="under_review">Under Review</SelectItem>
+					<SelectItem value="resolved">Resolved</SelectItem>
+					<SelectItem value="dismissed">Dismissed</SelectItem>
+				</SelectContent>
+			</Select>
 
-      <Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
-        <SelectTrigger className="w-40">
-          <SelectValue placeholder="Content type" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="all">All content</SelectItem>
-          <SelectItem value="article">Articles</SelectItem>
-          <SelectItem value="tutorial">Tutorials</SelectItem>
-          <SelectItem value="comment">Comments</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
-  );
+			<Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
+				<SelectTrigger className="w-40">
+					<SelectValue placeholder="Content type" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="all">All content</SelectItem>
+					<SelectItem value="article">Articles</SelectItem>
+					<SelectItem value="tutorial">Tutorials</SelectItem>
+					<SelectItem value="comment">Comments</SelectItem>
+				</SelectContent>
+			</Select>
+		</div>
+	)
 }
 
 /**
  * Props for the ReportResultsHeader component
  */
 interface ReportResultsHeaderProps {
-  /** Number of reports after filtering */
-  filteredCount: number;
-  /** Total number of reports before filtering */
-  totalCount: number;
+	/** Number of reports after filtering */
+	filteredCount: number
+	/** Total number of reports before filtering */
+	totalCount: number
 }
 
 /**
@@ -390,24 +390,24 @@ interface ReportResultsHeaderProps {
  * @returns {JSX.Element} Results count text
  */
 export function ReportResultsHeader({
-  filteredCount,
-  totalCount,
+	filteredCount,
+	totalCount,
 }: ReportResultsHeaderProps) {
-  return (
-    <div className="mb-4 text-sm text-muted-foreground">
-      Showing {filteredCount} of {totalCount} reports
-    </div>
-  );
+	return (
+		<div className="mb-4 text-sm text-muted-foreground">
+			Showing {filteredCount} of {totalCount} reports
+		</div>
+	)
 }
 
 /**
  * Props for the ReportPageHeader component
  */
 interface ReportPageHeaderProps {
-  /** Total number of reports */
-  totalReports: number;
-  /** Whether the user has any reports */
-  hasReports: boolean;
+	/** Total number of reports */
+	totalReports: number
+	/** Whether the user has any reports */
+	hasReports: boolean
 }
 
 /**
@@ -422,26 +422,26 @@ interface ReportPageHeaderProps {
  * @returns {JSX.Element} Page header with description
  */
 export function ReportPageHeader({
-  totalReports,
-  hasReports,
+	totalReports,
+	hasReports,
 }: ReportPageHeaderProps) {
-  return (
-    <div className="mb-8">
-      <p className="mt-2 text-muted-foreground">
-        {hasReports
-          ? `Your submitted reports and their status (${totalReports} total)`
-          : "Track your reports and their moderation status."}
-      </p>
-    </div>
-  );
+	return (
+		<div className="mb-8">
+			<p className="mt-2 text-muted-foreground">
+				{hasReports
+					? `Your submitted reports and their status (${totalReports} total)`
+					: "Track your reports and their moderation status."}
+			</p>
+		</div>
+	)
 }
 
 /**
  * Props for the ReportsList component
  */
 interface ReportsListProps {
-  /** Array of reports to display */
-  reports: Report[];
+	/** Array of reports to display */
+	reports: Report[]
 }
 
 /**
@@ -456,31 +456,31 @@ interface ReportsListProps {
  * @returns {JSX.Element} List of report cards or empty state
  */
 export function ReportsList({ reports }: ReportsListProps) {
-  if (reports.length === 0) {
-    return (
-      <EmptyState
-        icon={<Icons.search className="size-10 text-muted-foreground" />}
-        title="No reports found"
-        description="Try adjusting your search or filters to find what you're looking for."
-      />
-    );
-  }
+	if (reports.length === 0) {
+		return (
+			<EmptyState
+				icon={<Icons.search className="size-10 text-muted-foreground" />}
+				title="No reports found"
+				description="Try adjusting your search or filters to find what you're looking for."
+			/>
+		)
+	}
 
-  return (
-    <div className="space-y-4">
-      {reports.map((report) => (
-        <ReportCard key={report.id} report={report} />
-      ))}
-    </div>
-  );
+	return (
+		<div className="space-y-4">
+			{reports.map((report) => (
+				<ReportCard key={report.id} report={report} />
+			))}
+		</div>
+	)
 }
 
 /**
  * Props for the ReportCard component
  */
 interface ReportCardProps {
-  /** The report data to display */
-  report: Report;
+	/** The report data to display */
+	report: Report
 }
 
 /**
@@ -495,12 +495,12 @@ interface ReportCardProps {
  * @returns {JSX.Element} A report card with complete information
  */
 export function ReportCard({ report }: ReportCardProps) {
-  return (
-    <Card>
-      <ReportCardHeader report={report} />
-      <ReportCardContent report={report} />
-    </Card>
-  );
+	return (
+		<Card>
+			<ReportCardHeader report={report} />
+			<ReportCardContent report={report} />
+		</Card>
+	)
 }
 
 /**
@@ -514,24 +514,24 @@ export function ReportCard({ report }: ReportCardProps) {
  * @returns {JSX.Element} Report card header
  */
 function ReportCardHeader({ report }: { report: Report }) {
-  const statusConfig = getStatusConfig(report.status);
-  const StatusIcon = statusConfig.icon;
+	const statusConfig = getStatusConfig(report.status)
+	const StatusIcon = statusConfig.icon
 
-  return (
-    <CardHeader className="pb-3">
-      <div className="flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <ReportContentTypeIcon report={report} />
-          <ReportContentTypeBadge report={report} />
-          <ReportStatusBadge
-            statusConfig={statusConfig}
-            StatusIcon={StatusIcon}
-          />
-        </div>
-        <ReportDate date={report.createdAt} />
-      </div>
-    </CardHeader>
-  );
+	return (
+		<CardHeader className="pb-3">
+			<div className="flex items-start justify-between">
+				<div className="flex items-center gap-2">
+					<ReportContentTypeIcon report={report} />
+					<ReportContentTypeBadge report={report} />
+					<ReportStatusBadge
+						statusConfig={statusConfig}
+						StatusIcon={StatusIcon}
+					/>
+				</div>
+				<ReportDate date={report.createdAt} />
+			</div>
+		</CardHeader>
+	)
 }
 
 /**
@@ -545,14 +545,14 @@ function ReportCardHeader({ report }: { report: Report }) {
  * @returns {JSX.Element} Icon representing the content type
  */
 function ReportContentTypeIcon({ report }: { report: Report }) {
-  if (report.content) {
-    return report.content.type === "ARTICLE" ? (
-      <Icons.fileText className="size-4 text-blue-500" />
-    ) : (
-      <Icons.play className="size-4 text-green-500" />
-    );
-  }
-  return <Icons.messageSquare className="size-4 text-purple-500" />;
+	if (report.content) {
+		return report.content.type === "ARTICLE" ? (
+			<Icons.fileText className="size-4 text-blue-500" />
+		) : (
+			<Icons.play className="size-4 text-green-500" />
+		)
+	}
+	return <Icons.messageSquare className="size-4 text-purple-500" />
 }
 
 /**
@@ -565,25 +565,25 @@ function ReportContentTypeIcon({ report }: { report: Report }) {
  * @returns {JSX.Element} Badge with content type text
  */
 function ReportContentTypeBadge({ report }: { report: Report }) {
-  const contentType = report.content
-    ? report.content.type.toLowerCase()
-    : "comment";
+	const contentType = report.content
+		? report.content.type.toLowerCase()
+		: "comment"
 
-  return (
-    <Badge variant="outline" className="text-xs capitalize">
-      {contentType}
-    </Badge>
-  );
+	return (
+		<Badge variant="outline" className="text-xs capitalize">
+			{contentType}
+		</Badge>
+	)
 }
 
 /**
  * Props for the ReportStatusBadge component
  */
 interface ReportStatusBadgeProps {
-  /** Status configuration object */
-  statusConfig: StatusConfig;
-  /** Status icon component */
-  StatusIcon: React.ComponentType<{ className?: string }>;
+	/** Status configuration object */
+	statusConfig: StatusConfig
+	/** Status icon component */
+	StatusIcon: React.ComponentType<{ className?: string }>
 }
 
 /**
@@ -598,15 +598,15 @@ interface ReportStatusBadgeProps {
  * @returns {JSX.Element} Colored status badge with icon
  */
 function ReportStatusBadge({
-  statusConfig,
-  StatusIcon,
+	statusConfig,
+	StatusIcon,
 }: ReportStatusBadgeProps) {
-  return (
-    <Badge className={`text-xs ${statusConfig.color}`}>
-      <StatusIcon className="mr-1 size-3" />
-      {statusConfig.label}
-    </Badge>
-  );
+	return (
+		<Badge className={`text-xs ${statusConfig.color}`}>
+			<StatusIcon className="mr-1 size-3" />
+			{statusConfig.label}
+		</Badge>
+	)
 }
 
 /**
@@ -619,12 +619,12 @@ function ReportStatusBadge({
  * @returns {JSX.Element} Date with calendar icon
  */
 function ReportDate({ date }: { date: Date }) {
-  return (
-    <div className="flex items-center gap-1 text-xs text-muted-foreground">
-      <Icons.calendar className="size-3" />
-      {new Date(date).toLocaleDateString()}
-    </div>
-  );
+	return (
+		<div className="flex items-center gap-1 text-xs text-muted-foreground">
+			<Icons.calendar className="size-3" />
+			{new Date(date).toLocaleDateString()}
+		</div>
+	)
 }
 
 /**
@@ -638,12 +638,12 @@ function ReportDate({ date }: { date: Date }) {
  * @returns {JSX.Element} Report card content section
  */
 function ReportCardContent({ report }: { report: Report }) {
-  return (
-    <CardContent className="pt-0">
-      <ReportDetails report={report} />
-      <ReportFooter report={report} />
-    </CardContent>
-  );
+	return (
+		<CardContent className="pt-0">
+			<ReportDetails report={report} />
+			<ReportFooter report={report} />
+		</CardContent>
+	)
 }
 
 /**
@@ -657,15 +657,15 @@ function ReportCardContent({ report }: { report: Report }) {
  * @returns {JSX.Element} Report details section
  */
 function ReportDetails({ report }: { report: Report }) {
-  return (
-    <div className="mb-3">
-      <ReportReason reason={report.reason} />
-      {report.details ? <ReportDetailsText details={report.details} /> : null}
-      {report.comment ? (
-        <ReportCommentPreview comment={report.comment} />
-      ) : null}
-    </div>
-  );
+	return (
+		<div className="mb-3">
+			<ReportReason reason={report.reason} />
+			{report.details ? <ReportDetailsText details={report.details} /> : null}
+			{report.comment ? (
+				<ReportCommentPreview comment={report.comment} />
+			) : null}
+		</div>
+	)
 }
 
 /**
@@ -678,11 +678,11 @@ function ReportDetails({ report }: { report: Report }) {
  * @returns {JSX.Element} Formatted reason heading
  */
 function ReportReason({ reason }: { reason: string }) {
-  return (
-    <h3 className="font-medium capitalize">
-      {reason.replace("_", " ").toLowerCase()}
-    </h3>
-  );
+	return (
+		<h3 className="font-medium capitalize">
+			{reason.replace("_", " ").toLowerCase()}
+		</h3>
+	)
 }
 
 /**
@@ -695,7 +695,7 @@ function ReportReason({ reason }: { reason: string }) {
  * @returns {JSX.Element} Details text paragraph
  */
 function ReportDetailsText({ details }: { details: string }) {
-  return <p className="mt-1 text-sm text-muted-foreground">{details}</p>;
+	return <p className="mt-1 text-sm text-muted-foreground">{details}</p>
 }
 
 /**
@@ -709,19 +709,19 @@ function ReportDetailsText({ details }: { details: string }) {
  * @returns {JSX.Element|null} Comment preview or null if no comment
  */
 function ReportCommentPreview({ comment }: { comment: Report["comment"] }) {
-  if (!comment) return null;
+	if (!comment) return null
 
-  const truncatedBody = comment.body.substring(0, 100);
-  const isLong = comment.body.length > 100;
+	const truncatedBody = comment.body.substring(0, 100)
+	const isLong = comment.body.length > 100
 
-  return (
-    <div className="mt-2 rounded-md bg-muted p-2">
-      <p className="text-sm italic">
-        {truncatedBody}
-        {isLong ? "..." : ""}
-      </p>
-    </div>
-  );
+	return (
+		<div className="mt-2 rounded-md bg-muted p-2">
+			<p className="text-sm italic">
+				{truncatedBody}
+				{isLong ? "..." : ""}
+			</p>
+		</div>
+	)
 }
 
 /**
@@ -735,12 +735,12 @@ function ReportCommentPreview({ comment }: { comment: Report["comment"] }) {
  * @returns {JSX.Element} Report card footer
  */
 function ReportFooter({ report }: { report: Report }) {
-  return (
-    <div className="flex items-center justify-between">
-      <ReportResolvedDate resolvedAt={report.resolvedAt} />
-      <ReportViewContentButton content={report.content} />
-    </div>
-  );
+	return (
+		<div className="flex items-center justify-between">
+			<ReportResolvedDate resolvedAt={report.resolvedAt} />
+			<ReportViewContentButton content={report.content} />
+		</div>
+	)
 }
 
 /**
@@ -753,17 +753,17 @@ function ReportFooter({ report }: { report: Report }) {
  * @returns {JSX.Element} Resolved date text or empty div
  */
 function ReportResolvedDate({
-  resolvedAt,
+	resolvedAt,
 }: {
-  resolvedAt: Date | null | undefined;
+	resolvedAt: Date | null | undefined
 }) {
-  if (!resolvedAt) return <div />;
+	if (!resolvedAt) return <div />
 
-  return (
-    <div className="text-xs text-muted-foreground">
-      <span>Resolved: {new Date(resolvedAt).toLocaleDateString()}</span>
-    </div>
-  );
+	return (
+		<div className="text-xs text-muted-foreground">
+			<span>Resolved: {new Date(resolvedAt).toLocaleDateString()}</span>
+		</div>
+	)
 }
 
 /**
@@ -777,16 +777,16 @@ function ReportResolvedDate({
  * @returns {JSX.Element|null} View content button or null if no content
  */
 function ReportViewContentButton({ content }: { content: Report["content"] }) {
-  if (!content) return null;
+	if (!content) return null
 
-  const contentPath =
-    content.type.toLowerCase() === "article" ? "articles" : "tutorials";
+	const contentPath =
+		content.type.toLowerCase() === "article" ? "articles" : "tutorials"
 
-  return (
-    <Button asChild size="sm" variant="outline">
-      <Link to={`/${contentPath}/${content.id}`}>View Content</Link>
-    </Button>
-  );
+	return (
+		<Button asChild size="sm" variant="outline">
+			<Link to={`/${contentPath}/${content.id}`}>View Content</Link>
+		</Button>
+	)
 }
 
 /**
@@ -798,20 +798,20 @@ function ReportViewContentButton({ content }: { content: Report["content"] }) {
  * @returns {JSX.Element} Empty state with animation and helpful message
  */
 export function ContentReportsEmptyState() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Container title="Content Reports">
-        {/* <ReportPageHeader totalReports={0} hasReports={false} /> */}
-        <EmptyState
-          icon={<Icons.flag className="size-10 text-muted-foreground" />}
-          title="No reports yet"
-          description="You haven't submitted any content reports yet. Reports help us maintain a safe and respectful community."
-        />
-      </Container>
-    </motion.div>
-  );
+	return (
+		<motion.div
+			initial={{ opacity: 0, y: 20 }}
+			animate={{ opacity: 1, y: 0 }}
+			transition={{ duration: 0.3 }}
+		>
+			<Container title="Content Reports">
+				{/* <ReportPageHeader totalReports={0} hasReports={false} /> */}
+				<EmptyState
+					icon={<Icons.flag className="size-10 text-muted-foreground" />}
+					title="No reports yet"
+					description="You haven't submitted any content reports yet. Reports help us maintain a safe and respectful community."
+				/>
+			</Container>
+		</motion.div>
+	)
 }

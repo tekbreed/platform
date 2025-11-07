@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from "groq"
 
 /**
  * GROQ query to fetch all categories
@@ -10,4 +10,4 @@ export const categoryQuery = groq`*[_type == "category"] {
   "id": _id,
   title,
   "slug": slug.current
-}`;
+}`

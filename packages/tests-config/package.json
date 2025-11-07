@@ -1,16 +1,16 @@
 {
-  "name": "@repo/tests-config",
-  "version": "0.0.0",
-  "private": true,
-  "exports": {
-    "./mocks/*": "./src/mocks/*.ts"
-  },
-  "dependencies": {
-    "@repo/utils": "*",
-    "@repo/database": "*"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*"
-  }
+	"name": "@repo/tests-config",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		"./mocks/*": "./src/mocks/*.ts"
+	},
+	"dependencies": {
+		"@repo/utils": "*",
+		"@repo/database": "*"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "*",
+		"@repo/typescript-config": "*"
+	}
 }

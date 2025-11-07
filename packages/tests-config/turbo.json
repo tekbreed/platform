@@ -1,8 +1,8 @@
 {
-  "extends": ["//"],
-  "tasks": {
-    "build": {
-      "outputs": ["^build/**"]
-    }
-  }
+	"extends": ["//"],
+	"tasks": {
+		"build": {
+			"outputs": ["^build/**"]
+		}
+	}
 }

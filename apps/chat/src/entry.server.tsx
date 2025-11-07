@@ -1,8 +1,9 @@
-import { handleRequest } from "@repo/base-config/entry.server";
+import { handleRequest } from "@repo/base-config/entry.server"
+
 // import { getEnv, init } from "@repo/utils/env.server";
 
-const { MOCKS } = process.env;
-const isMocks = MOCKS === "true";
+const { MOCKS } = process.env
+const isMocks = MOCKS === "true"
 
 // init()
 // global.env = getEnv()
@@ -13,4 +14,4 @@ const isMocks = MOCKS === "true";
 //   }
 // })();
 
-export default handleRequest;
+export default handleRequest

@@ -1,11 +1,12 @@
 export function Metrics({ nonce }: { nonce: string }) {
-  return (
-    <>
-      {/* Yandex.Metrika counter  */}
-      <script
-        nonce={nonce}
-        dangerouslySetInnerHTML={{
-          __html: `
+	return (
+		<>
+			{/* Yandex.Metrika counter  */}
+			<script
+				nonce={nonce}
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: to be removed
+				dangerouslySetInnerHTML={{
+					__html: `
             (function(m,e,t,r,i,k,a){
               m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
               m[i].l=1*new Date();
@@ -15,18 +16,18 @@ export function Metrics({ nonce }: { nonce: string }) {
 
             ym(105142868, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
           `,
-        }}
-      />
-      <noscript>
-        <div>
-          <img
-            src="https://mc.yandex.ru/watch/105142868"
-            style={{ position: "absolute", left: "-9999px" }}
-            alt=""
-          />
-        </div>
-      </noscript>
-      {/* Yandex.Metrika counter  */}
-    </>
-  );
+				}}
+			/>
+			<noscript>
+				<div>
+					<img
+						src="https://mc.yandex.ru/watch/105142868"
+						style={{ position: "absolute", left: "-9999px" }}
+						alt=""
+					/>
+				</div>
+			</noscript>
+			{/* Yandex.Metrika counter  */}
+		</>
+	)
 }

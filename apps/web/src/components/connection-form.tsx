@@ -1,58 +1,57 @@
-import { Form } from "react-router";
-import { Button } from "@repo/ui/components/button";
-import { Icons } from "@repo/ui/composed/icons";
-import { useIsPending } from "@repo/utils/misc";
-import type { Action } from "./auth-form";
-import {
-  GITHUB_PROVIDER_NAME,
-  type ProviderName,
-} from "@repo/utils/connection";
+import { Form } from "react-router"
+
+import { Button } from "@repo/ui/components/button"
+import { Icons } from "@repo/ui/composed/icons"
+import { GITHUB_PROVIDER_NAME, type ProviderName } from "@repo/utils/connection"
+import { useIsPending } from "@repo/utils/misc"
+
+import type { Action } from "./auth-form"
 
 export const providerLabels: Record<ProviderName, string> = {
-  [GITHUB_PROVIDER_NAME]: "GitHub",
-} as const;
+	[GITHUB_PROVIDER_NAME]: "GitHub",
+} as const
 
 export const providerIcons: Record<ProviderName, React.ReactNode> = {
-  [GITHUB_PROVIDER_NAME]: <>Github</>,
-} as const;
+	[GITHUB_PROVIDER_NAME]: <>Github</>,
+} as const
 
 export const icons = {
-  [GITHUB_PROVIDER_NAME]: <Icons.github />,
-};
+	[GITHUB_PROVIDER_NAME]: <Icons.github />,
+}
 
 export function ConnectionForm({
-  redirectTo,
-  action,
-  providerName,
+	redirectTo,
+	action,
+	providerName,
 }: {
-  redirectTo?: string | null;
-  action: Action | "connect";
-  providerName: ProviderName;
+	redirectTo?: string | null
+	action: Action | "connect"
+	providerName: ProviderName
 }) {
-  const label = providerLabels[providerName];
-  const formAction = `/auth/${providerName}`;
-  const isPending = useIsPending({ formAction });
-  return (
-    <Form
-      className="flex items-center justify-center gap-2"
-      action={formAction}
-      method="POST"
-    >
-      {redirectTo ? (
-        <input type="hidden" name="redirectTo" value={redirectTo} />
-      ) : null}
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={isPending}
-        variant="secondary"
-      >
-        <span className="inline-flex items-center gap-1.5">
-          {icons[providerName]}
-          <span className="capitalize">{action}</span> with <span>{label}</span>{" "}
-          {isPending ? <Icons.loader2 className="ml-2 animate-spin" /> : null}
-        </span>
-      </Button>
-    </Form>
-  );
+	const label = providerLabels[providerName]
+	const formAction = `/auth/${providerName}`
+	const isPending = useIsPending({ formAction })
+	return (
+		<Form
+			className="flex items-center justify-center gap-2"
+			action={formAction}
+			method="POST"
+		>
+			{redirectTo ? (
+				<input type="hidden" name="redirectTo" value={redirectTo} />
+			) : null}
+			<Button
+				type="submit"
+				className="w-full"
+				disabled={isPending}
+				variant="secondary"
+			>
+				<span className="inline-flex items-center gap-1.5">
+					{icons[providerName]}
+					<span className="capitalize">{action}</span> with <span>{label}</span>{" "}
+					{isPending ? <Icons.loader2 className="ml-2 animate-spin" /> : null}
+				</span>
+			</Button>
+		</Form>
+	)
 }

@@ -1,8 +1,13 @@
-import { faqQuery, journeyQuery, pageQuery, teamMemberQuery } from "./queries";
-import { client } from "../loader";
-import type { FAQ, Roadmap, Journey, TeamMember, Page } from "./types";
-import { roadmapQuery } from "./queries";
-import { bundleMDX } from "@/mdx.server";
+import { bundleMDX } from "@/mdx.server"
+import { client } from "../loader"
+import {
+	faqQuery,
+	journeyQuery,
+	pageQuery,
+	roadmapQuery,
+	teamMemberQuery,
+} from "./queries"
+import type { FAQ, Journey, Page, Roadmap, TeamMember } from "./types"
 
 /**
  * Fetches all roadmap items from Sanity CMS.
@@ -20,13 +25,13 @@ import { bundleMDX } from "@/mdx.server";
  * ```
  */
 export async function getRoadmaps() {
-  const roadmap = await client.fetch<Roadmap[]>(roadmapQuery);
-  return Promise.all(
-    (roadmap || []).map(async (roadmap) => ({
-      ...roadmap,
-      content: (await bundleMDX({ source: roadmap.content })).code,
-    })),
-  );
+	const roadmap = await client.fetch<Roadmap[]>(roadmapQuery)
+	return Promise.all(
+		(roadmap || []).map(async (roadmap) => ({
+			...roadmap,
+			content: (await bundleMDX({ source: roadmap.content })).code,
+		})),
+	)
 }
 
 /**
@@ -43,13 +48,13 @@ export async function getRoadmaps() {
  * ```
  */
 export async function getJourneys() {
-  const journey = await client.fetch<Journey[]>(journeyQuery);
-  return Promise.all(
-    journey.map(async (journey) => ({
-      ...journey,
-      content: (await bundleMDX({ source: journey.content })).code,
-    })),
-  );
+	const journey = await client.fetch<Journey[]>(journeyQuery)
+	return Promise.all(
+		journey.map(async (journey) => ({
+			...journey,
+			content: (await bundleMDX({ source: journey.content })).code,
+		})),
+	)
 }
 
 /**
@@ -66,8 +71,8 @@ export async function getJourneys() {
  * ```
  */
 export async function getFAQs() {
-  const faq = await client.fetch<FAQ[]>(faqQuery);
-  return faq.sort((a, b) => a.order - b.order);
+	const faq = await client.fetch<FAQ[]>(faqQuery)
+	return faq.sort((a, b) => a.order - b.order)
 }
 
 /**
@@ -84,13 +89,13 @@ export async function getFAQs() {
  * ```
  */
 export async function getTeamMembers() {
-  const teamMember = await client.fetch<TeamMember[]>(teamMemberQuery);
-  return Promise.all(
-    teamMember.map(async (teamMember) => ({
-      ...teamMember,
-      bio: (await bundleMDX({ source: teamMember.bio })).code,
-    })),
-  );
+	const teamMember = await client.fetch<TeamMember[]>(teamMemberQuery)
+	return Promise.all(
+		teamMember.map(async (teamMember) => ({
+			...teamMember,
+			bio: (await bundleMDX({ source: teamMember.bio })).code,
+		})),
+	)
 }
 
 /**
@@ -110,10 +115,10 @@ export async function getTeamMembers() {
  * ```
  */
 export async function getPage(slug: string) {
-  const page = await client.fetch<Page>(pageQuery, { slug });
-  const content = await bundleMDX({ source: page.content });
-  return {
-    ...page,
-    content: content.code,
-  };
+	const page = await client.fetch<Page>(pageQuery, { slug })
+	const content = await bundleMDX({ source: page.content })
+	return {
+		...page,
+		content: content.code,
+	}
 }

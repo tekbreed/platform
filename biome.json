@@ -1,0 +1,94 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 80,
+		"bracketSpacing": true
+	},
+	"linter": {
+		"enabled": true,
+		"domains": {
+			"react": "recommended",
+			"test": "recommended"
+		},
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedImports": "error"
+			},
+			"style": {
+				"useImportType": "error",
+				"useNodejsImportProtocol": "error"
+			},
+			"nursery": {
+				"useSortedClasses": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"semicolons": "asNeeded"
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							{ "type": true, "source": [":NODE:"] },
+							":NODE:",
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": ["react", "react-dom", "react/**", "react-dom/**"]
+							},
+							["react", "react-dom", "react/**", "react-dom/**"],
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": [
+									"react-router",
+									"react-router-dom",
+									"react-router/**",
+									"react-router-dom/**"
+								]
+							},
+							[
+								"react-router",
+								"react-router-dom",
+								"react-router/**",
+								"react-router-dom/**"
+							],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["remix-*", "remix-*/**"] },
+							["remix-*", "remix-*/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": [":PACKAGE:", "!@repo", "!@repo/**"] },
+							[":PACKAGE:", "!@repo", "!@repo/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo", "@repo/**"] },
+							["@repo", "@repo/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@/**"] },
+							"@/**"
+						]
+					}
+				}
+			}
+		}
+	}
+}

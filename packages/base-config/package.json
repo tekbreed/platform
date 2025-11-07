@@ -1,32 +1,32 @@
 {
-  "name": "@repo/base-config",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "exports": {
-    "@/*": "./src/*"
-  },
-  "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "lint:fix": "eslint . --max-warnings 0 --fix",
-    "test": "vitest",
-    "test:run": "cross-env CI=true vitest run",
-    "test:coverage": "vitest run --coverage",
-    "typecheck": "tsc"
-  },
-  "dependencies": {
-    "@repo/database": "*",
-    "@repo/ui": "*",
-    "@repo/utils": "*"
-  },
-  "peerDependencies": {
-    "@react-router/node": "^7.9.4",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router": "^7.9.4"
-  },
-  "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*"
-  }
+	"name": "@repo/base-config",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"@/*": "./src/*"
+	},
+	"scripts": {
+		"lint": "eslint . --max-warnings 0",
+		"lint:fix": "eslint . --max-warnings 0 --fix",
+		"test": "vitest",
+		"test:run": "cross-env CI=true vitest run",
+		"test:coverage": "vitest run --coverage",
+		"typecheck": "tsc"
+	},
+	"dependencies": {
+		"@repo/database": "*",
+		"@repo/ui": "*",
+		"@repo/utils": "*"
+	},
+	"peerDependencies": {
+		"@react-router/node": "^7.9.4",
+		"react": "^19.1.1",
+		"react-dom": "^19.1.1",
+		"react-router": "^7.9.4"
+	},
+	"devDependencies": {
+		"@repo/eslint-config": "*",
+		"@repo/typescript-config": "*"
+	}
 }

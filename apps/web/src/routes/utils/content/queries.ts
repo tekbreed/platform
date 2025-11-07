@@ -1,4 +1,4 @@
-import groq from "groq";
+import groq from "groq"
 
 export const homePageQuery = groq`*[_type == "homePage"][0] {
   latestFeature,
@@ -8,4 +8,4 @@ export const homePageQuery = groq`*[_type == "homePage"][0] {
     released,
     description
   }
-}`;
+}`

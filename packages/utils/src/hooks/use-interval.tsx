@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 /**
  * A hook that creates an interval that can be paused and resumed
@@ -41,24 +41,24 @@ import React from "react";
  * ```
  */
 export function useInterval(callback: () => void, delay: number | null) {
-  const intervalRef = React.useRef<number | null>(null);
-  const savedCallback = React.useRef(callback);
+	const intervalRef = React.useRef<number | null>(null)
+	const savedCallback = React.useRef(callback)
 
-  // Update callback ref when callback changes
-  React.useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
+	// Update callback ref when callback changes
+	React.useEffect(() => {
+		savedCallback.current = callback
+	}, [callback])
 
-  // Set up the interval
-  React.useEffect(() => {
-    const tick = () => savedCallback.current();
+	// Set up the interval
+	React.useEffect(() => {
+		const tick = () => savedCallback.current()
 
-    if (typeof delay === "number") {
-      intervalRef.current = window.setInterval(tick, delay);
+		if (typeof delay === "number") {
+			intervalRef.current = window.setInterval(tick, delay)
 
-      return () => window.clearInterval(intervalRef.current!);
-    }
-  }, [delay]);
+			return () => window.clearInterval(intervalRef.current!)
+		}
+	}, [delay])
 
-  return intervalRef;
+	return intervalRef
 }

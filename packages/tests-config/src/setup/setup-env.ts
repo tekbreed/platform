@@ -1,10 +1,11 @@
-import "vitest-browser-react";
-import { beforeEach, afterEach, vi } from "vitest";
+import "vitest-browser-react"
+
+import { afterEach, beforeEach, vi } from "vitest"
 
 afterEach(() => {
-  vi.restoreAllMocks();
-});
+	vi.restoreAllMocks()
+})
 
 beforeEach(() => {
-  vi.clearAllMocks();
-});
+	vi.clearAllMocks()
+})

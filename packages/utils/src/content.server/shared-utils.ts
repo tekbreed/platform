@@ -1,6 +1,6 @@
-import type { Category } from "./shared-types";
-import { client } from "./loader";
-import { categoryQuery } from "./shared-queries";
+import { client } from "./loader"
+import { categoryQuery } from "./shared-queries"
+import type { Category } from "./shared-types"
 
 /**
  * Retrieves all available categories
@@ -11,5 +11,5 @@ import { categoryQuery } from "./shared-queries";
  * categories.forEach(category => console.log(category.title));
  */
 export async function getAllCategories() {
-  return client.fetch<Category[]>(categoryQuery);
+	return client.fetch<Category[]>(categoryQuery)
 }

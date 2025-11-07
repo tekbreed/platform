@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from "zod/v4"
 
 /**
  * Schema for URL query parameters
@@ -11,12 +11,12 @@ import { z } from "zod/v4";
  * @property {number} [page] - Page number for pagination (defaults to 1)
  */
 export const UrlSchema = z.object({
-  search: z.string().optional(),
-  tag: z.string().optional(),
-  order: z.string().optional(),
-  category: z.string().optional(),
-  page: z.coerce.number().min(1).default(1),
-});
+	search: z.string().optional(),
+	tag: z.string().optional(),
+	order: z.string().optional(),
+	category: z.string().optional(),
+	page: z.coerce.number().min(1).default(1),
+})
 
 /**
  * Schema for article query arguments
@@ -30,9 +30,9 @@ export const UrlSchema = z.object({
  * @property {number} [end] - End index for pagination (defaults to 6)
  */
 export const ArgsSchema = UrlSchema.extend({
-  start: z.number().min(0).default(0),
-  end: z.number().min(1).default(6),
-}).omit({ page: true });
+	start: z.number().min(0).default(0),
+	end: z.number().min(1).default(6),
+}).omit({ page: true })
 
 /**
  * Schema for a single file in a Sandpack template
@@ -45,12 +45,12 @@ export const ArgsSchema = UrlSchema.extend({
  * @property {boolean} [readOnly] - Whether this file should be read-only in the editor
  */
 const SandpackFileSchema = z.object({
-  path: z.string(),
-  code: z.string(),
-  active: z.boolean().optional(),
-  hidden: z.boolean().optional(),
-  readOnly: z.boolean().optional(),
-});
+	path: z.string(),
+	code: z.string(),
+	active: z.boolean().optional(),
+	hidden: z.boolean().optional(),
+	readOnly: z.boolean().optional(),
+})
 
 /**
  * Schema for Sandpack editor configuration options
@@ -67,16 +67,16 @@ const SandpackFileSchema = z.object({
  * @property {boolean} [autorun] - Whether to automatically run the code on load
  */
 const SandpackOptionsSchema = z.object({
-  visibleFiles: z.array(z.string()).optional(),
-  activeFile: z.string().optional(),
-  showLineNumbers: z.boolean().optional(),
-  showInlineErrors: z.boolean().optional(),
-  showTabs: z.boolean().optional(),
-  view: z.enum(["split", "preview", "editor"]).default("split"),
-  editorHeight: z.string().optional(),
-  theme: z.enum(["light", "dark", "auto"]).default("auto"),
-  autorun: z.boolean().optional(),
-});
+	visibleFiles: z.array(z.string()).optional(),
+	activeFile: z.string().optional(),
+	showLineNumbers: z.boolean().optional(),
+	showInlineErrors: z.boolean().optional(),
+	showTabs: z.boolean().optional(),
+	view: z.enum(["split", "preview", "editor"]).default("split"),
+	editorHeight: z.string().optional(),
+	theme: z.enum(["light", "dark", "auto"]).default("auto"),
+	autorun: z.boolean().optional(),
+})
 
 /**
  * Schema for a package dependency
@@ -86,9 +86,9 @@ const SandpackOptionsSchema = z.object({
  * @property {string} version - The version of the package to install
  */
 const DependencySchema = z.object({
-  name: z.string(),
-  version: z.string(),
-});
+	name: z.string(),
+	version: z.string(),
+})
 
 /**
  * Schema for Sandpack custom setup configuration
@@ -98,9 +98,9 @@ const DependencySchema = z.object({
  * @property {DependencySchema[]} [devDependencies] - Development dependencies
  */
 const SandpackCustomSetupSchema = z.object({
-  dependencies: z.array(DependencySchema).optional(),
-  devDependencies: z.array(DependencySchema).optional(),
-});
+	dependencies: z.array(DependencySchema).optional(),
+	devDependencies: z.array(DependencySchema).optional(),
+})
 
 /**
  * Schema for a Sandpack template
@@ -116,22 +116,22 @@ const SandpackCustomSetupSchema = z.object({
  * @property {SandpackCustomSetupSchema} [customSetup] - Optional dependency configuration
  */
 export const SandpackTemplateSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  slug: z.string(),
-  description: z.string().optional(),
-  template: z.enum([
-    "static",
-    "vanilla",
-    "vanilla-ts",
-    "vite-react",
-    "vite-react-ts",
-    "node",
-  ]),
-  sandpackFiles: z.array(SandpackFileSchema),
-  options: SandpackOptionsSchema.optional(),
-  customSetup: SandpackCustomSetupSchema.optional(),
-});
+	id: z.string(),
+	title: z.string(),
+	slug: z.string(),
+	description: z.string().optional(),
+	template: z.enum([
+		"static",
+		"vanilla",
+		"vanilla-ts",
+		"vite-react",
+		"vite-react-ts",
+		"node",
+	]),
+	sandpackFiles: z.array(SandpackFileSchema),
+	options: SandpackOptionsSchema.optional(),
+	customSetup: SandpackCustomSetupSchema.optional(),
+})
 
 /**
  * Schema for a Sanity code field
@@ -143,11 +143,11 @@ export const SandpackTemplateSchema = z.object({
  * @property {string} code - The actual code content
  */
 export const SanityCodeFieldSchema = z.object({
-  _type: z.literal("code"),
-  language: z.enum(["tsx", "jsx", "typescript", "javascript"]),
-  filename: z.string(),
-  code: z.string(),
-});
+	_type: z.literal("code"),
+	language: z.enum(["tsx", "jsx", "typescript", "javascript"]),
+	filename: z.string(),
+	code: z.string(),
+})
 
 /**
  * Schema for a React component
@@ -158,10 +158,10 @@ export const SanityCodeFieldSchema = z.object({
  * @property {SanityCodeFieldSchema} file - The component's code file
  */
 export const ComponentSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  file: SanityCodeFieldSchema,
-});
+	id: z.string(),
+	title: z.string(),
+	file: SanityCodeFieldSchema,
+})
 
 /**
  * Schema for component code
@@ -172,9 +172,9 @@ export const ComponentSchema = z.object({
  */
 
 export const ComponentCodeSchema = z.object({
-  filename: z.string(),
-  code: z.string(),
-});
+	filename: z.string(),
+	code: z.string(),
+})
 
 /**
  * Schema for article tags
@@ -185,12 +185,12 @@ export const ComponentCodeSchema = z.object({
  * @property {string} slug - URL-friendly identifier for the tag
  */
 export const TagsSchema = z.array(
-  z.object({
-    id: z.string(),
-    title: z.string(),
-    slug: z.string(),
-  }),
-);
+	z.object({
+		id: z.string(),
+		title: z.string(),
+		slug: z.string(),
+	}),
+)
 
 /**
  * Schema for article category
@@ -201,32 +201,32 @@ export const TagsSchema = z.array(
  * @property {string} slug - URL-friendly identifier for the category
  */
 export const CategorySchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  slug: z.string(),
-});
+	id: z.string(),
+	title: z.string(),
+	slug: z.string(),
+})
 
 /**
  * Type representing article query arguments
  */
-export type Args = z.infer<typeof ArgsSchema>;
+export type Args = z.infer<typeof ArgsSchema>
 
 /**
  * Type representing a Sanity code field
  */
-export type SandpackCodeField = z.infer<typeof SanityCodeFieldSchema>;
+export type SandpackCodeField = z.infer<typeof SanityCodeFieldSchema>
 
 /**
  * Type representing a Component code
  */
-export type ComponentCode = z.infer<typeof ComponentCodeSchema>;
+export type ComponentCode = z.infer<typeof ComponentCodeSchema>
 
 /**
  * Type representing a single tag
  */
-export type Tag = z.infer<typeof TagsSchema>[number];
+export type Tag = z.infer<typeof TagsSchema>[number]
 
 /**
  * Type representing a category
  */
-export type Category = z.infer<typeof CategorySchema>;
+export type Category = z.infer<typeof CategorySchema>

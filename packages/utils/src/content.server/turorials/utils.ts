@@ -1,18 +1,19 @@
-import type { QueryParams } from "@sanity/client";
-import type { Args } from "../shared-types";
-import { client } from "../loader";
+import type { QueryParams } from "@sanity/client"
+import { bundleMDX } from "mdx-bundler"
+
+import { bundleComponents } from "@/misc.server"
+import { client } from "../loader"
+import type { Args } from "../shared-types"
 import {
-  tutorialDetailsQuery,
-  tutorialsQuery,
-  countQuery,
-  lessonsQuery,
-  modulesQuery,
-  lessonDetailsQuery,
-  chatbotLessonQuery,
-} from "./queries";
-import type { Tutorial, Lesson, ChatBotLesson, ModulesList } from "./types";
-import { bundleMDX } from "mdx-bundler";
-import { bundleComponents } from "@/misc.server";
+	chatbotLessonQuery,
+	countQuery,
+	lessonDetailsQuery,
+	lessonsQuery,
+	modulesQuery,
+	tutorialDetailsQuery,
+	tutorialsQuery,
+} from "./queries"
+import type { ChatBotLesson, Lesson, ModulesList, Tutorial } from "./types"
 
 /**
  * Retrieves a list of tutorials based on specified filtering criteria
@@ -33,35 +34,35 @@ import { bundleComponents } from "@/misc.server";
  * });
  */
 export async function getTutorials(args: Args) {
-  const {
-    search = "",
-    category = "",
-    tag = "",
-    order = "createdAt desc",
-    start,
-    end,
-  } = args;
+	const {
+		search = "",
+		category = "",
+		tag = "",
+		order = "createdAt desc",
+		start,
+		end,
+	} = args
 
-  const queryParams = {
-    ...(search && { search: `*${search}*` }),
-    ...(category && { category }),
-    ...(tag && { tag }),
-    start,
-    end,
-  } as QueryParams;
+	const queryParams = {
+		...(search && { search: `*${search}*` }),
+		...(category && { category }),
+		...(tag && { tag }),
+		start,
+		end,
+	} as QueryParams
 
-  let filters = `_type == "tutorial" && published == true`;
-  if (category) filters += ` && category->slug.current == $category`;
-  if (tag) filters += ` && $tag in tags[]->slug.current`;
+	let filters = `_type == "tutorial" && published == true`
+	if (category) filters += ` && category->slug.current == $category`
+	if (tag) filters += ` && $tag in tags[]->slug.current`
 
-  const response = await client.fetch<{
-    tutorials: Tutorial[];
-    total: number;
-  }>(tutorialsQuery({ search, filters, order }), queryParams);
-  return {
-    tutorials: response.tutorials,
-    total: response.total ?? 0,
-  };
+	const response = await client.fetch<{
+		tutorials: Tutorial[]
+		total: number
+	}>(tutorialsQuery({ search, filters, order }), queryParams)
+	return {
+		tutorials: response.tutorials,
+		total: response.total ?? 0,
+	}
 }
 
 /**
@@ -73,7 +74,7 @@ export async function getTutorials(args: Args) {
  * console.log(`Total tutorials: ${count}`);
  */
 export async function countTutorials() {
-  return client.fetch<number>(countQuery);
+	return client.fetch<number>(countQuery)
 }
 
 /**
@@ -86,17 +87,17 @@ export async function countTutorials() {
  * console.log(tutorial.title); // "Complete Guide to React Hooks"
  */
 export async function getTutorialDetails(tutorialId: string) {
-  const tutorial = await client.fetch<Tutorial>(tutorialDetailsQuery, {
-    tutorialId,
-  });
-  if (tutorial.overview) {
-    const { code } = await bundleMDX({ source: tutorial.overview });
-    return {
-      ...tutorial,
-      overview: code,
-    };
-  }
-  return tutorial;
+	const tutorial = await client.fetch<Tutorial>(tutorialDetailsQuery, {
+		tutorialId,
+	})
+	if (tutorial.overview) {
+		const { code } = await bundleMDX({ source: tutorial.overview })
+		return {
+			...tutorial,
+			overview: code,
+		}
+	}
+	return tutorial
 }
 
 /**
@@ -109,7 +110,7 @@ export async function getTutorialDetails(tutorialId: string) {
  * console.log(modules.length); // 3
  */
 export async function getTutorialModules(tutorialId: string) {
-  return client.fetch<ModulesList>(modulesQuery, { tutorialId });
+	return client.fetch<ModulesList>(modulesQuery, { tutorialId })
 }
 
 /**
@@ -122,7 +123,7 @@ export async function getTutorialModules(tutorialId: string) {
  * console.log(lessons.length); // 5
  */
 export async function getTutorialLessons(tutorialId: string) {
-  return client.fetch<Lesson[]>(lessonsQuery, { tutorialId });
+	return client.fetch<Lesson[]>(lessonsQuery, { tutorialId })
 }
 
 /**
@@ -135,7 +136,7 @@ export async function getTutorialLessons(tutorialId: string) {
  * console.log(lesson.title); // "This is the title of the lesson"
  */
 export async function getChatBotLessonDetails(lessonId: string) {
-  return await client.fetch<ChatBotLesson>(chatbotLessonQuery, { lessonId });
+	return await client.fetch<ChatBotLesson>(chatbotLessonQuery, { lessonId })
 }
 
 /**
@@ -148,16 +149,16 @@ export async function getChatBotLessonDetails(lessonId: string) {
  * console.log(lesson.content); // "This is the content of the lesson"
  */
 export async function getTutorialLessonDetails(lessonId: string) {
-  const lesson = await client.fetch<Lesson>(lessonDetailsQuery, { lessonId });
-  const refinedComponents = bundleComponents(lesson.reactComponents);
+	const lesson = await client.fetch<Lesson>(lessonDetailsQuery, { lessonId })
+	const refinedComponents = bundleComponents(lesson.reactComponents)
 
-  const { code } = await bundleMDX({
-    source: lesson.content,
-    files: refinedComponents,
-  });
+	const { code } = await bundleMDX({
+		source: lesson.content,
+		files: refinedComponents,
+	})
 
-  return {
-    ...lesson,
-    content: code,
-  };
+	return {
+		...lesson,
+		content: code,
+	}
 }

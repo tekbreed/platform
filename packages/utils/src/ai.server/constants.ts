@@ -15,10 +15,10 @@ export const BASE_SYSTEM_PROMPT = `You are an expert software engineering AI ass
 - Diagrams: \`\`\`mermaid\`\`\` for flowcharts and architecture
 - Videos: \`\`\`youtube {videoId}\`\`\` for tutorials from trusted youtube channels
 
-Adapt explanations to user skill level and provide practical examples.`;
+Adapt explanations to user skill level and provide practical examples.`
 
 export const CACHED_SYSTEM_PROMPTS = {
-  RAG_ASSISTANT: `You are an expert software engineering learning assistant with access to a comprehensive knowledge base. Your role is to:
+	RAG_ASSISTANT: `You are an expert software engineering learning assistant with access to a comprehensive knowledge base. Your role is to:
 
 1. **Provide accurate, detailed explanations** with step-by-step breakdowns for complex concepts
 2. **Use the provided context** from the knowledge base to enhance your responses
@@ -38,7 +38,7 @@ When answering:
 
 Context from knowledge base will be provided in <context> tags. Use this information to enhance your responses but also draw from your general knowledge to provide comprehensive answers.`,
 
-  GENERAL_CHAT: `You are Claude, a helpful, thoughtful, and versatile AI assistant created by Anthropic. You excel at having natural conversations about any topic while being genuinely helpful and engaging.
+	GENERAL_CHAT: `You are Claude, a helpful, thoughtful, and versatile AI assistant created by Anthropic. You excel at having natural conversations about any topic while being genuinely helpful and engaging.
 
 **Core Personality:**
 - Warm, friendly, and approachable without being overly casual
@@ -81,7 +81,7 @@ Context from knowledge base will be provided in <context> tags. Use this informa
 
 Remember: Every interaction is an opportunity to be genuinely helpful, whether someone needs practical assistance, intellectual engagement, creative collaboration, or just a friendly conversation.`,
 
-  SUPERCHARGED_ASSISTANT: `You are a supercharged software engineering AI assistant capable of tackling any programming challenge. You excel at:
+	SUPERCHARGED_ASSISTANT: `You are a supercharged software engineering AI assistant capable of tackling any programming challenge. You excel at:
 
 1. **Algorithm Design & Analysis**: Breaking down complex problems, analyzing time/space complexity
 2. **Visual Communication**: Create flowcharts, diagrams, and system architectures using mermaid syntax
@@ -122,7 +122,7 @@ When solving problems:
 6. Include testing strategies
 7. Suggest improvements and scalability considerations`,
 
-  ANALYSE_CODE: `You are a specialized code analysis expert with forensic-level attention to detail. Your analysis should be:
+	ANALYSE_CODE: `You are a specialized code analysis expert with forensic-level attention to detail. Your analysis should be:
 
 **Analysis Framework:**
 1. **Structural Analysis**: Code organization, modularity, coupling, cohesion
@@ -151,7 +151,7 @@ When solving problems:
 - Testing strategy suggestions
 - Technical debt assessment and prioritization`,
 
-  CREATE_TUTORIAL: `You are a master educator specializing in creating comprehensive, production-ready programming tutorials. Your tutorials should:
+	CREATE_TUTORIAL: `You are a master educator specializing in creating comprehensive, production-ready programming tutorials. Your tutorials should:
 
 **Tutorial Structure:**
 1. **Prerequisites & Setup**: Exact requirements, environment configuration, tooling
@@ -184,7 +184,7 @@ When solving problems:
 - Tool recommendations and comparisons
 - Further learning resources and paths`,
 
-  EXPLAIN_OR_DESIGN_ALGORITHM: `You are an algorithm design and analysis virtuoso. Your explanations should achieve crystal clarity through:
+	EXPLAIN_OR_DESIGN_ALGORITHM: `You are an algorithm design and analysis virtuoso. Your explanations should achieve crystal clarity through:
 
 **Algorithm Explanation Framework:**
 1. **Problem Understanding**: Precise problem definition, constraints, edge cases
@@ -214,7 +214,7 @@ When solving problems:
 - Performance comparison charts
 - Decision tree representations for recursive algorithms`,
 
-  DEBUG_CODE: `You are a systematic debugging expert with surgical precision. Your debugging approach should be:
+	DEBUG_CODE: `You are a systematic debugging expert with surgical precision. Your debugging approach should be:
 
 **Debugging Methodology:**
 1. **Problem Identification**: Symptom analysis, error categorization, scope determination
@@ -247,7 +247,7 @@ When solving problems:
 - Performance impact assessment
 - Security implications of the fix`,
 
-  CAREER_ADVICE: `You are a seasoned software engineering career mentor with deep industry insights. Your guidance should cover:
+	CAREER_ADVICE: `You are a seasoned software engineering career mentor with deep industry insights. Your guidance should cover:
 
 **Career Development Framework:**
 1. **Skill Assessment**: Current capabilities, gaps, market demand analysis
@@ -283,7 +283,7 @@ When solving problems:
 - Conference speaking and community involvement
 - Startup vs. enterprise career considerations`,
 
-  SYSTEM_DESIGN: `You are a system architecture expert with experience designing scalable, fault-tolerant systems. Your system design approach should include:
+	SYSTEM_DESIGN: `You are a system architecture expert with experience designing scalable, fault-tolerant systems. Your system design approach should include:
 
 **Design Process:**
 1. **Requirements Gathering**: Functional and non-functional requirements
@@ -323,7 +323,7 @@ When solving problems:
 - Security threat modeling
 - Disaster recovery procedures`,
 
-  ANALYZE_ALGORITHM: `You are an algorithm analysis expert with mathematical rigor and practical insight. Your analysis should provide:
+	ANALYZE_ALGORITHM: `You are an algorithm analysis expert with mathematical rigor and practical insight. Your analysis should provide:
 
 **Comprehensive Analysis Framework:**
 1. **Algorithmic Paradigm**: Classification and pattern identification
@@ -361,7 +361,7 @@ When solving problems:
 - Memory access patterns
 - Algorithm animation descriptions`,
 
-  CODE_REVIEW: `You are a senior code reviewer with expertise across multiple domains and languages. Your code review should be:
+	CODE_REVIEW: `You are a senior code reviewer with expertise across multiple domains and languages. Your code review should be:
 
 **Review Standards:**
 1. **Functionality**: Logic correctness, requirement fulfillment, edge case handling
@@ -395,557 +395,557 @@ When solving problems:
 - Documentation completeness
 - API contract adherence
 - Deployment readiness checklist`,
-};
+}
 
 // Type definitions for learning modes
 export type LearningMode =
-  | "analyse-code"
-  | "create-tutorial"
-  | "explain-or-design-algorithm"
-  | "debug-code"
-  | "career-advice"
-  | "system-design"
-  | "analyze-algorithm"
-  | "code-review"
-  | "general-chat"
-  | "default";
+	| "analyse-code"
+	| "create-tutorial"
+	| "explain-or-design-algorithm"
+	| "debug-code"
+	| "career-advice"
+	| "system-design"
+	| "analyze-algorithm"
+	| "code-review"
+	| "general-chat"
+	| "default"
 
 // Mapping object for easy access
 export const LEARNING_MODE_PROMPTS: Record<LearningMode, string> = {
-  "analyse-code": CACHED_SYSTEM_PROMPTS.ANALYSE_CODE,
-  "create-tutorial": CACHED_SYSTEM_PROMPTS.CREATE_TUTORIAL,
-  "explain-or-design-algorithm":
-    CACHED_SYSTEM_PROMPTS.EXPLAIN_OR_DESIGN_ALGORITHM,
-  "debug-code": CACHED_SYSTEM_PROMPTS.DEBUG_CODE,
-  "career-advice": CACHED_SYSTEM_PROMPTS.CAREER_ADVICE,
-  "system-design": CACHED_SYSTEM_PROMPTS.SYSTEM_DESIGN,
-  "analyze-algorithm": CACHED_SYSTEM_PROMPTS.ANALYZE_ALGORITHM,
-  "code-review": CACHED_SYSTEM_PROMPTS.CODE_REVIEW,
-  "general-chat": CACHED_SYSTEM_PROMPTS.GENERAL_CHAT,
-  default: CACHED_SYSTEM_PROMPTS.SUPERCHARGED_ASSISTANT,
-};
+	"analyse-code": CACHED_SYSTEM_PROMPTS.ANALYSE_CODE,
+	"create-tutorial": CACHED_SYSTEM_PROMPTS.CREATE_TUTORIAL,
+	"explain-or-design-algorithm":
+		CACHED_SYSTEM_PROMPTS.EXPLAIN_OR_DESIGN_ALGORITHM,
+	"debug-code": CACHED_SYSTEM_PROMPTS.DEBUG_CODE,
+	"career-advice": CACHED_SYSTEM_PROMPTS.CAREER_ADVICE,
+	"system-design": CACHED_SYSTEM_PROMPTS.SYSTEM_DESIGN,
+	"analyze-algorithm": CACHED_SYSTEM_PROMPTS.ANALYZE_ALGORITHM,
+	"code-review": CACHED_SYSTEM_PROMPTS.CODE_REVIEW,
+	"general-chat": CACHED_SYSTEM_PROMPTS.GENERAL_CHAT,
+	default: CACHED_SYSTEM_PROMPTS.SUPERCHARGED_ASSISTANT,
+}
 
 // Add general conversation keywords for detection
 export const GENERAL_CHAT_KEYWORDS = [
-  // Casual conversation starters
-  "how are you",
-  "hello",
-  "hi",
-  "hey",
-  "good morning",
-  "good afternoon",
-  "good evening",
-  "what's up",
-  "how's it going",
-  "nice to meet you",
+	// Casual conversation starters
+	"how are you",
+	"hello",
+	"hi",
+	"hey",
+	"good morning",
+	"good afternoon",
+	"good evening",
+	"what's up",
+	"how's it going",
+	"nice to meet you",
 
-  // Personal/life topics
-  "tell me about",
-  "what do you think about",
-  "I'm feeling",
-  "I had a",
-  "my day",
-  "my weekend",
-  "my family",
-  "my friend",
-  "relationship",
-  "advice about life",
-  "personal advice",
+	// Personal/life topics
+	"tell me about",
+	"what do you think about",
+	"I'm feeling",
+	"I had a",
+	"my day",
+	"my weekend",
+	"my family",
+	"my friend",
+	"relationship",
+	"advice about life",
+	"personal advice",
 
-  // General interests
-  "favorite",
-  "recommend a",
-  "suggest a",
-  "book recommendation",
-  "movie recommendation",
-  "music recommendation",
-  "travel",
-  "vacation",
-  "hobby",
-  "cooking",
-  "recipe",
-  "fitness",
-  "exercise",
-  "health",
+	// General interests
+	"favorite",
+	"recommend a",
+	"suggest a",
+	"book recommendation",
+	"movie recommendation",
+	"music recommendation",
+	"travel",
+	"vacation",
+	"hobby",
+	"cooking",
+	"recipe",
+	"fitness",
+	"exercise",
+	"health",
 
-  // Creative and fun
-  "story",
-  "joke",
-  "riddle",
-  "game",
-  "trivia",
-  "fun fact",
-  "creative writing",
-  "poem",
-  "song",
+	// Creative and fun
+	"story",
+	"joke",
+	"riddle",
+	"game",
+	"trivia",
+	"fun fact",
+	"creative writing",
+	"poem",
+	"song",
 
-  // Learning and education (non-programming)
-  "explain",
-  "what is",
-  "how does",
-  "why is",
-  "history of",
-  "science",
-  "math help",
-  "homework help",
-  "study tips",
-  "learning about",
+	// Learning and education (non-programming)
+	"explain",
+	"what is",
+	"how does",
+	"why is",
+	"history of",
+	"science",
+	"math help",
+	"homework help",
+	"study tips",
+	"learning about",
 
-  // Current events and opinions
-  "news",
-  "current events",
-  "opinion on",
-  "thoughts on",
-  "what happened",
-  "latest",
-  "trending",
+	// Current events and opinions
+	"news",
+	"current events",
+	"opinion on",
+	"thoughts on",
+	"what happened",
+	"latest",
+	"trending",
 
-  // Planning and productivity
-  "plan",
-  "organize",
-  "schedule",
-  "productivity tips",
-  "time management",
-  "goal setting",
-  "decision making",
+	// Planning and productivity
+	"plan",
+	"organize",
+	"schedule",
+	"productivity tips",
+	"time management",
+	"goal setting",
+	"decision making",
 
-  // Philosophical and thoughtful
-  "meaning of",
-  "philosophy",
-  "ethics",
-  "moral",
-  "deep question",
-  "existential",
-  "life advice",
-  "wisdom",
-];
+	// Philosophical and thoughtful
+	"meaning of",
+	"philosophy",
+	"ethics",
+	"moral",
+	"deep question",
+	"existential",
+	"life advice",
+	"wisdom",
+]
 
 // Rest of the constants remain the same...
 export const SOFTWARE_ENG_DOMAINS = [
-  // Documentation & Official Sites
-  "stackoverflow.com",
-  "github.com",
-  "gitlab.com",
-  "bitbucket.org",
-  "developer.mozilla.org",
-  "docs.python.org",
-  "reactjs.org",
-  "reactrouter.com",
-  "remix.run",
-  "nodejs.org",
-  "vuejs.org",
-  "angular.io",
-  "svelte.dev",
-  "nextjs.org",
-  "nuxtjs.org",
-  "django.readthedocs.io",
-  "flask.palletsprojects.com",
-  "fastapi.tiangolo.com",
-  "spring.io",
-  "laravel.com",
-  "rubyonrails.org",
-  "expressjs.com",
-  "nestjs.com",
-  "kubernetes.io",
-  "docker.com",
-  "terraform.io",
-  "ansible.com",
-  "jenkins.io",
-  "nginx.org",
-  "apache.org",
-  "redis.io",
-  "mongodb.com",
-  "postgresql.org",
-  "mysql.com",
-  "sqlite.org",
-  "elasticsearch.co",
-  "tensorflow.org",
-  "pytorch.org",
-  "scikit-learn.org",
-  "pandas.pydata.org",
-  "numpy.org",
-  "jupyter.org",
+	// Documentation & Official Sites
+	"stackoverflow.com",
+	"github.com",
+	"gitlab.com",
+	"bitbucket.org",
+	"developer.mozilla.org",
+	"docs.python.org",
+	"reactjs.org",
+	"reactrouter.com",
+	"remix.run",
+	"nodejs.org",
+	"vuejs.org",
+	"angular.io",
+	"svelte.dev",
+	"nextjs.org",
+	"nuxtjs.org",
+	"django.readthedocs.io",
+	"flask.palletsprojects.com",
+	"fastapi.tiangolo.com",
+	"spring.io",
+	"laravel.com",
+	"rubyonrails.org",
+	"expressjs.com",
+	"nestjs.com",
+	"kubernetes.io",
+	"docker.com",
+	"terraform.io",
+	"ansible.com",
+	"jenkins.io",
+	"nginx.org",
+	"apache.org",
+	"redis.io",
+	"mongodb.com",
+	"postgresql.org",
+	"mysql.com",
+	"sqlite.org",
+	"elasticsearch.co",
+	"tensorflow.org",
+	"pytorch.org",
+	"scikit-learn.org",
+	"pandas.pydata.org",
+	"numpy.org",
+	"jupyter.org",
 
-  // Cloud Providers & Services
-  "fly.io",
-  "render.com",
-  "upstash.com",
-  "aws.amazon.com",
-  "cloud.google.com",
-  "azure.microsoft.com",
-  "digitalocean.com",
-  "heroku.com",
-  "netlify.com",
-  "vercel.com",
-  "firebase.google.com",
-  "supabase.com",
-  "cloudflare.com",
-  "linode.com",
-  "vultr.com",
+	// Cloud Providers & Services
+	"fly.io",
+	"render.com",
+	"upstash.com",
+	"aws.amazon.com",
+	"cloud.google.com",
+	"azure.microsoft.com",
+	"digitalocean.com",
+	"heroku.com",
+	"netlify.com",
+	"vercel.com",
+	"firebase.google.com",
+	"supabase.com",
+	"cloudflare.com",
+	"linode.com",
+	"vultr.com",
 
-  // Learning Platforms & Tutorials
-  "tekbreed.com",
-  "medium.com",
-  "dev.to",
-  "hackernoon.com",
-  "freecodecamp.org",
-  "geeksforgeeks.org",
-  "leetcode.com",
-  "hackerrank.com",
-  "codewars.com",
-  "educative.io",
-  "coursera.org",
-  "udemy.com",
-  "pluralsight.com",
-  "edx.org",
-  "codecademy.com",
-  "khanacademy.org",
-  "roadmap.sh",
-  "javascript.info",
-  "w3schools.com",
-  "tutorialspoint.com",
-  "javatpoint.com",
-  "programiz.com",
-  "codepen.io",
-  "jsfiddle.net",
-  "repl.it",
-  "codesandbox.io",
+	// Learning Platforms & Tutorials
+	"tekbreed.com",
+	"medium.com",
+	"dev.to",
+	"hackernoon.com",
+	"freecodecamp.org",
+	"geeksforgeeks.org",
+	"leetcode.com",
+	"hackerrank.com",
+	"codewars.com",
+	"educative.io",
+	"coursera.org",
+	"udemy.com",
+	"pluralsight.com",
+	"edx.org",
+	"codecademy.com",
+	"khanacademy.org",
+	"roadmap.sh",
+	"javascript.info",
+	"w3schools.com",
+	"tutorialspoint.com",
+	"javatpoint.com",
+	"programiz.com",
+	"codepen.io",
+	"jsfiddle.net",
+	"repl.it",
+	"codesandbox.io",
 
-  // Community & News
-  "tekbreed.com",
-  "reddit.com",
-  "news.ycombinator.com",
-  "producthunt.com",
-  "indie.hackers.com",
-  "lobste.rs",
-  "techcrunch.com",
-  "thenewstack.io",
-  "infoq.com",
-  "smashingmagazine.com",
-  "css-tricks.com",
-  "alistapart.com",
+	// Community & News
+	"tekbreed.com",
+	"reddit.com",
+	"news.ycombinator.com",
+	"producthunt.com",
+	"indie.hackers.com",
+	"lobste.rs",
+	"techcrunch.com",
+	"thenewstack.io",
+	"infoq.com",
+	"smashingmagazine.com",
+	"css-tricks.com",
+	"alistapart.com",
 
-  // Tools & Resources
-  "npmjs.com",
-  "pypi.org",
-  "packagist.org",
-  "rubygems.org",
-  "nuget.org",
-  "crates.io",
-  "maven.apache.org",
-  "gradle.org",
-  "webpack.js.org",
-  "vitejs.dev",
-  "rollupjs.org",
-  "babeljs.io",
-  "eslint.org",
-  "prettier.io",
-  "jestjs.io",
-  "mochajs.org",
-  "cypress.io",
-  "selenium.dev",
-  "postman.com",
-  "insomnia.rest",
-  "figma.com",
-  "sketch.com",
-  "invisionapp.com",
-  "notion.so",
-  "confluence.atlassian.com",
-  "jira.atlassian.com",
-  "trello.com",
-  "asana.com",
-  "slack.com",
-  "discord.com",
-  "teams.microsoft.com",
-  "zoom.us",
-];
+	// Tools & Resources
+	"npmjs.com",
+	"pypi.org",
+	"packagist.org",
+	"rubygems.org",
+	"nuget.org",
+	"crates.io",
+	"maven.apache.org",
+	"gradle.org",
+	"webpack.js.org",
+	"vitejs.dev",
+	"rollupjs.org",
+	"babeljs.io",
+	"eslint.org",
+	"prettier.io",
+	"jestjs.io",
+	"mochajs.org",
+	"cypress.io",
+	"selenium.dev",
+	"postman.com",
+	"insomnia.rest",
+	"figma.com",
+	"sketch.com",
+	"invisionapp.com",
+	"notion.so",
+	"confluence.atlassian.com",
+	"jira.atlassian.com",
+	"trello.com",
+	"asana.com",
+	"slack.com",
+	"discord.com",
+	"teams.microsoft.com",
+	"zoom.us",
+]
 
 export const DEBUG_KEYWORDS = [
-  "debug",
-  "fix",
-  "error",
-  "bug",
-  "not working",
-  "broken",
-  "issue",
-  "problem",
-  "troubleshoot",
-  "why doesn't",
-  "what's wrong",
-  "crash",
-  "exception",
-  "stack trace",
-  "logs",
-  "debugging",
-  "syntax error",
-  "runtime error",
-  "fix this code",
-  "why is this failing",
-  "help me solve",
-];
+	"debug",
+	"fix",
+	"error",
+	"bug",
+	"not working",
+	"broken",
+	"issue",
+	"problem",
+	"troubleshoot",
+	"why doesn't",
+	"what's wrong",
+	"crash",
+	"exception",
+	"stack trace",
+	"logs",
+	"debugging",
+	"syntax error",
+	"runtime error",
+	"fix this code",
+	"why is this failing",
+	"help me solve",
+]
 
 export const REVIEW_KEYWORDS = [
-  "review",
-  "improve",
-  "optimize",
-  "refactor",
-  "clean up",
-  "best practices",
-  "code quality",
-  "performance",
-  "maintainable",
-  "readable",
-  "lint",
-  "static analysis",
-  "technical debt",
-  "peer review",
-  "feedback on code",
-  "how to make this better",
-  "coding standards",
-];
+	"review",
+	"improve",
+	"optimize",
+	"refactor",
+	"clean up",
+	"best practices",
+	"code quality",
+	"performance",
+	"maintainable",
+	"readable",
+	"lint",
+	"static analysis",
+	"technical debt",
+	"peer review",
+	"feedback on code",
+	"how to make this better",
+	"coding standards",
+]
 
 export const TUTORIAL_KEYWORDS = [
-  "tutorial",
-  "learn",
-  "teach",
-  "explain",
-  "how to",
-  "guide",
-  "step by step",
-  "beginner",
-  "introduction",
-  "getting started",
-  "walkthrough",
-  "example",
-  "demo",
-  "hands-on",
-  "crash course",
-  "for dummies",
-  "basics",
-  "primer",
-];
+	"tutorial",
+	"learn",
+	"teach",
+	"explain",
+	"how to",
+	"guide",
+	"step by step",
+	"beginner",
+	"introduction",
+	"getting started",
+	"walkthrough",
+	"example",
+	"demo",
+	"hands-on",
+	"crash course",
+	"for dummies",
+	"basics",
+	"primer",
+]
 
 export const ALGORITHM_KEYWORDS = [
-  "algorithm",
-  "complexity",
-  "big o",
-  "time complexity",
-  "space complexity",
-  "sorting",
-  "searching",
-  "optimization",
-  "dynamic programming",
-  "recursion",
-  "graph",
-  "tree",
-  "Dijkstra",
-  "BFS",
-  "DFS",
-  "backtracking",
-  "greedy",
-  "divide and conquer",
-  "memoization",
-  "hash table",
-  "binary search",
-];
+	"algorithm",
+	"complexity",
+	"big o",
+	"time complexity",
+	"space complexity",
+	"sorting",
+	"searching",
+	"optimization",
+	"dynamic programming",
+	"recursion",
+	"graph",
+	"tree",
+	"Dijkstra",
+	"BFS",
+	"DFS",
+	"backtracking",
+	"greedy",
+	"divide and conquer",
+	"memoization",
+	"hash table",
+	"binary search",
+]
 
 export const SYSTEM_DESIGN_KEYWORDS = [
-  "system design",
-  "architecture",
-  "scalable",
-  "distributed",
-  "microservices",
-  "load balancer",
-  "database design",
-  "caching",
-  "api design",
-  "infrastructure",
-  "high availability",
-  "fault tolerance",
-  "CAP theorem",
-  "event-driven",
-  "message queue",
-  "Kafka",
-  "Kubernetes",
-  "cloud design",
-  "serverless",
-];
+	"system design",
+	"architecture",
+	"scalable",
+	"distributed",
+	"microservices",
+	"load balancer",
+	"database design",
+	"caching",
+	"api design",
+	"infrastructure",
+	"high availability",
+	"fault tolerance",
+	"CAP theorem",
+	"event-driven",
+	"message queue",
+	"Kafka",
+	"Kubernetes",
+	"cloud design",
+	"serverless",
+]
 
 export const ANALYSIS_KEYWORDS = [
-  "analyze",
-  "analysis",
-  "understand",
-  "explain code",
-  "what does this do",
-  "breakdown",
-  "structure",
-  "patterns",
-  "code walkthrough",
-  "interpret",
-  "reverse engineer",
-  "how this works",
-  "flow",
-  "control flow",
-];
+	"analyze",
+	"analysis",
+	"understand",
+	"explain code",
+	"what does this do",
+	"breakdown",
+	"structure",
+	"patterns",
+	"code walkthrough",
+	"interpret",
+	"reverse engineer",
+	"how this works",
+	"flow",
+	"control flow",
+]
 
 export const COMPLEXITY_INDICATORS = [
-  "enterprise",
-  "production",
-  "scalable",
-  "distributed",
-  "microservices",
-  "advanced",
-  "complex",
-  "detailed",
-  "comprehensive",
-  "in-depth",
-  "performance optimization",
-  "security",
-  "architecture",
-  "design patterns",
-  "multithreading",
-  "concurrency",
-  "async",
-  "parallel",
-  "low latency",
-  "high throughput",
-];
+	"enterprise",
+	"production",
+	"scalable",
+	"distributed",
+	"microservices",
+	"advanced",
+	"complex",
+	"detailed",
+	"comprehensive",
+	"in-depth",
+	"performance optimization",
+	"security",
+	"architecture",
+	"design patterns",
+	"multithreading",
+	"concurrency",
+	"async",
+	"parallel",
+	"low latency",
+	"high throughput",
+]
 
 export const SIMPLICITY_INDICATORS = [
-  "simple",
-  "basic",
-  "quick",
-  "beginner",
-  "easy",
-  "what is",
-  "how do i",
-  "briefly",
-  "overview",
-  "introduction",
-  "starter",
-  "minimal",
-  "boilerplate",
-];
+	"simple",
+	"basic",
+	"quick",
+	"beginner",
+	"easy",
+	"what is",
+	"how do i",
+	"briefly",
+	"overview",
+	"introduction",
+	"starter",
+	"minimal",
+	"boilerplate",
+]
 
 export const SOFTWARE_INDICATORS = [
-  "code",
-  "programming",
-  "development",
-  "framework",
-  "library",
-  "api",
-  "documentation",
-  "tutorial",
-  "github",
-  "npm",
-  "package",
-  "algorithm",
-  "data structure",
-  "design pattern",
-  "architecture",
-  "SDK",
-  "CLI",
-  "IDE",
-  "debugger",
-  "container",
-  "Docker",
-  "Kubernetes",
-];
+	"code",
+	"programming",
+	"development",
+	"framework",
+	"library",
+	"api",
+	"documentation",
+	"tutorial",
+	"github",
+	"npm",
+	"package",
+	"algorithm",
+	"data structure",
+	"design pattern",
+	"architecture",
+	"SDK",
+	"CLI",
+	"IDE",
+	"debugger",
+	"container",
+	"Docker",
+	"Kubernetes",
+]
 
 export const CAREER_KEYWORDS = [
-  // General career terms
-  "career",
-  "job",
-  "interview",
-  "resume",
-  "salary",
-  "promotion",
-  "skills",
-  "learning path",
-  "certifications",
-  "industry",
-  "role",
-  "position",
-  "hiring",
+	// General career terms
+	"career",
+	"job",
+	"interview",
+	"resume",
+	"salary",
+	"promotion",
+	"skills",
+	"learning path",
+	"certifications",
+	"industry",
+	"role",
+	"position",
+	"hiring",
 
-  // Tactical/short-term career queries
-  "negotiation",
-  "job search",
-  "quick advice",
-  "should I",
-  "how to",
-  "what technology",
-  "which framework",
-  "offer letter",
-  "LinkedIn",
-  "portfolio",
-  "cover letter",
-  "technical interview",
-  "whiteboard",
+	// Tactical/short-term career queries
+	"negotiation",
+	"job search",
+	"quick advice",
+	"should I",
+	"how to",
+	"what technology",
+	"which framework",
+	"offer letter",
+	"LinkedIn",
+	"portfolio",
+	"cover letter",
+	"technical interview",
+	"whiteboard",
 
-  // Complex/long-term career strategy
-  "career transition",
-  "long-term strategy",
-  "leadership",
-  "startup",
-  "entrepreneurship",
-  "industry trends",
-  "comprehensive plan",
-  "roadmap",
-  "architecture career",
-  "principal engineer",
-  "technical director",
-  "CTO",
-  "management",
-  "tech lead",
-  "mentorship",
-  "career growth",
-  "promotion path",
-  "career pivot",
-  "freelancing",
-  "remote work",
-  "compensation strategy",
-];
+	// Complex/long-term career strategy
+	"career transition",
+	"long-term strategy",
+	"leadership",
+	"startup",
+	"entrepreneurship",
+	"industry trends",
+	"comprehensive plan",
+	"roadmap",
+	"architecture career",
+	"principal engineer",
+	"technical director",
+	"CTO",
+	"management",
+	"tech lead",
+	"mentorship",
+	"career growth",
+	"promotion path",
+	"career pivot",
+	"freelancing",
+	"remote work",
+	"compensation strategy",
+]
 
 export const QUESTION_INDICATORS = [
-  // Time-sensitive queries (news/updates)
-  "what is the latest",
-  "what's new in",
-  "any recent updates on",
-  "latest trends in",
-  "has there been any news about",
+	// Time-sensitive queries (news/updates)
+	"what is the latest",
+	"what's new in",
+	"any recent updates on",
+	"latest trends in",
+	"has there been any news about",
 
-  // Popularity/trending queries
-  "how popular is",
-  "is anyone still using",
-  "what's trending in",
-  "is X dying",
-  "is X outdated",
+	// Popularity/trending queries
+	"how popular is",
+	"is anyone still using",
+	"what's trending in",
+	"is X dying",
+	"is X outdated",
 
-  // Decision-making queries (should I use X?)
-  "is it worth",
-  "should I use",
-  "should I learn",
-  "is X better than Y",
-  "is X good for",
-  "would you recommend",
-  "pros and cons of",
-  "advantages of",
+	// Decision-making queries (should I use X?)
+	"is it worth",
+	"should I use",
+	"should I learn",
+	"is X better than Y",
+	"is X good for",
+	"would you recommend",
+	"pros and cons of",
+	"advantages of",
 
-  // Opinion-based queries
-  "what do people think",
-  "what's the consensus on",
-  "do developers like",
-  "why do people hate",
-  "why is X so popular",
+	// Opinion-based queries
+	"what do people think",
+	"what's the consensus on",
+	"do developers like",
+	"why do people hate",
+	"why is X so popular",
 
-  // Real-world/experience-based queries
-  "real world",
-  "production",
-  "in practice",
-  "industry standard",
-  "enterprise use",
-  "scaling X",
-  "war stories about",
-  "case study on",
-];
+	// Real-world/experience-based queries
+	"real world",
+	"production",
+	"in practice",
+	"industry standard",
+	"enterprise use",
+	"scaling X",
+	"war stories about",
+	"case study on",
+]

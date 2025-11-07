@@ -1,7 +1,7 @@
-import type { Author } from "./types";
-import type { Article } from "../articles/types";
-import { client } from "../loader";
-import { authorDetailsQuery, authorArticlesQuery } from "./queries";
+import type { Article } from "../articles/types"
+import { client } from "../loader"
+import { authorArticlesQuery, authorDetailsQuery } from "./queries"
+import type { Author } from "./types"
 
 /**
  * Retrieves detailed information about a specific author by their slug
@@ -13,10 +13,10 @@ import { authorDetailsQuery, authorArticlesQuery } from "./queries";
  * console.log(author.name); // "Christopher S. Aondona"
  */
 export async function getAuthorBySlug(slug: string) {
-  const author = await client.fetch<Author | null>(authorDetailsQuery, {
-    slug,
-  });
-  return author;
+	const author = await client.fetch<Author | null>(authorDetailsQuery, {
+		slug,
+	})
+	return author
 }
 
 /**
@@ -29,6 +29,6 @@ export async function getAuthorBySlug(slug: string) {
  * articles.forEach(article => console.log(article.title));
  */
 export async function getAuthorArticles(slug: string) {
-  const articles = await client.fetch<Article[]>(authorArticlesQuery, { slug });
-  return articles;
+	const articles = await client.fetch<Article[]>(authorArticlesQuery, { slug })
+	return articles
 }

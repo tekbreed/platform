@@ -1,15 +1,15 @@
 {
-  "name": "docs",
-  "version": "1.0.0",
-  "description": "TekBreed Docs",
-  "type": "module",
-  "keywords": [
-    "docs"
-  ],
-  "author": "TekBreed",
-  "scripts": {
-    "dev": "vitepress dev",
-    "build": "vitepress build",
-    "preview": "vitepress preview"
-  }
+	"name": "docs",
+	"version": "1.0.0",
+	"description": "TekBreed Docs",
+	"type": "module",
+	"keywords": [
+		"docs"
+	],
+	"author": "TekBreed",
+	"scripts": {
+		"dev": "vitepress dev",
+		"build": "vitepress build",
+		"preview": "vitepress preview"
+	}
 }

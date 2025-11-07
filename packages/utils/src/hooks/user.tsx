@@ -1,4 +1,4 @@
-import { useRouteLoaderData } from "react-router";
+import { useRouteLoaderData } from "react-router"
 
 /**
  * Type guard to check if a value is a valid user object.
@@ -17,13 +17,13 @@ import { useRouteLoaderData } from "react-router";
  * ```
  */
 function isUser(user: unknown) {
-  return (
-    !!user &&
-    typeof user === "object" &&
-    user !== null &&
-    "id" in user &&
-    "roles" in user
-  );
+	return (
+		!!user &&
+		typeof user === "object" &&
+		user !== null &&
+		"id" in user &&
+		"roles" in user
+	)
 }
 
 /**
@@ -44,11 +44,11 @@ function isUser(user: unknown) {
  * ```
  */
 export function useOptionalUser() {
-  const data = useRouteLoaderData("root");
-  if (!data || !isUser(data.user)) {
-    return null;
-  }
-  return data.user;
+	const data = useRouteLoaderData("root")
+	if (!data || !isUser(data.user)) {
+		return null
+	}
+	return data.user
 }
 
 /**
@@ -75,11 +75,11 @@ export function useOptionalUser() {
  * ```
  */
 export function useUser() {
-  const maybeUser = useOptionalUser();
-  if (!maybeUser) {
-    throw new Error(
-      "No user found in root loader, but user is required by useUser. If user is optional, try useOptionalUser instead.",
-    );
-  }
-  return maybeUser;
+	const maybeUser = useOptionalUser()
+	if (!maybeUser) {
+		throw new Error(
+			"No user found in root loader, but user is required by useUser. If user is optional, try useOptionalUser instead.",
+		)
+	}
+	return maybeUser
 }

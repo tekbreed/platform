@@ -1,7 +1,9 @@
-import { redirect } from "react-router";
-import { createThemeAction } from "remix-themes";
-import { themeSessionResolver } from "@repo/utils/theme.server";
+import { redirect } from "react-router"
 
-export const loader = () => redirect("/");
+import { createThemeAction } from "remix-themes"
 
-export const action = createThemeAction(themeSessionResolver);
+import { themeSessionResolver } from "@repo/utils/theme.server"
+
+export const loader = () => redirect("/")
+
+export const action = createThemeAction(themeSessionResolver)
