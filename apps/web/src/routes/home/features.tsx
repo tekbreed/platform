@@ -33,7 +33,7 @@ type IconName = keyof typeof iconMap
 export function Features({ content }: { content: Promise<HomePageContent> }) {
 	return (
 		<section className="mx-auto w-full pt-12 pb-24">
-			<div className="container w-full">
+			<div className="container mx-auto w-full">
 				<div className="mx-auto max-w-3xl text-center">
 					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
 						Why Choose TekBreed?
