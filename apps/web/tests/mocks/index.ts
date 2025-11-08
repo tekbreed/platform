@@ -1,7 +1,7 @@
 import closeWithGrace from "close-with-grace"
 import { setupServer } from "msw/node"
 
-import { handlers as bunnyHandlers } from "@repo/tests-config/mocks/bunny"
+// import { handlers as bunnyHandlers } from "@repo/tests-config/mocks/bunny"
 import { handlers as discordHandlers } from "@repo/tests-config/mocks/discord"
 import { handlers as miscHandlers } from "@repo/tests-config/mocks/misc"
 import { handlers as resendHandlers } from "@repo/tests-config/mocks/resend"
@@ -16,7 +16,7 @@ import { handlers as polarHandlers } from "./polar"
 export const server = setupServer(
 	...miscHandlers,
 	...resendHandlers,
-	...bunnyHandlers,
+	// ...bunnyHandlers,
 	...sanityHandlers,
 	...githubHandlers,
 	...polarHandlers,
