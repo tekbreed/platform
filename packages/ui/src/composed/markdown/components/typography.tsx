@@ -15,7 +15,7 @@ export function H1({
 	return (
 		<h1
 			className={cn(
-				"mt-10 mb-6 scroll-m-20 text-3xl font-bold tracking-normal lg:text-4xl",
+				"mt-10 mb-6 scroll-m-20 font-bold text-3xl tracking-normal lg:text-4xl",
 				className,
 			)}
 			{...props}
@@ -30,7 +30,7 @@ export function H2({
 	return (
 		<h2
 			className={cn(
-				"scroll-m-20 text-3xl font-semibold tracking-tight text-foreground",
+				"scroll-m-20 font-semibold text-3xl text-foreground tracking-tight",
 				"mt-8 mb-4 border-border",
 				className,
 			)}
@@ -45,7 +45,7 @@ export const H3 = ({
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
 	<h3
 		className={cn(
-			"scroll-m-20 text-2xl font-semibold tracking-tight text-foreground",
+			"scroll-m-20 font-semibold text-2xl text-foreground tracking-tight",
 			"mt-8 mb-4 border-border",
 			className,
 		)}
@@ -59,7 +59,7 @@ export const H4 = ({
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
 	<h4
 		className={cn(
-			"scroll-m-20 text-xl font-semibold tracking-tight text-foreground",
+			"scroll-m-20 font-semibold text-foreground text-xl tracking-tight",
 			"mt-8 mb-4 border-border",
 			className,
 		)}
@@ -73,7 +73,7 @@ export const H5 = ({
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
 	<h5
 		className={cn(
-			"scroll-m-20 text-lg font-semibold tracking-tight text-foreground",
+			"scroll-m-20 font-semibold text-foreground text-lg tracking-tight",
 			"mt-8 mb-4 border-border",
 			className,
 		)}
@@ -87,7 +87,7 @@ export const H6 = ({
 }: React.HTMLAttributes<HTMLHeadingElement>) => (
 	<h6
 		className={cn(
-			"scroll-m-20 text-lg font-semibold tracking-tight text-foreground",
+			"scroll-m-20 font-semibold text-foreground text-lg tracking-tight",
 			"mt-8 mb-4 border-border",
 			className,
 		)}
@@ -107,7 +107,7 @@ export function P({
 	return (
 		<p
 			className={cn(
-				"text-[1.05em] leading-7.5 tracking-wide text-foreground [&:not(:first-child)]:mt-6",
+				"text-[1.05em] text-foreground leading-7.5 tracking-wide [&:not(:first-child)]:mt-6",
 				className,
 			)}
 			{...props}
@@ -177,9 +177,9 @@ export function Div({
 	if (variant) {
 		return (
 			<Callout
-				variant={variant}
-				title={variant}
 				className={cn("my-8", className)}
+				title={variant}
+				variant={variant}
 				{...props}
 			>
 				{contentChildren}
@@ -200,7 +200,7 @@ export function Subtle({
 }: React.HTMLAttributes<HTMLSpanElement>) {
 	return (
 		<span
-			className={cn("text-sm text-muted-foreground", className)}
+			className={cn("text-muted-foreground text-sm", className)}
 			{...props}
 		/>
 	)
@@ -212,11 +212,11 @@ export function Blockquote({
 }: React.HTMLAttributes<HTMLQuoteElement>) {
 	return (
 		<div className="relative">
-			<Quote className="absolute -top-2 left-2 size-4 text-muted-foreground" />
+			<Quote className="-top-2 absolute left-2 size-4 text-muted-foreground" />
 			<blockquote
 				className={cn(
 					"pl-8 text-muted-foreground italic",
-					"border-l-4 border-border",
+					"border-border border-l-4",
 					"relative overflow-visible",
 					className,
 				)}
@@ -235,14 +235,14 @@ export function A({
 
 	return (
 		<Link
-			to={rest?.href ?? "#"}
-			prefetch="intent"
-			target={target}
-			rel={rel}
 			className={cn(
 				"font-medium text-blue-600 underline-offset-4 hover:underline dark:text-blue-400",
 				className,
 			)}
+			prefetch="intent"
+			rel={rel}
+			target={target}
+			to={rest?.href ?? "#"}
 			{...rest}
 		/>
 	)

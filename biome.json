@@ -6,7 +6,15 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": [
+			"**/src/**",
+			"!**/mockServiceWorker.js",
+			"!**/*.css",
+			"!**/apps/waitlist",
+			"!**/tsconfig.json",
+			"!**/tsconfig.*.json"
+		]
 	},
 	"formatter": {
 		"enabled": true,
@@ -24,7 +32,11 @@
 		"rules": {
 			"recommended": true,
 			"correctness": {
-				"noUnusedImports": "error"
+				"noUnusedImports": "error",
+				"noUnusedVariables": "error"
+			},
+			"suspicious": {
+				"noConsole": "warn"
 			},
 			"style": {
 				"useImportType": "error",
@@ -41,10 +53,23 @@
 			"semicolons": "asNeeded"
 		}
 	},
+	"css": {
+		"linter": null,
+		"formatter": null,
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
 	"assist": {
 		"enabled": true,
 		"actions": {
 			"source": {
+				"useSortedAttributes": {
+					"level": "on",
+					"options": {
+						"sortOrder": "lexicographic"
+					}
+				},
 				"organizeImports": {
 					"level": "on",
 					"options": {
@@ -80,8 +105,26 @@
 							{ "type": true, "source": [":PACKAGE:", "!@repo", "!@repo/**"] },
 							[":PACKAGE:", "!@repo", "!@repo/**"],
 							":BLANK_LINE:",
-							{ "type": true, "source": ["@repo", "@repo/**"] },
-							["@repo", "@repo/**"],
+							{ "type": true, "source": ["@repo/ui", "@repo/ui/**"] },
+							["@repo/ui", "@repo/ui/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/utils", "@repo/utils/**"] },
+							["@repo/utils", "@repo/utils/**"],
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": ["@repo/database", "@repo/database/**"]
+							},
+							["@repo/database", "@repo/database/**"],
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": ["@repo/base-config", "@repo/base-config/**"]
+							},
+							["@repo/base-config", "@repo/base-config/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/**"] },
+							"@repo/**",
 							":BLANK_LINE:",
 							{ "type": true, "source": ["@/**"] },
 							"@/**"

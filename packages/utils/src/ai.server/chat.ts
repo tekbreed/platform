@@ -353,14 +353,6 @@ export async function askRAGAssistant(
 			analysis,
 		)
 
-		console.log(`[RAG-ENHANCEMENT] Analysis:`, {
-			mode: analysis.learningMode,
-			complexity: analysis.complexity,
-			confidence: analysis.confidence,
-			reasoning: analysis.reasoning,
-			isGeneralChat: analysis.isGeneralChat,
-		})
-
 		const conversationContext: ConversationContext = {
 			messages: [...messages, { role: "user", content: enhancedQuery }],
 			systemPrompt: analysis.isGeneralChat ? "GENERAL_CHAT" : "RAG_ASSISTANT",
@@ -377,7 +369,6 @@ export async function askRAGAssistant(
 		const response = await callClaudeAPI(conversationContext)
 		return response as StreamingAIResponse
 	} catch (error) {
-		console.error("Enhanced RAG Assistant error:", error)
 		throw new Error(`RAG Assistant failed: ${getErrorMessage(error)}`)
 	}
 }
@@ -506,14 +497,14 @@ export async function askAIAssistant(
 			},
 		]
 
-		console.log(`[AI-ENHANCEMENT] Analysis:`, {
-			detected: analysis.learningMode,
-			final: finalLearningMode,
-			model: selectedModel,
-			confidence: analysis.confidence,
-			isGeneralChat: analysis.isGeneralChat,
-			reasoning: analysis.reasoning.slice(0, 3), // First 3 reasons
-		})
+		// console.log(`[AI-ENHANCEMENT] Analysis:`, {
+		// 	detected: analysis.learningMode,
+		// 	final: finalLearningMode,
+		// 	model: selectedModel,
+		// 	confidence: analysis.confidence,
+		// 	isGeneralChat: analysis.isGeneralChat,
+		// 	reasoning: analysis.reasoning.slice(0, 3), // First 3 reasons
+		// })
 
 		const conversationContext: ConversationContext = {
 			messages,
@@ -550,7 +541,7 @@ export async function askAIAssistant(
 
 		return streamingResponse
 	} catch (error) {
-		console.error(`Enhanced AI Assistant error:`, error)
+		// console.error(`Enhanced AI Assistant error:`, error)
 		throw new Error(`AI Assistant failed: ${getErrorMessage(error)}`)
 	}
 }
@@ -607,7 +598,7 @@ export function getEnhancementMetadata(userQuery: string): {
 export function validateEnhancementInput(
 	userQuery: string,
 	options: Record<string, string | undefined> = {},
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	// biome-ignore lint/suspicious/noExplicitAny: allow any
 ): { isValid: boolean; errors: string[]; sanitized: any } {
 	const errors: string[] = []
 	const sanitized = { ...options }

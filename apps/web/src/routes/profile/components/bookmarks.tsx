@@ -111,23 +111,23 @@ export function Bookmarks({ bookmarks }: BookmarksProps) {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<Container title="Bookmarks">
 				<div className="mb-6 space-y-4">
 					<BookmarkSearchBar
-						searchQuery={searchQuery}
 						onSearchChange={setSearchQuery}
+						searchQuery={searchQuery}
 					/>
 
 					<BookmarkFilters
+						availableTags={allTags}
 						contentTypeFilter={contentTypeFilter}
 						onContentTypeChange={setContentTypeFilter}
-						tagFilter={tagFilter}
 						onTagChange={setTagFilter}
-						availableTags={allTags}
+						tagFilter={tagFilter}
 					/>
 				</div>
 
@@ -244,12 +244,12 @@ export function BookmarkSearchBar({
 }: BookmarkSearchBarProps) {
 	return (
 		<div className="relative">
-			<Icons.search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+			<Icons.search className="-translate-y-1/2 absolute top-1/2 left-3 size-4 text-muted-foreground" />
 			<Input
+				className="pl-10"
+				onChange={(e) => onSearchChange(e.target.value)}
 				placeholder="Search bookmarks by notes, content type, or tags..."
 				value={searchQuery}
-				onChange={(e) => onSearchChange(e.target.value)}
-				className="pl-10"
 			/>
 		</div>
 	)
@@ -297,10 +297,10 @@ export function BookmarkFilters({
 		<div className="flex flex-wrap gap-4">
 			<div className="flex items-center gap-2">
 				<Icons.filter className="size-4" />
-				<span className="text-sm font-medium">Filter by:</span>
+				<span className="font-medium text-sm">Filter by:</span>
 			</div>
 
-			<Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
+			<Select onValueChange={onContentTypeChange} value={contentTypeFilter}>
 				<SelectTrigger className="w-40">
 					<SelectValue placeholder="Content type" />
 				</SelectTrigger>
@@ -311,7 +311,7 @@ export function BookmarkFilters({
 				</SelectContent>
 			</Select>
 
-			<Select value={tagFilter} onValueChange={onTagChange}>
+			<Select onValueChange={onTagChange} value={tagFilter}>
 				<SelectTrigger className="w-40">
 					<SelectValue placeholder="Tag" />
 				</SelectTrigger>
@@ -354,7 +354,7 @@ export function BookmarkResultsHeader({
 	totalCount,
 }: BookmarkResultsHeaderProps) {
 	return (
-		<div className="mb-4 text-sm text-muted-foreground">
+		<div className="mb-4 text-muted-foreground text-sm">
 			Showing {filteredCount} of {totalCount} bookmarks
 		</div>
 	)
@@ -383,9 +383,9 @@ export function BookmarkGrid({ bookmarks }: BookmarkGridProps) {
 	if (bookmarks.length === 0) {
 		return (
 			<EmptyState
+				description="Try adjusting your search or filters to find what you're looking for."
 				icon={<Icons.search className="size-10 text-muted-foreground" />}
 				title="No bookmarks found"
-				description="Try adjusting your search or filters to find what you're looking for."
 			/>
 		)
 	}
@@ -393,7 +393,7 @@ export function BookmarkGrid({ bookmarks }: BookmarkGridProps) {
 	return (
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{bookmarks.map((bookmark) => (
-				<BookmarkCard key={bookmark.id} bookmark={bookmark} />
+				<BookmarkCard bookmark={bookmark} key={bookmark.id} />
 			))}
 		</div>
 	)
@@ -456,11 +456,11 @@ function BookmarkCardHeader({ bookmark }: { bookmark: Bookmark }) {
 					) : (
 						<Icons.play className="size-4 text-green-500" />
 					)}
-					<Badge variant="outline" className="text-xs capitalize">
+					<Badge className="text-xs capitalize" variant="outline">
 						{contentType}
 					</Badge>
 				</div>
-				<div className="flex items-center gap-1 text-xs text-muted-foreground">
+				<div className="flex items-center gap-1 text-muted-foreground text-xs">
 					<Icons.calendar className="size-3" />
 					{format(bookmark.createdAt, "MMM d, yyyy")}
 				</div>
@@ -507,10 +507,10 @@ function BookmarkCardContent({
 			)}
 
 			<BookmarkFooter
-				views={bookmark.content.views}
 				contentType={contentType}
 				contentTypePath={contentTypePath}
 				itemId={bookmark.content.id}
+				views={bookmark.content.views}
 			/>
 		</CardContent>
 	)
@@ -528,7 +528,7 @@ function BookmarkCardContent({
  */
 function BookmarkNotes({ notes }: { notes: string }) {
 	return (
-		<p className="mb-3 line-clamp-2 text-sm text-muted-foreground">{notes}</p>
+		<p className="mb-3 line-clamp-2 text-muted-foreground text-sm">{notes}</p>
 	)
 }
 
@@ -547,13 +547,13 @@ function BookmarkTags({ tags }: { tags: Bookmark["bookmarkTags"] }) {
 		<div className="mb-3 flex flex-wrap gap-1">
 			{tags.map((bt) => (
 				<Badge
-					key={bt.tag.name}
-					variant="secondary"
 					className="text-xs"
+					key={bt.tag.name}
 					style={{
 						backgroundColor: bt.tag.color ?? undefined,
 						color: bt.tag.color ? "white" : undefined,
 					}}
+					variant="secondary"
 				>
 					<Icons.tag className="mr-1 size-3" />
 					{bt.tag.name}
@@ -598,7 +598,7 @@ function BookmarkFooter({
 }: BookmarkFooterProps) {
 	return (
 		<div className="flex items-center justify-between">
-			<div className="text-xs text-muted-foreground">
+			<div className="text-muted-foreground text-xs">
 				{views.toLocaleString()} views
 			</div>
 			<Button asChild size="sm" variant="outline">
@@ -621,19 +621,19 @@ export function BookmarksEmptyState() {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<Container title="Bookmarks">
 				<EmptyState
-					icon={<Icons.bookmark className="size-10 text-muted-foreground" />}
-					title="No bookmarks yet"
-					description="Start bookmarking articles and tutorials to see them here. You can add tags and notes to organize your content."
 					action={{
 						label: "Browse Content",
 						onClick: () => navigate("/articles"),
 					}}
+					description="Start bookmarking articles and tutorials to see them here. You can add tags and notes to organize your content."
+					icon={<Icons.bookmark className="size-10 text-muted-foreground" />}
+					title="No bookmarks yet"
 				/>
 			</Container>
 		</motion.div>

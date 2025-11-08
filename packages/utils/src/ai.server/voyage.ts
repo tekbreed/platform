@@ -1,6 +1,6 @@
 import { VoyageAIClient } from "voyageai"
 
-import { getErrorMessage } from "../misc"
+import { getErrorMessage, invariant } from "../misc"
 import { withRetry } from "../misc.server"
 
 const voyageClient = new VoyageAIClient({
@@ -49,7 +49,6 @@ export async function generateDocumentEmbedding(
 		}
 		return response
 	} catch (error) {
-		console.error("VoyageAI embedding error:", error)
 		throw new Error(`Failed to generate embeddings: ${getErrorMessage(error)}`)
 	}
 }
@@ -57,17 +56,17 @@ export async function generateDocumentEmbedding(
 export async function generateQueryEmbedding(query: string): Promise<number[]> {
 	try {
 		const response = await generateEmbedding(query, MODELS.QUERY, "query")
+		invariant(response, "No embeddings returned from VoyageAI")
 		if (!response) {
 			throw new Error("No embeddings returned from VoyageAI")
 		}
 		if (!response.length) {
 			return []
 		}
-		return response[0]
+		return response[0] ?? []
 	} catch (error) {
+		// biome-ignore lint/suspicious/noConsole: allow console warning
 		console.error("VoyageAI query embedding error:", error)
-		throw new Error(
-			`Failed to generate query embedding: ${getErrorMessage(error)}`,
-		)
+		return []
 	}
 }

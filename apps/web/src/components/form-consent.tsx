@@ -7,17 +7,17 @@ export function FormConsent({ action }: { action: Action }) {
 		<p className="-my-1 text-xs">
 			By signing {action === "signup" ? "up" : "in"}, you agree to our{" "}
 			<Link
-				to={"/legal/terms-of-use"}
-				prefetch="intent"
 				className="text-blue-700 dark:text-blue-500"
+				prefetch="intent"
+				to={"/legal/terms-of-use"}
 			>
 				Terms of Service
 			</Link>{" "}
 			and{" "}
 			<Link
-				to={"/legal/privacy-policy"}
-				prefetch="intent"
 				className="text-blue-700 dark:text-blue-500"
+				prefetch="intent"
+				to={"/legal/privacy-policy"}
 			>
 				Privacy Policy
 			</Link>

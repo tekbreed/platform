@@ -3,12 +3,14 @@ import { data } from "react-router"
 import { format } from "date-fns"
 import { StatusCodes } from "http-status-codes"
 
-import { prisma } from "@repo/database/client"
 import { EmailChangeNotification } from "@repo/ui/email/email-change-notification"
+
 import { sendEmail } from "@repo/utils/email.server"
 import { invariant } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
 import { verifySessionStorage } from "@repo/utils/verification.server"
+
+import { prisma } from "@repo/database/client"
 
 import type { VerifyFunctionArgs } from "../auth/verify.server"
 import { newEmailAddressSessionKey } from "./change-email"

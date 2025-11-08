@@ -7,6 +7,7 @@ import ShikiHighlighter, { type Element } from "react-shiki"
 
 import type { SandpackTemplate } from "@repo/utils/content/articles/types"
 
+import { Button } from "@/components/button"
 import { EmptyState } from "@/composed/empty-state"
 import { Icons } from "@/composed/icons"
 import { cn } from "@/lib/utils"
@@ -41,9 +42,9 @@ interface CodeHighlightProps {
 function InvalidSandboxTemplate() {
 	return (
 		<EmptyState
+			className="bg-red-300/60 dark:bg-red-950"
 			icon={<Icons.codesandbox className="size-7 animate-spin text-red-500" />}
 			title="Invalid sandbox template"
-			className="bg-red-300/60 dark:bg-red-950"
 		/>
 	)
 }
@@ -73,18 +74,19 @@ const CopyButton = React.memo(function CopyButton({ code }: CopyButtonProps) {
 	}, [code])
 
 	return (
-		<button
-			onClick={copyToClipboard}
-			className="absolute top-2 right-2 z-10 rounded-md bg-muted/80 p-2 text-destructive transition-colors hover:bg-muted"
+		<Button
 			aria-label="Copy code"
+			className="absolute top-2 right-2 z-10 rounded-md bg-muted/80 p-2 text-destructive transition-colors hover:bg-muted"
 			disabled={copied}
+			onClick={copyToClipboard}
+			variant={"ghost"}
 		>
 			{copied ? (
-				<Icons.check size={16} className="text-blue-600" />
+				<Icons.check className="text-blue-600" size={16} />
 			) : (
-				<Icons.copy size={16} className="text-muted-foreground" />
+				<Icons.copy className="text-muted-foreground" size={16} />
 			)}
-		</button>
+		</Button>
 	)
 })
 
@@ -142,13 +144,13 @@ export function Code({
 		if (!videoId) {
 			return (
 				<EmptyState
+					className="bg-red-300/60 dark:bg-red-950"
 					icon={<Icons.youtube className="size-7 animate-pulse text-red-500" />}
 					title="Invalid YouTube ID"
-					className="bg-red-300/60 dark:bg-red-950"
 				/>
 			)
 		}
-		return <Iframe videoId={videoId} type={isYoutube ? "youtube" : "bunny"} />
+		return <Iframe type={isYoutube ? "youtube" : "bunny"} videoId={videoId} />
 	}
 
 	// Handle Sandpack content
@@ -176,11 +178,11 @@ export function Code({
 		<div className={cn("relative text-sm", className)}>
 			<CopyButton code={code} />
 			<ShikiHighlighter
-				transformers={[transformerNotationDiff({ matchAlgorithm: "v3" })]}
+				delay={150}
+				langClassName="left-2 !top-[3px] capitalize"
 				language={language}
 				theme={currentTheme}
-				langClassName="left-2 !top-[3px] capitalize"
-				delay={150}
+				transformers={[transformerNotationDiff({ matchAlgorithm: "v3" })]}
 				{...props}
 			>
 				{code}

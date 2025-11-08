@@ -20,6 +20,7 @@ export function CodeBlockComponent({
 				{extension.options.lowlight
 					.listLanguages()
 					.map((lang: string, index: number) => (
+						// biome-ignore lint/suspicious/noArrayIndexKey: List doesn't change
 						<option key={index} value={lang}>
 							{lang}
 						</option>

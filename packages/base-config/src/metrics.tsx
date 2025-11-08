@@ -3,8 +3,7 @@ export function Metrics({ nonce }: { nonce: string }) {
 		<>
 			{/* Yandex.Metrika counter  */}
 			<script
-				nonce={nonce}
-				// biome-ignore lint/security/noDangerouslySetInnerHtml: to be removed
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: allow
 				dangerouslySetInnerHTML={{
 					__html: `
             (function(m,e,t,r,i,k,a){
@@ -17,13 +16,14 @@ export function Metrics({ nonce }: { nonce: string }) {
             ym(105142868, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
           `,
 				}}
+				nonce={nonce}
 			/>
 			<noscript>
 				<div>
 					<img
+						alt=""
 						src="https://mc.yandex.ru/watch/105142868"
 						style={{ position: "absolute", left: "-9999px" }}
-						alt=""
 					/>
 				</div>
 			</noscript>

@@ -37,15 +37,15 @@ export function DataAndSecurity() {
 	return (
 		<Container title="Data and Security">
 			<Item
-				title="Change Email"
 				description={
 					<>
 						Change your email from{" "}
 						<span className="font-bold">{user.email}</span>
 					</>
 				}
+				title="Change Email"
 			>
-				<Button variant="outline" asChild>
+				<Button asChild variant="outline">
 					<Link to={"/profile/change-email"}>
 						<Icons.mail className="mr-1 size-4" />
 						Change
@@ -54,11 +54,11 @@ export function DataAndSecurity() {
 			</Item>
 			{user.password ? (
 				<Item
-					title="Update Password"
-					description="Update your password to a new, secure one"
 					className="mt-4"
+					description="Update your password to a new, secure one"
+					title="Update Password"
 				>
-					<Button variant="outline" asChild>
+					<Button asChild variant="outline">
 						<Link to={"/profile/password"}>
 							<Icons.rectangleEllipsis className="mr-1 size-4" />
 							Update
@@ -67,11 +67,11 @@ export function DataAndSecurity() {
 				</Item>
 			) : (
 				<Item
-					title="Create a Password"
-					description="Create a secure password to protect your account"
 					className="mt-4"
+					description="Create a secure password to protect your account"
+					title="Create a Password"
 				>
-					<Button variant="outline" asChild>
+					<Button asChild variant="outline">
 						<Link to={"/profile/password/create"}>
 							<Icons.lockKeyhole className="mr-1 size-4" />
 							Create
@@ -81,15 +81,15 @@ export function DataAndSecurity() {
 			)}
 
 			<Item
-				title="Download Your Data"
-				description="Get a copy of all your data stored in your account"
 				className="mt-4"
+				description="Get a copy of all your data stored in your account"
+				title="Download Your Data"
 			>
-				<Button variant="outline" asChild>
+				<Button asChild variant="outline">
 					<a
-						href="/download-user-data"
-						download="tekbreed-data"
 						className="flex items-center"
+						download="tekbreed-data"
+						href="/download-user-data"
 					>
 						<Icons.download className="mr-2 size-4" />
 						Download
@@ -98,13 +98,13 @@ export function DataAndSecurity() {
 			</Item>
 
 			<Item
-				title="Active Sessions"
+				className="mt-4"
 				description={
 					otherSessionsCount
 						? "Sign out from all other devices where you're signed in"
 						: "This is your only session"
 				}
-				className="mt-4"
+				title="Active Sessions"
 			>
 				{otherSessionsCount ? (
 					<AlertDialog>
@@ -146,7 +146,7 @@ export function DataAndSecurity() {
 			</Item>
 
 			<div className="pt-4">
-				<h3 className="mb-1 text-lg font-medium text-red-500 dark:text-red-400">
+				<h3 className="mb-1 font-medium text-lg text-red-500 dark:text-red-400">
 					Danger Zone
 				</h3>
 				<p className="mb-4 text-muted-foreground">
@@ -156,8 +156,8 @@ export function DataAndSecurity() {
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
 						<Button
-							variant={"outline"}
 							className="border-red-300 text-red-500 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950/30"
+							variant={"outline"}
 						>
 							<Icons.alertTriangle className="mr-2 size-4" />
 							Delete Account
@@ -210,12 +210,12 @@ function Item({
 	return (
 		<div
 			className={cn(
-				"flex items-center justify-between border-b border-border pb-4",
+				"flex items-center justify-between border-border border-b pb-4",
 				className,
 			)}
 		>
 			<div>
-				<h3 className="mb-1 text-lg font-medium">{title}</h3>
+				<h3 className="mb-1 font-medium text-lg">{title}</h3>
 				<p className="text-muted-foreground">{description}</p>
 			</div>
 			{children}

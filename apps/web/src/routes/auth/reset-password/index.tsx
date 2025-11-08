@@ -20,6 +20,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
 import { PasswordAndConfirmPasswordSchema } from "@repo/utils/user-validation"
@@ -59,16 +60,16 @@ export default function ResetPasswordRoute({
 		<>
 			{/* {metadata} */}
 			<motion.div
-				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.3 }}
 				className="mx-auto w-full max-w-lg"
+				initial={{ opacity: 0, y: 20 }}
+				transition={{ duration: 0.3 }}
 			>
 				<Card className="w-full bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form
 						{...getFormProps(form)}
-						method="post"
 						className="mx-auto w-full space-y-6"
+						method="post"
 					>
 						<HoneypotInputs />
 						<CardHeader>
@@ -82,8 +83,8 @@ export default function ResetPasswordRoute({
 								<Label htmlFor={fields.password.id}>New Password</Label>
 								<Input
 									{...getInputProps(fields.password, { type: "password" })}
-									placeholder="••••••"
 									className="h-12 border-border bg-background text-lg"
+									placeholder="••••••"
 								/>
 								<FormError errors={fields.password.errors} />
 							</div>
@@ -95,8 +96,8 @@ export default function ResetPasswordRoute({
 									{...getInputProps(fields.confirmPassword, {
 										type: "password",
 									})}
-									placeholder="••••••"
 									className="h-12 border-border bg-background text-lg"
+									placeholder="••••••"
 								/>
 								<FormError errors={fields.confirmPassword.errors} />
 							</div>
@@ -107,14 +108,14 @@ export default function ResetPasswordRoute({
 								<div className="flex gap-4">
 									<Link to={"/forgot-password"}>
 										<Button
+											disabled={isUpdating}
 											type="button"
 											variant={"outline"}
-											disabled={isUpdating}
 										>
 											Cancel
 										</Button>
 									</Link>
-									<Button type="submit" disabled={isUpdating}>
+									<Button disabled={isUpdating} type="submit">
 										Update{" "}
 										{isUpdating ? (
 											<Icons.loader2 className="ml-2 animate-spin" />

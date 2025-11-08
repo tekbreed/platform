@@ -23,23 +23,23 @@ export function generateMetadata({
 	return (
 		<>
 			<title>{title}</title>
-			<meta name="description" content={description} />
-			<meta name="keywords" content={keywords} />
-			<meta name="author" content="Christopher S. Aondona (The Coding Simba)" />
+			<meta content={description} name="description" />
+			<meta content={keywords} name="keywords" />
+			<meta content="Christopher S. Aondona (The Coding Simba)" name="author" />
 
-			<meta property="og:title" content={title} />
-			<meta property="og:description" content={description} />
-			<meta property="og:url" content={`${baseUrl}/${url}`} />
-			<meta property="og:image" content={image} />
-			<meta property="og:image:alt" content={imageAlt} />
-			<meta property="og:type" content={type} />
+			<meta content={title} property="og:title" />
+			<meta content={description} property="og:description" />
+			<meta content={`${baseUrl}/${url}`} property="og:url" />
+			<meta content={image} property="og:image" />
+			<meta content={imageAlt} property="og:image:alt" />
+			<meta content={type} property="og:type" />
 
-			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:site" content="@tekbreed" />
-			<meta name="twitter:title" content={title} />
-			<meta name="twitter:description" content={description} />
-			<meta name="twitter:image" content={image} />
-			<meta name="twitter:image:alt" content={imageAlt} />
+			<meta content="summary_large_image" name="twitter:card" />
+			<meta content="@tekbreed" name="twitter:site" />
+			<meta content={title} name="twitter:title" />
+			<meta content={description} name="twitter:description" />
+			<meta content={image} name="twitter:image" />
+			<meta content={imageAlt} name="twitter:image:alt" />
 		</>
 	)
 }

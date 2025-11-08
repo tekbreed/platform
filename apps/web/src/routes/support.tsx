@@ -8,6 +8,7 @@ import {
 	CardTitle,
 } from "@repo/ui/components/card"
 import { Header } from "@repo/ui/composed/page-header"
+
 import { useChat } from "@repo/utils/providers/chat"
 
 export default function SupportRoute() {
@@ -15,8 +16,8 @@ export default function SupportRoute() {
 	return (
 		<>
 			<Header
-				title="Support Center"
 				description="Get help with your account, billing, and technical issues."
+				title="Support Center"
 			/>
 
 			<div className="container mx-auto my-20 w-full max-w-6xl space-y-12">
@@ -32,8 +33,8 @@ export default function SupportRoute() {
 							<p className="mb-4 text-muted-foreground">
 								Send us an email and we&apos;ll get back to you within 24 hours.
 							</p>
-							<Button variant="outline" className="mt-auto w-full" asChild>
-								<Link to="mailto:support@tekbreed.com" target="_blank">
+							<Button asChild className="mt-auto w-full" variant="outline">
+								<Link target="_blank" to="mailto:support@tekbreed.com">
 									Send Email
 								</Link>
 							</Button>
@@ -51,7 +52,7 @@ export default function SupportRoute() {
 							<p className="mb-4 text-muted-foreground">
 								Chat with our support team in real-time.
 							</p>
-							<Button onClick={toggleChat} variant="outline" className="w-full">
+							<Button className="w-full" onClick={toggleChat} variant="outline">
 								Start Chat
 							</Button>
 						</CardContent>
@@ -70,7 +71,7 @@ export default function SupportRoute() {
 								customers.
 							</p>
 							<div className="mt-auto flex items-center justify-center">
-								<span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground">
+								<span className="inline-flex items-center rounded-full bg-muted px-3 py-1 font-medium text-muted-foreground text-sm">
 									Teams Only
 								</span>
 							</div>

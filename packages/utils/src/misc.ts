@@ -116,6 +116,7 @@ export function getErrorMessage(error: unknown) {
 	) {
 		return error.message
 	}
+	// biome-ignore lint/suspicious/noConsole: for debugging
 	console.error("Unable to get error message for error", error)
 	return "Unknown Error"
 }

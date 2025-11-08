@@ -21,25 +21,25 @@ export function Document({
 }: DocumentProps) {
 	const allowIndexing = env?.ALLOW_INDEXING !== "false"
 	return (
-		<html lang="en" data-theme={currentTheme ?? ""}>
+		<html data-theme={currentTheme ?? ""} lang="en">
 			<head>
 				<meta charSet="utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta content="width=device-width, initial-scale=1" name="viewport" />
 				<Meta />
 				<PreventFlashOnWrongTheme nonce={nonce} ssrTheme={!!theme} />
 				{allowIndexing ? null : (
-					<meta name="robots" content="noindex, nofollow" />
+					<meta content="noindex, nofollow" name="robots" />
 				)}
 				<Links />
 			</head>
 			<body className="min-h-screen">
 				<div className="flex flex-col">{children}</div>
 				<script
-					nonce={nonce}
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: Ignore DSIHTML for this file
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: Ignore dangerouslySetInnerHTML here as it is needed and safe
 					dangerouslySetInnerHTML={{
 						__html: `window.env = ${JSON.stringify(env)}`,
 					}}
+					nonce={nonce}
 				/>
 				{/* <Metrics nonce={nonce} /> */}
 				<ScrollRestoration nonce={nonce} />

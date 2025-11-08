@@ -36,6 +36,7 @@ export const prisma = remember("prisma", () => {
 		if (e.duration < LOG_THRESHOLD) return
 		const color =
 			e.duration < 50 ? "green" : e.duration < 100 ? "yellow" : "red"
+		// biome-ignore lint/suspicious/noConsole: for viewing queries on the console
 		console.info(
 			`prisma:query - ${styleText(color, `${e.duration}ms`)} - ${e.query}`,
 		)

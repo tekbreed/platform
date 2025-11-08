@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import {
 	Body,
 	Column,
@@ -39,9 +37,9 @@ export const Verification = ({
 						{/* Header with Logo */}
 						<Section className="mb-[8px] text-center">
 							<Img
-								src="https://di867tnz6fwga.cloudfront.net/brand-kits/4131df7d-337f-4182-99ad-1dc8664a83be/primary/c56c3e12-1f19-4f5c-ab3d-042d351d4a59.png"
 								alt="TekBreed"
 								className="mx-auto mb-[8px] h-auto w-full max-w-[80px] object-cover"
+								src="https://di867tnz6fwga.cloudfront.net/brand-kits/4131df7d-337f-4182-99ad-1dc8664a83be/primary/c56c3e12-1f19-4f5c-ab3d-042d351d4a59.png"
 							/>
 						</Section>
 
@@ -49,7 +47,7 @@ export const Verification = ({
 						<Section className="mb-[32px]">
 							<Heading
 								as="h2"
-								className="mb-[16px] text-center text-[24px] font-semibold"
+								className="mb-[16px] text-center font-semibold text-[24px]"
 								style={{ color: "#fbfbfc" }}
 							>
 								Email Verification
@@ -66,7 +64,7 @@ export const Verification = ({
 							{/* Verification Code Section - Using reference structure */}
 							<Section className="mb-[24px]">
 								<Text
-									className="mb-[8px] text-[16px] font-semibold"
+									className="mb-[8px] font-semibold text-[16px]"
 									style={{ color: "#fbfbfc" }}
 								>
 									Your Verification Code
@@ -82,7 +80,7 @@ export const Verification = ({
 									style={{ backgroundColor: "#1f1f23", borderColor: "#bfdbfe" }}
 								>
 									<Text
-										className="m-0 text-[32px] font-bold tracking-[8px]"
+										className="m-0 font-bold text-[32px] tracking-[8px]"
 										style={{ color: "#fbfbfc" }}
 									>
 										{code}
@@ -102,8 +100,8 @@ export const Verification = ({
 									Or click this link to verify:
 								</Text>
 								<Link
-									href={verificationUrl}
 									className="block break-all"
+									href={verificationUrl}
 									style={{ color: "#bfdbfe" }}
 								>
 									{verificationUrl}
@@ -124,48 +122,48 @@ export const Verification = ({
 						<Section className="mb-[32px] text-center">
 							<Row>
 								<Column className="text-center">
-									<Link href="https://github.com/tekbreed" className="mx-[8px]">
+									<Link className="mx-[8px]" href="https://github.com/tekbreed">
 										<Img
-											src="https://new.email/static/emails/social/social-github.png"
 											alt="GitHub"
 											className="inline-block h-[24px] w-[24px]"
+											src="https://new.email/static/emails/social/social-github.png"
 										/>
 									</Link>
 									<Link
-										href="https://www.linkedin.com/company/tekbreed/"
 										className="mx-[8px]"
+										href="https://www.linkedin.com/company/tekbreed/"
 									>
 										<Img
-											src="https://new.email/static/emails/social/social-linkedin.png"
 											alt="LinkedIn"
 											className="inline-block h-[24px] w-[24px]"
+											src="https://new.email/static/emails/social/social-linkedin.png"
 										/>
 									</Link>
-									<Link href="https://x.com/tekbreed" className="mx-[8px]">
+									<Link className="mx-[8px]" href="https://x.com/tekbreed">
 										<Img
-											src="https://new.email/static/emails/social/social-x.png"
 											alt="X"
 											className="inline-block h-[24px] w-[24px]"
+											src="https://new.email/static/emails/social/social-x.png"
 										/>
 									</Link>
 									<Link
-										href="https://www.youtube.com/channel/UCYWjNbfB8ygT_7hElaa0B9Q"
 										className="mx-[8px]"
+										href="https://www.youtube.com/channel/UCYWjNbfB8ygT_7hElaa0B9Q"
 									>
 										<Img
-											src="https://new.email/static/emails/social/social-youtube.png"
 											alt="YouTube"
 											className="inline-block h-[24px] w-[24px]"
+											src="https://new.email/static/emails/social/social-youtube.png"
 										/>
 									</Link>
 									<Link
-										href="https://discord.gg/7uZ6PWf4Xv"
 										className="mx-[8px]"
+										href="https://discord.gg/7uZ6PWf4Xv"
 									>
 										<Img
-											src="https://new.email/static/emails/social/social-discord.png"
 											alt="Discord"
 											className="inline-block h-[24px] w-[24px]"
+											src="https://new.email/static/emails/social/social-discord.png"
 										/>
 									</Link>
 								</Column>

@@ -5,7 +5,6 @@ import type { z } from "zod/v4"
 import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 
-import { prisma } from "@repo/database"
 import { getDomainUrl } from "@repo/utils/misc"
 import { TOTP } from "@repo/utils/totp.server"
 import {
@@ -16,6 +15,8 @@ import {
 	type VerificationTypes,
 	VerifySchema,
 } from "@repo/utils/verify"
+
+import { prisma } from "@repo/database"
 
 import {
 	handleVerification as handleChangeEmailVerification,

@@ -3,11 +3,12 @@ import { Outlet, useLocation } from "react-router"
 import { type Theme, useTheme } from "remix-themes"
 import { HoneypotProvider } from "remix-utils/honeypot/react"
 
-import type { HoneypotInputProps } from "@repo/utils/honeypot.server"
-import type { Toast } from "@repo/utils/toast.server"
 import { Toaster } from "@repo/ui/components/sonner"
 import { Footer } from "@repo/ui/composed/footer"
 import { Header } from "@repo/ui/composed/header/index"
+
+import type { HoneypotInputProps } from "@repo/utils/honeypot.server"
+import type { Toast } from "@repo/utils/toast.server"
 import { useToast } from "@repo/utils/hooks/use-toast"
 import { ChatProvider } from "@repo/utils/providers/chat"
 import { DiscordProvider } from "@repo/utils/providers/discord"
@@ -31,7 +32,7 @@ export function App({
 	const excludedRoutes = ["auth"]
 	const hideHeader = excludedRoutes.some((r) => location.pathname.includes(r))
 	return (
-		<Document currentTheme={currentTheme} theme={theme} env={env} nonce={nonce}>
+		<Document currentTheme={currentTheme} env={env} nonce={nonce} theme={theme}>
 			{!hideHeader ? <Header /> : null}
 			<main className="h-full min-h-full px-4 md:px-8">
 				<Outlet />
@@ -61,7 +62,7 @@ export function AppWithProviders({
 				<ChatProvider>
 					<DiscordProvider>
 						<ThemedApp theme={theme}>
-							<App theme={theme} nonce={nonce} env={env} />
+							<App env={env} nonce={nonce} theme={theme} />
 						</ThemedApp>
 					</DiscordProvider>
 				</ChatProvider>

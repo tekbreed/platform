@@ -13,9 +13,9 @@ export function ThemedApp({
 }) {
 	return (
 		<ThemeProvider
+			disableTransitionOnThemeChange={true}
 			specifiedTheme={theme}
 			themeAction="/set-theme"
-			disableTransitionOnThemeChange={true}
 		>
 			{children}
 		</ThemeProvider>

@@ -42,8 +42,8 @@ export const Preview =
 				<div className="flex items-center gap-2 border-b p-1">
 					<RunButton />
 					<ShowConsole
-						showConsole={showConsole}
 						setShowConsole={toggleConsole}
+						showConsole={showConsole}
 					/>
 					<RefreshButton />
 				</div>
@@ -52,8 +52,8 @@ export const Preview =
 					<SandpackPreview
 						className={previewClassName}
 						showNavigator={false}
-						showRefreshButton={false}
 						showOpenInCodeSandbox={false}
+						showRefreshButton={false}
 					/>
 
 					{showConsole && (

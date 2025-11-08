@@ -73,7 +73,7 @@ const coreValues = [
 
 export function AboutSection() {
 	return (
-		<section id="learn-more" className="bg-background py-24 sm:py-32">
+		<section className="bg-background py-24 sm:py-32" id="learn-more">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center">
 					<h2 className="text-base leading-7 font-semibold text-primary">
@@ -93,7 +93,7 @@ export function AboutSection() {
 				<div className="mx-auto mt-16 max-w-3xl sm:mt-20 lg:mt-24 lg:max-w-none">
 					<div className="grid max-w-xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-2">
 						{missionPoints.map((point, index) => (
-							<Card key={index} className="backdrop-blur-sm">
+							<Card className="backdrop-blur-sm" key={index}>
 								<CardHeader>
 									<div className="flex items-center gap-4">
 										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
@@ -128,7 +128,7 @@ export function AboutSection() {
 
 					<div className="grid max-w-xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-2">
 						{coreValues.map((value, index) => (
-							<Card key={index} className="backdrop-blur-sm">
+							<Card className="backdrop-blur-sm" key={index}>
 								<CardHeader>
 									<div className="flex items-center gap-4">
 										<div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">

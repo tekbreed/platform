@@ -69,8 +69,8 @@ export function BackgroundCanvas() {
 
 	return (
 		<canvas
-			ref={canvasRef}
 			className="pointer-events-none absolute inset-0"
+			ref={canvasRef}
 			style={{ zIndex: 1 }}
 		/>
 	)

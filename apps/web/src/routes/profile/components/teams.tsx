@@ -8,15 +8,15 @@ import { Container } from "./container"
 export function Teams() {
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<Container title="My Teams">
 				<EmptyState
+					description="We are working to implement this feature."
 					icon={<Icons.comingSoon className="size-8" />}
 					title="Coming Soon!"
-					description="We are working to implement this feature."
 				/>
 			</Container>
 		</motion.div>

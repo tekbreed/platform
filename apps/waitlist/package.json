@@ -6,8 +6,6 @@
 		"build": "react-router build",
 		"dev": "react-router dev",
 		"start": "react-router-serve ./build/server/index.js",
-		"lint": "eslint . --max-warnings 0",
-		"lint:fix": "eslint . --max-warnings 0 --fix",
 		"typecheck": "react-router typegen && tsc"
 	},
 	"dependencies": {

@@ -68,7 +68,7 @@ export function MDXEditor({
 	return (
 		<div className="rounded-lg border border-border">
 			<MenuBar editor={editor} />
-			<EditorContent editor={editor} className="bg-background" />
+			<EditorContent className="bg-background" editor={editor} />
 		</div>
 	)
 }

@@ -6,7 +6,6 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { prisma } from "@repo/database"
 import {
 	requireAnonymous,
 	sessionKey,
@@ -19,6 +18,8 @@ import { onboardingSessionKey } from "@repo/utils/onboarding"
 import { authSessionStorage } from "@repo/utils/session.server"
 import { redirectWithToast } from "@repo/utils/toast.server"
 import { verifySessionStorage } from "@repo/utils/verification.server"
+
+import { prisma } from "@repo/database"
 
 import { OnboardingSchema, providerIdKey } from "./provider"
 
@@ -93,8 +94,6 @@ export async function handleProviderOnboarding(
 	})
 
 	if (submission.status !== "success") {
-		console.log("Yo error", submission)
-
 		return data({ status: "error", ...submission.reply() } as const, {
 			status:
 				submission.status === "error"

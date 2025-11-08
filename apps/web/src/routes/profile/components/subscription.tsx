@@ -1,138 +1,3 @@
-// import React from "react";
-// import type { Route } from "../+types/index";
-// import { motion } from "framer-motion";
-// import { Button } from "~/components/ui/button";
-// import { ChevronRight, CreditCard } from "lucide-react";
-// import { EmptyState } from "~/components/empty-state";
-// import { Link, useLoaderData, useNavigate } from "react-router";
-// import { format } from "date-fns";
-// import { cn } from "~/utils/misc";
-
-// export function Subscription() {
-//   const { subscription } = useLoaderData<Route.ComponentProps["loaderData"]>();
-//   const navigate = useNavigate();
-//   const statusesToCheck = ["canceled", "past_due", "unpaid"];
-//   return (
-//     <motion.div
-//       initial={{ opacity: 0, y: 20 }}
-//       animate={{ opacity: 1, y: 0 }}
-//       transition={{ duration: 0.3 }}
-//     >
-//       <div className="border-border bg-card mb-8 rounded-xl border shadow-sm">
-//         <div className="border-border border-b p-6">
-//           <h2 className="text-xl font-bold">Subscription Details</h2>
-//         </div>
-//         <div className="p-6">
-//           {!subscription ? (
-//             <EmptyState
-//               icon={<CreditCard className="size-8" />}
-//               title="No Subscription Found!"
-//               description="You don't have an active subscription."
-//               action={{
-//                 label: "Subscribe Now",
-//                 onClick: () => navigate("/subscription"),
-//               }}
-//             />
-//           ) : (
-//             <>
-//               <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-800 dark:bg-blue-900/20">
-//                 <div className="flex items-center justify-between">
-//                   <div>
-//                     <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
-//                       {subscription.product.name} Plan
-//                     </div>
-//                     <div className="text-muted-foreground">
-//                       ${subscription.amount / 100} /{" "}
-//                       {subscription.recurringInterval}
-//                     </div>
-//                   </div>
-//                   <div
-//                     className={cn(
-//                       "rounded-full px-3 py-1 text-sm font-medium capitalize",
-//                       {
-//                         "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400":
-//                           subscription.status === "active",
-//                         "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400":
-//                           subscription.status === "canceled",
-//                         "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400":
-//                           subscription.status === "incomplete",
-//                         "bg-muted text-muted-foreground":
-//                           subscription.status === "incomplete_expired",
-//                       },
-//                     )}
-//                   >
-//                     {subscription.status}
-//                   </div>
-//                 </div>
-//               </div>
-//               <div className="space-y-4">
-//                 <div className="border-border flex items-center justify-between border-b pb-4">
-//                   <div className="font-medium"> Started on</div>
-//                   <div>
-//                     {format(subscription.currentPeriodStart, "MMM d, yyyy")}
-//                   </div>
-//                 </div>
-//                 {subscription.currentPeriodEnd &&
-//                 !subscription.cancelAtPeriodEnd ? (
-//                   <div className="border-border flex items-center justify-between border-b pb-4">
-//                     <div className="font-medium">Next billing date</div>
-//                     <div>
-//                       {format(subscription.currentPeriodEnd, "MMM d, yyyy")}
-//                     </div>
-//                   </div>
-//                 ) : null}
-//                 {statusesToCheck.includes(subscription.status) ? (
-//                   <div className="border-border flex items-center justify-between border-b pb-4">
-//                     <div className="font-medium">Ended on</div>
-//                     <div>
-//                       {subscription.endedAt
-//                         ? format(subscription.endedAt, "MMM d, yyyy")
-//                         : "N/A"}
-//                     </div>
-//                   </div>
-//                 ) : null}
-//                 {subscription.cancelAtPeriodEnd &&
-//                 subscription.currentPeriodEnd ? (
-//                   <div className="border-border flex items-center justify-between border-b pb-4">
-//                     <div className="font-medium">
-//                       Subscription will be canceled on
-//                     </div>
-//                     <div>
-//                       {format(subscription.currentPeriodEnd, "MMM d, yyyy")}
-//                     </div>
-//                   </div>
-//                 ) : null}
-//                 <div className="border-border flex items-center justify-between border-b pb-4">
-//                   <div className="font-medium">Billing history</div>
-//                   <Link to={`/subscription/portal`} target="_blank">
-//                     <Button variant="link" className="h-auto p-0">
-//                       View all
-//                       <ChevronRight className="ml-1 h-4 w-4" />
-//                     </Button>
-//                   </Link>
-//                 </div>
-//                 <div className="flex justify-end gap-6">
-//                   <Link to={`/subscription/portal`} target="_blank">
-//                     <Button variant="outline">Manage Subscription</Button>
-//                   </Link>
-//                   <Link to={`/subscription/portal`} target="_blank">
-//                     <Button
-//                       variant="outline"
-//                       className="border-red-200 text-red-600 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-900/20"
-//                     >
-//                       Cancel Subscription
-//                     </Button>
-//                   </Link>
-//                 </div>
-//               </div>
-//             </>
-//           )}
-//         </div>
-//       </div>
-//     </motion.div>
-//   );
-// }
-
 import type React from "react"
 
 import { Link, useLoaderData, useNavigate } from "react-router"
@@ -249,29 +114,6 @@ interface SubscriptionCardProps {
 	children: React.ReactNode
 }
 
-/**
- * A comprehensive subscription management component for the profile page.
- *
- * This component displays subscription information with:
- * - Subscription plan details with status indicators
- * - Billing information and important dates
- * - Status-aware conditional rendering for different subscription states
- * - Action buttons for subscription management
- * - Empty state for users without subscriptions
- * - Responsive design with proper visual hierarchy
- *
- * The component has been refactored into smaller, focused components:
- * - SubscriptionCard: Consistent card layout wrapper
- * - SubscriptionEmptyState: Empty state for no subscription
- * - SubscriptionPlanHeader: Plan info with status badge
- * - SubscriptionDetails: Billing dates and subscription timeline
- * - BillingHistorySection: Link to billing portal
- * - SubscriptionActions: Manage and cancel buttons
- * - ActiveSubscriptionContent: Complete active subscription display
- * - Utility functions for status handling and date logic
- *
- * @returns {JSX.Element} A subscription management interface
- */
 export function Subscription() {
 	const { subscription } = useLoaderData<Route.ComponentProps["loaderData"]>()
 	const navigate = useNavigate()
@@ -282,8 +124,8 @@ export function Subscription() {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<SubscriptionCard title="Subscription Details">
@@ -300,8 +142,8 @@ export function Subscription() {
 export function SubscriptionCard({ title, children }: SubscriptionCardProps) {
 	return (
 		<div className="mb-8 rounded-xl border border-border bg-card shadow-sm">
-			<div className="border-b border-border p-6">
-				<h2 className="text-xl font-bold">{title}</h2>
+			<div className="border-border border-b p-6">
+				<h2 className="font-bold text-xl">{title}</h2>
 			</div>
 			<div className="p-6">{children}</div>
 		</div>
@@ -317,13 +159,13 @@ export function SubscriptionEmptyState({
 }: SubscriptionEmptyStateProps) {
 	return (
 		<EmptyState
-			icon={<Icons.creditCard className="size-8" />}
-			title="No Subscription Found!"
-			description="You don't have an active subscription."
 			action={{
 				label: "Subscribe Now",
 				onClick: onSubscribeClick,
 			}}
+			description="You don't have an active subscription."
+			icon={<Icons.creditCard className="size-8" />}
+			title="No Subscription Found!"
 		/>
 	)
 }
@@ -354,7 +196,7 @@ function SubscriptionPlanInfo({
 }) {
 	return (
 		<div>
-			<div className="text-lg font-bold text-blue-600 dark:text-blue-400">
+			<div className="font-bold text-blue-600 text-lg dark:text-blue-400">
 				{subscription.product.name} Plan
 			</div>
 			<div className="text-muted-foreground">
@@ -372,7 +214,7 @@ function SubscriptionStatusBadge({
 	return (
 		<div
 			className={cn(
-				"rounded-full px-3 py-1 text-sm font-medium capitalize",
+				"rounded-full px-3 py-1 font-medium text-sm capitalize",
 				statusConfig.className,
 			)}
 		>
@@ -399,33 +241,34 @@ export function SubscriptionDetails({
 				subscription.status,
 				subscription.currentPeriodEnd,
 				subscription.cancelAtPeriodEnd,
-			) && (
-				<SubscriptionDetailRow
-					label="Next billing date"
-					value={format(subscription.currentPeriodEnd!, "MMM d, yyyy")}
-				/>
-			)}
+			) &&
+				subscription.currentPeriodEnd && (
+					<SubscriptionDetailRow
+						label="Next billing date"
+						value={format(subscription.currentPeriodEnd, "MMM d, yyyy")}
+					/>
+				)}
 
-			{shouldShowEndDate(subscription.status) && (
+			{shouldShowEndDate(subscription.status) && subscription.endedAt && (
 				<SubscriptionDetailRow
 					label="Ended on"
-					value={
-						subscription.endedAt
-							? format(subscription.endedAt, "MMM d, yyyy")
-							: "N/A"
-					}
+					value={format(subscription.endedAt, "MMM d, yyyy")}
 				/>
 			)}
 
 			{shouldShowCancellationDate(
 				subscription.cancelAtPeriodEnd,
 				subscription.currentPeriodEnd,
-			) && (
+			) ? (
 				<SubscriptionDetailRow
 					label="Subscription will be canceled on"
-					value={format(subscription.currentPeriodEnd!, "MMM d, yyyy")}
+					value={
+						subscription.currentPeriodEnd
+							? format(subscription.currentPeriodEnd, "MMM d, yyyy")
+							: "N/A"
+					}
 				/>
-			)}
+			) : null}
 		</div>
 	)
 }
@@ -438,7 +281,7 @@ function SubscriptionDetailRow({
 	value: string
 }) {
 	return (
-		<div className="flex items-center justify-between border-b border-border pb-4">
+		<div className="flex items-center justify-between border-border border-b pb-4">
 			<div className="font-medium">{label}</div>
 			<div>{value}</div>
 		</div>
@@ -447,10 +290,10 @@ function SubscriptionDetailRow({
 
 export function BillingHistorySection() {
 	return (
-		<div className="flex items-center justify-between border-b border-border pb-4">
+		<div className="flex items-center justify-between border-border border-b pb-4">
 			<div className="font-medium">Billing history</div>
-			<Link to="/subscription/portal" target="_blank">
-				<Button variant="link" className="h-auto p-0">
+			<Link target="_blank" to="/subscription/portal">
+				<Button className="h-auto p-0" variant="link">
 					View all
 					<Icons.chevronRight className="ml-1 h-4 w-4" />
 				</Button>
@@ -470,7 +313,7 @@ export function SubscriptionActions() {
 
 function ManageSubscriptionButton() {
 	return (
-		<Link to="/subscription/portal" target="_blank">
+		<Link target="_blank" to="/subscription/portal">
 			<Button variant="outline">Manage Subscription</Button>
 		</Link>
 	)
@@ -478,10 +321,10 @@ function ManageSubscriptionButton() {
 
 function CancelSubscriptionButton() {
 	return (
-		<Link to="/subscription/portal" target="_blank">
+		<Link target="_blank" to="/subscription/portal">
 			<Button
-				variant="outline"
 				className="border-red-200 text-red-600 hover:bg-red-50 dark:border-red-900 dark:text-red-400 dark:hover:bg-red-900/20"
+				variant="outline"
 			>
 				Cancel Subscription
 			</Button>

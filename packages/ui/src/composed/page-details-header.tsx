@@ -32,17 +32,17 @@ export function DetailsHeader({ item }: DetailsHeaderProps) {
 	const stats = "markdown" in item ? readingTime(item.markdown) : null
 
 	return (
-		<div className="relative isolate mt-13 overflow-hidden border-b border-border py-4">
+		<div className="relative isolate mt-13 overflow-hidden border-border border-b py-4">
 			<BackgroundCanvas />
-			<div className="relative z-10 container mx-auto px-4">
+			<div className="container relative z-10 mx-auto px-4">
 				<div className="mx-auto">
 					<div>
 						<Breadcrumb>
 							<BreadcrumbList>
 								<BreadcrumbItem>
 									<Link
-										to={`/${itemType}`}
 										className="text-lg capitalize hover:text-blue-600 dark:hover:text-blue-400"
+										to={`/${itemType}`}
 									>
 										{itemType}
 									</Link>
@@ -51,8 +51,8 @@ export function DetailsHeader({ item }: DetailsHeaderProps) {
 								{isTutorial ? (
 									<BreadcrumbItem>
 										<Link
-											to={`/tutorials/${item.slug}`}
 											className="text-lg capitalize hover:text-blue-600 dark:hover:text-blue-400"
+											to={`/tutorials/${item.slug}`}
 										>
 											{item.title}
 										</Link>
@@ -68,13 +68,13 @@ export function DetailsHeader({ item }: DetailsHeaderProps) {
 						</Breadcrumb>
 					</div>
 
-					<h1 className="mt-2 mb-3 text-2xl font-bold md:text-3xl">
+					<h1 className="mt-2 mb-3 font-bold text-2xl md:text-3xl">
 						{item.title}
 					</h1>
 
 					<div className="flex flex-wrap items-center gap-4">
 						{item.category ? (
-							<span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+							<span className="rounded-full bg-blue-100 px-3 py-1 font-medium text-blue-600 text-sm dark:bg-blue-900/30 dark:text-blue-400">
 								{item.category.title}
 							</span>
 						) : null}
@@ -107,7 +107,7 @@ export function DetailsHeader({ item }: DetailsHeaderProps) {
 											{getInitials(item.author.name)}
 										</AvatarFallback>
 									</Avatar>
-									<p className="text-sm font-medium">{item.author.name}</p>
+									<p className="font-medium text-sm">{item.author.name}</p>
 								</div>
 							</>
 						) : null}

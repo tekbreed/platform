@@ -57,41 +57,41 @@ export function Notifications() {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<Container title="Notifications">
 				<div className="space-y-6">
 					<Toggle
 						{...getInputProps(fields.allNotifications, { type: "checkbox" })}
-						label="Receive all notifications"
-						description="Receive all updates straight to your inbox"
 						defaultChecked={turnAllOn}
+						description="Receive all updates straight to your inbox"
+						label="Receive all notifications"
 						onChange={handleSubmit}
 					/>
 
 					<Toggle
 						{...getInputProps(fields.contentUpdate, { type: "checkbox" })}
-						label="Content updates"
-						description="Get notified about new content and updates"
 						checked={notifications?.contentUpdate || turnAllOn}
+						description="Get notified about new content and updates"
+						label="Content updates"
 						onChange={handleSubmit}
 					/>
 
 					<Toggle
 						{...getInputProps(fields.promotions, { type: "checkbox" })}
-						label="Promotions"
-						description="Receive promotional offers and discounts"
 						checked={notifications?.promotions || turnAllOn}
+						description="Receive promotional offers and discounts"
+						label="Promotions"
 						onChange={handleSubmit}
 					/>
 
 					<Toggle
 						{...getInputProps(fields.communityEvents, { type: "checkbox" })}
-						label="Community events"
-						description="Stay updated with community activities"
 						checked={notifications?.communityEvents || turnAllOn}
+						description="Stay updated with community activities"
+						label="Community events"
 						onChange={handleSubmit}
 					/>
 				</div>
@@ -112,22 +112,22 @@ export function Toggle({
 	...props
 }: ToggleProps) {
 	return (
-		<div className="flex items-center justify-between border-b border-border pb-4">
+		<div className="flex items-center justify-between border-border border-b pb-4">
 			{(label || description) && (
 				<div>
 					{label && <div className="font-medium">{label}</div>}
 					{description && (
-						<div className="text-sm text-muted-foreground">{description}</div>
+						<div className="text-muted-foreground text-sm">{description}</div>
 					)}
 				</div>
 			)}
 			<label className="relative inline-flex cursor-pointer items-center">
 				<input
-					type="checkbox"
 					className={cn("peer sr-only", className)}
+					type="checkbox"
 					{...props}
 				/>
-				<div className="peer h-6 w-11 rounded-full bg-muted peer-checked:bg-primary peer-focus:ring-4 peer-focus:ring-primary peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-border after:bg-background after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-background rtl:peer-checked:after:-translate-x-full" />
+				<div className="peer rtl:peer-checked:after:-translate-x-full h-6 w-11 rounded-full bg-muted after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-border after:bg-background after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-background peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary" />
 			</label>
 		</div>
 	)

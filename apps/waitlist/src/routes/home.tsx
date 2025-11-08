@@ -84,28 +84,28 @@ export default function WaitlistRoute() {
 	return (
 		<>
 			<title>Waitlist | TekBreed</title>
-			<meta name="keywords" content="TekBreed, Software, AI, Learning" />
+			<meta content="TekBreed, Software, AI, Learning" name="keywords" />
 			<meta
-				name="description"
 				content="Breeding the next generation of software engineers."
+				name="description"
 			/>
 			{/* Open Graph */}
-			<meta property="og:title" content="Waitlist | TekBreed" />
+			<meta content="Waitlist | TekBreed" property="og:title" />
 			<meta
-				property="og:description"
 				content="Breeding the next generation of software engineers."
+				property="og:description"
 			/>
-			<meta property="og:type" content="website" />
-			<meta property="og:image" content="/wl.jpg" />
+			<meta content="website" property="og:type" />
+			<meta content="/wl.jpg" property="og:image" />
 
 			{/* Twitter */}
-			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:title" content="Waitlist | TekBreed" />
+			<meta content="summary_large_image" name="twitter:card" />
+			<meta content="Waitlist | TekBreed" name="twitter:title" />
 			<meta
-				name="twitter:description"
 				content="Breeding the next generation of software engineers."
+				name="twitter:description"
 			/>
-			<meta name="twitter:image" content="/wl.jpg" />
+			<meta content="/wl.jpg" name="twitter:image" />
 			<HeroSection />
 			<LaunchDateSection />
 			<FeaturesSection />

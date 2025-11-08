@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: allow for debugging mocks */
 import { faker } from "@faker-js/faker"
 import { type HttpHandler, HttpResponse, http } from "msw"
 import { z } from "zod/v4"

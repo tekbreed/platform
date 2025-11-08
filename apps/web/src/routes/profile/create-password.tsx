@@ -7,7 +7,6 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { prisma } from "@repo/database/client"
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -20,11 +19,14 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { getPasswordHash, requireUser } from "@repo/utils/auth.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
 import { PasswordSchema } from "@repo/utils/user-validation"
+
+import { prisma } from "@repo/database/client"
 
 import type { Route } from "./+types/create-password"
 
@@ -100,7 +102,7 @@ export default function CreatePasswordRoute({
 	return (
 		<>
 			{/* {metadata} */}
-			<div className="flex !h-[90%]">
+			<div className="!h-[90%] flex">
 				<Card className="m-auto w-full max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form {...getFormProps(form)} method="post">
 						<HoneypotInputs />
@@ -112,8 +114,8 @@ export default function CreatePasswordRoute({
 								<Label htmlFor={fields.password.id}>New Password</Label>
 								<Input
 									{...getInputProps(fields.password, { type: "password" })}
-									placeholder="••••••"
 									className="border-border bg-background"
+									placeholder="••••••"
 								/>
 								<FormError errors={fields.password.errors} />
 							</div>
@@ -125,8 +127,8 @@ export default function CreatePasswordRoute({
 									{...getInputProps(fields.confirmPassword, {
 										type: "password",
 									})}
-									placeholder="••••••"
 									className="border-border bg-background"
+									placeholder="••••••"
 								/>
 								<FormError errors={fields.confirmPassword.errors} />
 							</div>
@@ -135,10 +137,10 @@ export default function CreatePasswordRoute({
 						<CardFooter>
 							<div className="flex w-full justify-end">
 								<div className="flex gap-6">
-									<Button variant={"outline"} asChild>
+									<Button asChild variant={"outline"}>
 										<Link to={"/profile"}>Cancel</Link>
 									</Button>
-									<Button type="submit" disabled={isCreaating}>
+									<Button disabled={isCreaating} type="submit">
 										Create{" "}
 										{isCreaating ? (
 											<Icons.loader2 className="ml-2 animate-spin" />

@@ -38,13 +38,13 @@ export function FormSection() {
 	})
 
 	return (
-		<section id="waitlist" className="bg-background py-24 sm:py-32">
+		<section className="bg-background py-24 sm:py-32" id="waitlist">
 			<div className="mx-auto max-w-7xl px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl text-center">
-					<h2 className="tracking-tight. text-3xl font-bold text-balance text-foreground sm:text-4xl">
+					<h2 className="text-balance font-bold text-3xl text-foreground tracking-tight. sm:text-4xl">
 						Be the first to experience the future
 					</h2>
-					<p className="mt-6 text-lg leading-8 text-pretty text-muted-foreground">
+					<p className="mt-6 text-pretty text-lg text-muted-foreground leading-8">
 						Join our exclusive waitlist and get early access to the platform
 						that will transform how you build software. Plus, receive a special
 						launch discount when we go live
@@ -55,7 +55,7 @@ export function FormSection() {
 					<Card className="border-border bg-card shadow-xl">
 						{!isSubscribed ? (
 							<CardHeader className="text-center">
-								<CardTitle className="text-2xl font-bold text-foreground">
+								<CardTitle className="font-bold text-2xl text-foreground">
 									Join the Waitlist
 								</CardTitle>
 								<CardDescription className="text-muted-foreground">
@@ -67,7 +67,7 @@ export function FormSection() {
 							{isSubscribed ? (
 								<div className="py-8 text-center">
 									<CheckCircle className="mx-auto mb-4 h-16 w-16 text-primary" />
-									<h3 className="mb-2 text-xl font-semibold text-foreground">
+									<h3 className="mb-2 font-semibold text-foreground text-xl">
 										You&apos;re on the list!
 									</h3>
 									<p className="text-muted-foreground">
@@ -78,34 +78,34 @@ export function FormSection() {
 							) : (
 								<fetcher.Form
 									{...getFormProps(form)}
-									method="post"
 									action="/?index"
 									className="space-y-6"
+									method="post"
 								>
 									<HoneypotInputs />
 									<div className="space-y-4">
 										<div className="w-full">
 											<Input
 												{...getInputProps(fields.name, { type: "text" })}
+												className="mb-2 flex h-12 w-full rounded-lg border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed"
 												placeholder="Tony Max"
-												className="mb-2 flex h-12 w-full rounded-lg border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
 											/>
 											<FormError errors={fields.name.errors} />
 										</div>
 										<div className="w-full">
 											<Input
 												{...getInputProps(fields.email, { type: "email" })}
+												className="mb-2 flex h-12 w-full rounded-lg border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed"
 												placeholder="tonymax@tekbreed.com"
-												className="mb-2 flex h-12 w-full rounded-lg border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
 											/>
 											<FormError errors={fields.email.errors} />
 										</div>
 									</div>
 
 									<Button
-										type="submit"
-										className="h-12 w-full bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90"
+										className="h-12 w-full bg-primary font-semibold text-base text-primary-foreground hover:bg-primary/90"
 										disabled={fetcher.state !== "idle"}
+										type="submit"
 									>
 										Join the Waitlist
 										{fetcher.state !== "idle" ? (
@@ -113,7 +113,7 @@ export function FormSection() {
 										) : null}
 									</Button>
 
-									<p className="text-center text-xs text-muted-foreground">
+									<p className="text-center text-muted-foreground text-xs">
 										By joining, you agree to receive updates about our platform.
 										We respect your privacy and will never spam you.
 									</p>
@@ -127,26 +127,31 @@ export function FormSection() {
 				<div className="mx-auto mt-16 max-w-4xl">
 					<div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
 						<div className="text-center">
-							<div className="text-3xl font-bold text-primary">
-								{loaderData.subscribers?.data?.data?.length
+							<div className="font-bold text-3xl text-primary">
+								{loaderData.subscribers &&
+								"data" in loaderData.subscribers &&
+								loaderData.subscribers.data &&
+								"data" in loaderData.subscribers.data &&
+								Array.isArray(loaderData.subscribers.data.data) &&
+								loaderData.subscribers.data.data.length
 									? loaderData.subscribers.data.data.length.toLocaleString()
 									: "13"}
 							</div>
-							<div className="text-sm text-muted-foreground">
+							<div className="text-muted-foreground text-sm">
 								Developer
 								{loaderData.subscribers?.data?.data?.length === 1 ? "" : "s"}{" "}
 								waiting
 							</div>
 						</div>
 						<div className="text-center">
-							<div className="text-3xl font-bold text-primary">100%</div>
-							<div className="text-sm text-muted-foreground">
+							<div className="font-bold text-3xl text-primary">100%</div>
+							<div className="text-muted-foreground text-sm">
 								Launch discount
 							</div>
 						</div>
 						<div className="text-center">
-							<div className="text-3xl font-bold text-primary">Q1 2026</div>
-							<div className="text-sm text-muted-foreground">
+							<div className="font-bold text-3xl text-primary">Q1 2026</div>
+							<div className="text-muted-foreground text-sm">
 								Expected launch
 							</div>
 						</div>

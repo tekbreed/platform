@@ -1,5 +1,3 @@
-import React from "react"
-
 import { AuthButtons } from "./auth-buttons"
 import { MainNav } from "./main-nav"
 

@@ -1,12 +1,9 @@
-import { data } from "react-router"
-
 import { getHomePageContent } from "../utils/content/utils"
 import type { Route } from "./+types/index"
 import { ActionVideo } from "./action-video"
 import { Features } from "./features"
 import { Hero } from "./hero"
 import { PricingSection } from "./pricing-section"
-import { Stats } from "./stats"
 // import { SubscriptionForm } from "./suscription-form";
 // import { FeaturedCourses } from "./featured-courses";
 // import { FeaturedTutorials } from "./featured-tutorials";

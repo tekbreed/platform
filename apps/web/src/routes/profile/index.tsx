@@ -139,17 +139,17 @@ export default function ProfileRoute() {
 						<div className="lg:col-span-1">
 							<div className="lg:sticky lg:top-20">
 								<SideNav
-									tabs={tabs}
 									activeTab={activeTab}
 									setActiveTab={handleTabChange}
+									tabs={tabs}
 								/>
 							</div>
 						</div>
 						<div
-							className="lg:col-span-3"
-							role="tabpanel"
-							id={`tabpanel-${activeTab}`}
 							aria-labelledby={`tab-${activeTab}`}
+							className="lg:col-span-3"
+							id={`tabpanel-${activeTab}`}
+							role="tabpanel"
 						>
 							{renderTab()}
 						</div>

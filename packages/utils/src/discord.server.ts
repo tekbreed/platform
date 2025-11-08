@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: allow console for this file */
 import {
 	Client,
 	EmbedBuilder,
@@ -57,25 +58,18 @@ function createDiscordClient(): Client {
 
 // Initialize client once
 async function getDiscordClient(): Promise<Client> {
-	try {
-		if (!discordClient) {
-			discordClient = createDiscordClient()
+	if (!discordClient) {
+		discordClient = createDiscordClient()
 
-			discordClient.once("ready", () => {
-				console.log(`Discord bot logged in as ${discordClient?.user?.tag}`)
-			})
+		discordClient.once("ready", () => {})
 
-			discordClient.on("guildMemberAdd", async (member: GuildMember) => {
-				await handleNewMemberJoin(member)
-			})
+		discordClient.on("guildMemberAdd", async (member: GuildMember) => {
+			await handleNewMemberJoin(member)
+		})
 
-			await discordClient.login(DISCORD_BOT_TOKEN)
-		}
-		return discordClient
-	} catch (error) {
-		console.error("Error getting Discord client:", error)
-		throw new Error("Failed to get Discord client")
+		await discordClient.login(DISCORD_BOT_TOKEN)
 	}
+	return discordClient
 }
 
 // Function to get all channels in a guild
@@ -256,7 +250,7 @@ export async function postAnnouncement(
 export async function createUserInvite(
 	user: LearningSystemUser,
 	channelName: string = "general",
-	guildId: string = DISCORD_GUILD_ID!,
+	guildId: string = DISCORD_GUILD_ID,
 ): Promise<string> {
 	try {
 		const client = await getDiscordClient()

@@ -20,6 +20,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { requireAnonymous } from "@repo/utils/auth.server"
 import { getImgSrc, useIsPending } from "@repo/utils/misc"
 import { RememberMeSchema } from "@repo/utils/user-validation"
@@ -84,18 +85,18 @@ export default function OnboardingProvider({
 			{/* {metadata} */}
 			<div className="flex min-h-screen items-center justify-center">
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.5 }}
 					className="relative z-10 w-full max-w-md"
+					initial={{ opacity: 0, y: 20 }}
+					transition={{ duration: 0.5 }}
 				>
 					<Card className="border-0 bg-card/80 shadow-xl backdrop-blur-sm">
 						<CardHeader className="text-center">
 							<div className="mx-auto flex w-full items-center justify-center pb-4">
 								<img
-									src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
 									alt="TekBreed"
 									className="size-10"
+									src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
 								/>
 							</div>
 							<CardTitle className="text-xl">Welcome aboard {email}</CardTitle>
@@ -103,7 +104,7 @@ export default function OnboardingProvider({
 						</CardHeader>
 
 						<CardContent className="space-y-6">
-							<Form {...getFormProps(form)} method="post" className="space-y-4">
+							<Form {...getFormProps(form)} className="space-y-4" method="post">
 								<input
 									{...getInputProps(fields.redirectTo, { type: "hidden" })}
 								/>
@@ -118,8 +119,8 @@ export default function OnboardingProvider({
 								</div>
 								<div className="flex justify-between">
 									<Label
-										htmlFor={fields.rememberMe.id}
 										className="flex items-center gap-2 text-muted-foreground text-sm"
+										htmlFor={fields.rememberMe.id}
 									>
 										<input
 											{...getInputProps(fields.rememberMe, {
@@ -131,10 +132,10 @@ export default function OnboardingProvider({
 									</Label>
 								</div>
 								<Button
-									type="submit"
+									aria-label="Create account"
 									className="w-full"
 									disabled={isSubmitting}
-									aria-label="Create account"
+									type="submit"
 								>
 									Create account{" "}
 									{isSubmitting ? (

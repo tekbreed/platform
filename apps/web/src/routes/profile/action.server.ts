@@ -4,11 +4,12 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { prisma } from "@repo/database/client"
 import { sessionKey } from "@repo/utils/auth.server"
 import { invariantResponse } from "@repo/utils/misc"
 import { authSessionStorage } from "@repo/utils/session.server"
 import { redirectWithToast } from "@repo/utils/toast.server"
+
+import { prisma } from "@repo/database/client"
 
 import {
 	ACCOUNT_INFORMATION_INTENT,
@@ -35,10 +36,10 @@ const IntentSchema = z.object({
 })
 
 const AcccountUpdateSchema = z.union([
-	IntentSchema.merge(AcccountInformationSchema),
-	IntentSchema.merge(NotificationSettingsSchema),
-	IntentSchema.merge(SessionSchema),
-	IntentSchema.merge(DeleteUserSchema),
+	IntentSchema.and(AcccountInformationSchema),
+	IntentSchema.and(NotificationSettingsSchema),
+	IntentSchema.and(SessionSchema),
+	IntentSchema.and(DeleteUserSchema),
 ])
 
 export async function handleActions(request: Request, userId: string) {

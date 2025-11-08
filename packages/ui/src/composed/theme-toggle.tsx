@@ -26,48 +26,48 @@ export function ThemeToggle() {
 	const isDarkTheme = theme === "dark" && definedBy !== "SYSTEM"
 
 	return (
-		<DropdownMenu open={dropDown} onOpenChange={setDropDown}>
+		<DropdownMenu onOpenChange={setDropDown} open={dropDown}>
 			<DropdownMenuTrigger asChild>
 				{isNavigating ? (
 					<Button
-						variant="outline"
-						size="icon"
-						className="relative rounded-full"
 						arial-disabled={true}
+						className="relative rounded-full"
+						size="icon"
+						variant="outline"
 					>
 						<Icons.loader className="animate-spin" />
 					</Button>
 				) : (
 					<Button
-						variant="outline"
-						size="icon"
 						className="relative rounded-full"
+						size="icon"
+						variant="outline"
 					>
 						{/* System Theme Icon */}
 						<Icons.monitor
+							aria-hidden="true"
 							className={cn(
 								"absolute h-[1.2rem] w-[1.2rem] transition-all",
 								definedBy === "SYSTEM"
-									? "scale-100 rotate-0"
-									: "scale-0 rotate-90",
+									? "rotate-0 scale-100"
+									: "rotate-90 scale-0",
 							)}
-							aria-hidden="true"
 						/>
 						{/* Light Theme Icon */}
 						<Icons.sun
+							aria-hidden="true"
 							className={cn(
 								"absolute h-[1.2rem] w-[1.2rem] transition-all",
-								isLightTheme ? "scale-100 rotate-0" : "scale-0 -rotate-90",
+								isLightTheme ? "rotate-0 scale-100" : "-rotate-90 scale-0",
 							)}
-							aria-hidden="true"
 						/>
 						{/* Dark Theme Icon */}
 						<Icons.moon
+							aria-hidden="true"
 							className={cn(
 								"absolute h-[1.2rem] w-[1.2rem] transition-all",
-								isDarkTheme ? "scale-100 rotate-0" : "scale-0 rotate-90",
+								isDarkTheme ? "rotate-0 scale-100" : "rotate-90 scale-0",
 							)}
-							aria-hidden="true"
 						/>
 						<VisuallyHidden>Toogle Theme</VisuallyHidden>
 					</Button>

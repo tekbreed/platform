@@ -19,13 +19,8 @@
 		"./hooks/*": "./src/hooks/*.ts"
 	},
 	"scripts": {
-		"lint": "eslint . --max-warnings 0",
-		"lint:fix": "eslint . --max-warnings 0 --fix",
 		"build:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/globals.css",
 		"dev:styles": "tailwindcss -i ./src/styles/globals.css -o ./dist/globals.css --watch",
-		"test": "vitest",
-		"test:run": "cross-env CI=true vitest run",
-		"test:coverage": "vitest run --coverage",
 		"typecheck": "tsc"
 	},
 	"dependencies": {

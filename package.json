@@ -4,8 +4,8 @@
 	"scripts": {
 		"build": "turbo run build",
 		"dev": "turbo run dev",
-		"test": "turbo run test",
-		"test:run": "turbo run test:run",
+		"test": "vitest",
+		"test:run": "cross-env CI=true vitest run --coverage",
 		"format-and-lint": "biome check .",
 		"format-and-lint:fix": "biome check . --write",
 		"typecheck": "turbo run typecheck",
@@ -23,6 +23,7 @@
 		"@vitejs/plugin-react": "^5.0.4",
 		"@vitest/browser": "^3.2.4",
 		"@vitest/browser-playwright": "^4.0.5",
+		"@vitest/coverage-v8": "^4.0.8",
 		"close-with-grace": "^2.3.0",
 		"cross-env": "^10.1.0",
 		"dotenv": "^16.0.3",

@@ -128,24 +128,24 @@ export function ContentReports({ reports }: ContentReportsProps) {
 
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<Container title="Content Reports">
-				<ReportPageHeader totalReports={reports.length} hasReports={true} />
+				<ReportPageHeader hasReports={true} totalReports={reports.length} />
 
 				<div className="mb-6 space-y-4">
 					<ReportSearchBar
-						searchQuery={searchQuery}
 						onSearchChange={setSearchQuery}
+						searchQuery={searchQuery}
 					/>
 
 					<ReportFilters
-						statusFilter={statusFilter}
-						onStatusChange={setStatusFilter}
 						contentTypeFilter={contentTypeFilter}
 						onContentTypeChange={setContentTypeFilter}
+						onStatusChange={setStatusFilter}
+						statusFilter={statusFilter}
 					/>
 				</div>
 
@@ -288,12 +288,12 @@ export function ReportSearchBar({
 }: ReportSearchBarProps) {
 	return (
 		<div className="relative">
-			<Icons.search className="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+			<Icons.search className="-translate-y-1/2 absolute top-1/2 left-3 size-4 text-muted-foreground" />
 			<Input
+				className="pl-10"
+				onChange={(e) => onSearchChange(e.target.value)}
 				placeholder="Search reports by reason, details, or comment content..."
 				value={searchQuery}
-				onChange={(e) => onSearchChange(e.target.value)}
-				className="pl-10"
 			/>
 		</div>
 	)
@@ -337,10 +337,10 @@ export function ReportFilters({
 		<div className="flex flex-wrap gap-4">
 			<div className="flex items-center gap-2">
 				<Icons.filter className="size-4" />
-				<span className="text-sm font-medium">Filter by:</span>
+				<span className="font-medium text-sm">Filter by:</span>
 			</div>
 
-			<Select value={statusFilter} onValueChange={onStatusChange}>
+			<Select onValueChange={onStatusChange} value={statusFilter}>
 				<SelectTrigger className="w-40">
 					<SelectValue placeholder="Status" />
 				</SelectTrigger>
@@ -353,7 +353,7 @@ export function ReportFilters({
 				</SelectContent>
 			</Select>
 
-			<Select value={contentTypeFilter} onValueChange={onContentTypeChange}>
+			<Select onValueChange={onContentTypeChange} value={contentTypeFilter}>
 				<SelectTrigger className="w-40">
 					<SelectValue placeholder="Content type" />
 				</SelectTrigger>
@@ -394,7 +394,7 @@ export function ReportResultsHeader({
 	totalCount,
 }: ReportResultsHeaderProps) {
 	return (
-		<div className="mb-4 text-sm text-muted-foreground">
+		<div className="mb-4 text-muted-foreground text-sm">
 			Showing {filteredCount} of {totalCount} reports
 		</div>
 	)
@@ -459,9 +459,9 @@ export function ReportsList({ reports }: ReportsListProps) {
 	if (reports.length === 0) {
 		return (
 			<EmptyState
+				description="Try adjusting your search or filters to find what you're looking for."
 				icon={<Icons.search className="size-10 text-muted-foreground" />}
 				title="No reports found"
-				description="Try adjusting your search or filters to find what you're looking for."
 			/>
 		)
 	}
@@ -524,8 +524,8 @@ function ReportCardHeader({ report }: { report: Report }) {
 					<ReportContentTypeIcon report={report} />
 					<ReportContentTypeBadge report={report} />
 					<ReportStatusBadge
-						statusConfig={statusConfig}
 						StatusIcon={StatusIcon}
+						statusConfig={statusConfig}
 					/>
 				</div>
 				<ReportDate date={report.createdAt} />
@@ -570,7 +570,7 @@ function ReportContentTypeBadge({ report }: { report: Report }) {
 		: "comment"
 
 	return (
-		<Badge variant="outline" className="text-xs capitalize">
+		<Badge className="text-xs capitalize" variant="outline">
 			{contentType}
 		</Badge>
 	)
@@ -620,7 +620,7 @@ function ReportStatusBadge({
  */
 function ReportDate({ date }: { date: Date }) {
 	return (
-		<div className="flex items-center gap-1 text-xs text-muted-foreground">
+		<div className="flex items-center gap-1 text-muted-foreground text-xs">
 			<Icons.calendar className="size-3" />
 			{new Date(date).toLocaleDateString()}
 		</div>
@@ -695,7 +695,7 @@ function ReportReason({ reason }: { reason: string }) {
  * @returns {JSX.Element} Details text paragraph
  */
 function ReportDetailsText({ details }: { details: string }) {
-	return <p className="mt-1 text-sm text-muted-foreground">{details}</p>
+	return <p className="mt-1 text-muted-foreground text-sm">{details}</p>
 }
 
 /**
@@ -760,7 +760,7 @@ function ReportResolvedDate({
 	if (!resolvedAt) return <div />
 
 	return (
-		<div className="text-xs text-muted-foreground">
+		<div className="text-muted-foreground text-xs">
 			<span>Resolved: {new Date(resolvedAt).toLocaleDateString()}</span>
 		</div>
 	)
@@ -800,16 +800,16 @@ function ReportViewContentButton({ content }: { content: Report["content"] }) {
 export function ContentReportsEmptyState() {
 	return (
 		<motion.div
-			initial={{ opacity: 0, y: 20 }}
 			animate={{ opacity: 1, y: 0 }}
+			initial={{ opacity: 0, y: 20 }}
 			transition={{ duration: 0.3 }}
 		>
 			<Container title="Content Reports">
 				{/* <ReportPageHeader totalReports={0} hasReports={false} /> */}
 				<EmptyState
+					description="You haven't submitted any content reports yet. Reports help us maintain a safe and respectful community."
 					icon={<Icons.flag className="size-10 text-muted-foreground" />}
 					title="No reports yet"
-					description="You haven't submitted any content reports yet. Reports help us maintain a safe and respectful community."
 				/>
 			</Container>
 		</motion.div>

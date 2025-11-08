@@ -36,8 +36,8 @@ function Toggle({
 	VariantProps<typeof toggleVariants>) {
 	return (
 		<TogglePrimitive.Root
-			data-slot="toggle"
 			className={cn(toggleVariants({ variant, size, className }))}
+			data-slot="toggle"
 			{...props}
 		/>
 	)

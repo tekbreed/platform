@@ -7,7 +7,6 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { prisma } from "@repo/database/client"
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -20,6 +19,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import {
 	getPasswordHash,
 	requireUser,
@@ -29,6 +29,8 @@ import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
 import { PasswordSchema } from "@repo/utils/user-validation"
+
+import { prisma } from "@repo/database/client"
 
 import type { Route } from "./+types/change-password"
 
@@ -138,8 +140,8 @@ export default function ResetPasswordRoute({
 									{...getInputProps(fields.currentPassword, {
 										type: "password",
 									})}
+									className="border-border bg-background"
 									placeholder="••••••"
-									className="h-12 border-border bg-background !text-lg"
 								/>
 								<FormError errors={fields.currentPassword.errors} />
 							</div>
@@ -147,8 +149,8 @@ export default function ResetPasswordRoute({
 								<Label htmlFor={fields.password.id}>New Password</Label>
 								<Input
 									{...getInputProps(fields.password, { type: "password" })}
+									className="border-border bg-background"
 									placeholder="••••••"
-									className="h-12 border-border bg-background !text-lg"
 								/>
 								<FormError errors={fields.password.errors} />
 							</div>
@@ -160,8 +162,8 @@ export default function ResetPasswordRoute({
 									{...getInputProps(fields.confirmPassword, {
 										type: "password",
 									})}
+									className="border-border bg-background"
 									placeholder="••••••"
-									className="h-12 border-border bg-background !text-lg"
 								/>
 								<FormError errors={fields.confirmPassword.errors} />
 							</div>
@@ -170,10 +172,10 @@ export default function ResetPasswordRoute({
 						<CardFooter>
 							<div className="flex w-full justify-end">
 								<div className="flex gap-6">
-									<Button variant={"outline"} asChild>
+									<Button asChild variant={"outline"}>
 										<Link to={"/profile"}>Cancel</Link>
 									</Button>
-									<Button type="submit" disabled={isUpdating}>
+									<Button disabled={isUpdating} type="submit">
 										Change{" "}
 										{isUpdating ? (
 											<Icons.loader2 className="ml-2 animate-spin" />

@@ -14,7 +14,6 @@ import type { Route } from "./+types/change-photo"
 
 import { HoneypotInputs } from "remix-utils/honeypot/react"
 
-import { prisma } from "@repo/database/client"
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar"
 import { Button } from "@repo/ui/components/button"
 import {
@@ -27,6 +26,7 @@ import {
 } from "@repo/ui/components/card"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { requireUserId } from "@repo/utils/auth.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import {
@@ -40,6 +40,8 @@ import {
 	uploadFIleToStorage,
 } from "@repo/utils/storage.server"
 import { redirectWithToast } from "@repo/utils/toast.server"
+
+import { prisma } from "@repo/database/client"
 
 const MAX_SIZE = 1024 * 1024 * 3 // 3MB
 const allowedTypes = ["image/jpeg", "image/png", "image/webp"]
@@ -195,11 +197,11 @@ export default function ChangePhoto({
 	return (
 		<>
 			{/* {metadata} */}
-			<div className="flex !h-[90%]">
+			<div className="!h-[90%] flex">
 				<Card className="m-auto w-full max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form
-						method="POST"
 						encType="multipart/form-data"
+						method="POST"
 						onReset={() => setNewImageSrc(null)}
 						{...getFormProps(form)}
 						className="mx-auto w-full space-y-6"
@@ -215,6 +217,7 @@ export default function ChangePhoto({
 						<CardContent className="my-8">
 							<Avatar className="mx-auto my-4 size-48 border border-border">
 								<AvatarImage
+									alt={user.name}
 									src={
 										newImageSrc ??
 										getImgSrc({
@@ -222,7 +225,6 @@ export default function ChangePhoto({
 											fileKey: user.image?.fileKey,
 										})
 									}
-									alt={user.name}
 								/>
 								<AvatarFallback className="text-3xl">
 									{getInitials(user.name)}
@@ -234,8 +236,6 @@ export default function ChangePhoto({
 									{...getInputProps(fields.photoFile, { type: "file" })}
 									accept="image/*"
 									className="peer sr-only"
-									required
-									tabIndex={newImageSrc ? -1 : 0}
 									onChange={(e) => {
 										const file = e.currentTarget.files?.[0]
 										if (file) {
@@ -246,6 +246,8 @@ export default function ChangePhoto({
 											reader.readAsDataURL(file)
 										}
 									}}
+									required
+									tabIndex={newImageSrc ? -1 : 0}
 								/>
 							</div>
 						</CardContent>
@@ -255,18 +257,18 @@ export default function ChangePhoto({
 									<Button variant={"outline"}>Cancel</Button>
 								</Link>
 								{newImageSrc ? (
-									<Button variant="destructive" type="reset">
+									<Button type="reset" variant="destructive">
 										Reset
 									</Button>
 								) : null}
 
 								{user.image ? (
 									<Button
-										variant={"destructive"}
-										type="submit"
-										name="intent"
-										value="delete"
 										disabled={isSubmitting}
+										name="intent"
+										type="submit"
+										value="delete"
+										variant={"destructive"}
 									>
 										{isSubmitting ? (
 											<Icons.loader className="mr-1 size-4 animate-spin" />
@@ -276,10 +278,10 @@ export default function ChangePhoto({
 								) : null}
 								{newImageSrc ? (
 									<Button
-										name="intent"
-										value="submit"
-										type="submit"
 										disabled={isSubmitting}
+										name="intent"
+										type="submit"
+										value="submit"
 									>
 										Save{" "}
 										{isSubmitting ? (
@@ -288,11 +290,11 @@ export default function ChangePhoto({
 									</Button>
 								) : (
 									<Button
-										name="intent"
-										value="submit"
-										type="submit"
-										disabled={isSubmitting}
 										asChild
+										disabled={isSubmitting}
+										name="intent"
+										type="submit"
+										value="submit"
 									>
 										<label htmlFor={fields.photoFile.id}>Change </label>
 									</Button>

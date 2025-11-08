@@ -5645,31 +5645,31 @@
     line-height: var(--tw-leading, var(--text-sm--line-height)) !important;
     color: inherit;
   }
-  .code-block .hljs-comment, .code-block .hljs-quote {
+  .code-block .hljs-comment,	.code-block .hljs-quote {
     color: var(--muted-foreground) !important;
   }
-  .code-block .hljs-variable, .code-block .hljs-template-variable, .code-block .hljs-attribute, .code-block .hljs-tag, .code-block .hljs-name, .code-block .hljs-regexp, .code-block .hljs-link, .code-block .hljs-selector-id, .code-block .hljs-selector-class {
+  .code-block .hljs-variable,	.code-block .hljs-template-variable,	.code-block .hljs-attribute,	.code-block .hljs-tag,	.code-block .hljs-name,	.code-block .hljs-regexp,	.code-block .hljs-link,	.code-block .hljs-selector-id,	.code-block .hljs-selector-class {
     color: var(--destructive) !important;
   }
-  .code-block .hljs-number, .code-block .hljs-meta, .code-block .hljs-built_in, .code-block .hljs-builtin-name, .code-block .hljs-literal, .code-block .hljs-type, .code-block .hljs-params {
+  .code-block .hljs-number,	.code-block .hljs-meta,	.code-block .hljs-built_in,	.code-block .hljs-builtin-name,	.code-block .hljs-literal,	.code-block .hljs-type,	.code-block .hljs-params {
     color: var(--color-orange-600) !important;
     &:where([data-theme="dark"], [data-theme="dark"] *) {
       color: var(--color-orange-400) !important;
     }
   }
-  .code-block .hljs-string, .code-block .hljs-symbol, .code-block .hljs-bullet {
+  .code-block .hljs-string,	.code-block .hljs-symbol,	.code-block .hljs-bullet {
     color: var(--color-green-600) !important;
     &:where([data-theme="dark"], [data-theme="dark"] *) {
       color: var(--color-green-400) !important;
     }
   }
-  .code-block .hljs-title, .code-block .hljs-section {
+  .code-block .hljs-title,	.code-block .hljs-section {
     color: var(--color-yellow-600) !important;
     &:where([data-theme="dark"], [data-theme="dark"] *) {
       color: var(--color-yellow-400) !important;
     }
   }
-  .code-block .hljs-keyword, .code-block .hljs-selector-tag {
+  .code-block .hljs-keyword,	.code-block .hljs-selector-tag {
     color: var(--color-blue-600) !important;
     &:where([data-theme="dark"], [data-theme="dark"] *) {
       color: var(--color-blue-400) !important;

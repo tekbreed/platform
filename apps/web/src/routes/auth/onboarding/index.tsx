@@ -19,6 +19,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { requireAnonymous } from "@repo/utils/auth.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { getImgSrc, useIsPending } from "@repo/utils/misc"
@@ -86,9 +87,9 @@ export default function Onboarding({
 					<CardHeader className="text-center">
 						<div className="mx-auto flex w-full items-center justify-center pb-4">
 							<img
-								src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
 								alt="TekBreed"
 								className="size-10"
+								src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
 							/>
 						</div>
 						<CardTitle className="text-xl">Welcome aboard {email}</CardTitle>
@@ -96,7 +97,7 @@ export default function Onboarding({
 					</CardHeader>
 
 					<CardContent className="space-y-6">
-						<Form {...getFormProps(form)} method="post" className="space-y-4">
+						<Form {...getFormProps(form)} className="space-y-4" method="post">
 							<HoneypotInputs />
 							<input
 								{...getInputProps(fields.redirectTo, { type: "hidden" })}
@@ -135,8 +136,8 @@ export default function Onboarding({
 							</div>
 							<div className="flex justify-between">
 								<Label
-									htmlFor={fields.rememberMe.id}
 									className="flex items-center gap-2 text-muted-foreground text-sm"
+									htmlFor={fields.rememberMe.id}
 								>
 									<input
 										{...getInputProps(fields.rememberMe, {
@@ -148,10 +149,10 @@ export default function Onboarding({
 								</Label>
 							</div>
 							<Button
-								type="submit"
+								aria-label="Create account"
 								className="w-full"
 								disabled={isSubmitting}
-								aria-label="Create account"
+								type="submit"
 							>
 								Create account{" "}
 								{isSubmitting ? (

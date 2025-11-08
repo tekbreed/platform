@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import {
 	Body,
 	Column,
@@ -21,7 +19,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 	const { firstName = "Developer" } = props
 
 	return (
-		<Html lang="en" dir="ltr">
+		<Html dir="ltr" lang="en">
 			<Tailwind>
 				<Head />
 				<Preview>Welcome to TekBreed - You&apos;re on the waitlist!</Preview>
@@ -36,16 +34,16 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 						{/* Header with Logo */}
 						<Section className="mb-[8px] text-center">
 							<Img
-								src="https://di867tnz6fwga.cloudfront.net/brand-kits/4131df7d-337f-4182-99ad-1dc8664a83be/primary/c56c3e12-1f19-4f5c-ab3d-042d351d4a59.png"
 								alt="TekBreed"
 								className="mx-auto h-auto w-full max-w-[80px]"
+								src="https://di867tnz6fwga.cloudfront.net/brand-kits/4131df7d-337f-4182-99ad-1dc8664a83be/primary/c56c3e12-1f19-4f5c-ab3d-042d351d4a59.png"
 							/>
 						</Section>
 
 						{/* Main Content */}
 						<Section className="mb-[32px]">
 							<Heading
-								className="mb-[16px] text-center text-[24px] font-bold"
+								className="mb-[16px] text-center font-bold text-[24px]"
 								style={{ color: "#fbfbfc" }}
 							>
 								Welcome to TekBreed, {firstName}!
@@ -136,63 +134,63 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 								<Row>
 									<Column className="text-center">
 										<Link
+											className="mx-[8px] inline-block"
 											href="https://github.com/tekbreed"
-											className="mx-[8px] inline-block"
 										>
 											<Img
-												src="https://new.email/static/emails/social/social-github.png"
 												alt="GitHub"
-												width="32"
-												height="32"
 												className="rounded-[4px]"
+												height="32"
+												src="https://new.email/static/emails/social/social-github.png"
+												width="32"
 											/>
 										</Link>
 										<Link
+											className="mx-[8px] inline-block"
 											href="https://www.linkedin.com/company/tekbreed/"
-											className="mx-[8px] inline-block"
 										>
 											<Img
-												src="https://new.email/static/emails/social/social-linkedin.png"
 												alt="LinkedIn"
-												width="32"
-												height="32"
 												className="rounded-[4px]"
+												height="32"
+												src="https://new.email/static/emails/social/social-linkedin.png"
+												width="32"
 											/>
 										</Link>
 										<Link
+											className="mx-[8px] inline-block"
 											href="https://x.com/tekbreed"
-											className="mx-[8px] inline-block"
 										>
 											<Img
-												src="https://new.email/static/emails/social/social-x.png"
 												alt="X (Twitter)"
-												width="32"
-												height="32"
 												className="rounded-[4px]"
+												height="32"
+												src="https://new.email/static/emails/social/social-x.png"
+												width="32"
 											/>
 										</Link>
 										<Link
+											className="mx-[8px] inline-block"
 											href="https://www.youtube.com/channel/UCYWjNbfB8ygT_7hElaa0B9Q"
-											className="mx-[8px] inline-block"
 										>
 											<Img
-												src="https://new.email/static/emails/social/social-youtube.png"
 												alt="YouTube"
-												width="32"
-												height="32"
 												className="rounded-[4px]"
+												height="32"
+												src="https://new.email/static/emails/social/social-youtube.png"
+												width="32"
 											/>
 										</Link>
 										<Link
-											href="https://discord.gg/7uZ6PWf4Xv"
 											className="mx-[8px] inline-block"
+											href="https://discord.gg/7uZ6PWf4Xv"
 										>
 											<Img
-												src="https://new.email/static/emails/social/social-discord.png"
 												alt="Discord"
-												width="32"
-												height="32"
 												className="rounded-[4px]"
+												height="32"
+												src="https://new.email/static/emails/social/social-discord.png"
+												width="32"
 											/>
 										</Link>
 									</Column>
@@ -234,8 +232,8 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 								© 2025 TekBreed
 							</Text>
 							<Link
-								href="https://tekbreed.com/unsubscribe"
 								className="text-[12px] underline"
+								href="https://tekbreed.com/unsubscribe"
 								style={{ color: "#bfdbfe" }}
 							>
 								Unsubscribe

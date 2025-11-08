@@ -56,6 +56,7 @@ export function useInterval(callback: () => void, delay: number | null) {
 		if (typeof delay === "number") {
 			intervalRef.current = window.setInterval(tick, delay)
 
+			// biome-ignore lint/style/noNonNullAssertion: allow it
 			return () => window.clearInterval(intervalRef.current!)
 		}
 	}, [delay])

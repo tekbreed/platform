@@ -23,7 +23,7 @@ type StatusHandler = (info: {
 export function GeneralErrorBoundary({
 	defaultStatusHandler = ({ error }) => (
 		<>
-			<div className="mx-auto w-full text-3xl font-bold text-destructive">
+			<div className="mx-auto w-full font-bold text-3xl text-destructive">
 				{error.status}
 			</div>
 			<p className="text-muted-foreground">{error.data}</p>
@@ -44,6 +44,7 @@ export function GeneralErrorBoundary({
 	const [showDetails, setShowDetails] = useState(true)
 
 	if (typeof document !== "undefined") {
+		// biome-ignore lint/suspicious/noConsole: Ignore
 		console.error(error)
 	}
 
@@ -59,7 +60,7 @@ export function GeneralErrorBoundary({
 							</div>
 						</div>
 
-						<h1 className="mb-2 text-center text-3xl font-bold">
+						<h1 className="mb-2 text-center font-bold text-3xl">
 							Oops! Something went wrong
 						</h1>
 
@@ -74,8 +75,8 @@ export function GeneralErrorBoundary({
 						<div className="mb-8 flex flex-col justify-center gap-4 sm:flex-row">
 							<div>
 								<Button
-									onClick={() => navigate(0)}
 									className="flex items-center gap-2 border-0 bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg hover:from-blue-600 hover:to-blue-700"
+									onClick={() => navigate(0)}
 									size="lg"
 								>
 									<div>
@@ -88,9 +89,9 @@ export function GeneralErrorBoundary({
 							<div>
 								<SmartLink to={getModuleUrl("web")}>
 									<Button
-										variant="outline"
 										className="flex items-center gap-2 border-2 border-border hover:border-border hover:bg-muted"
 										size="lg"
+										variant="outline"
 									>
 										<Icons.home className="size-4" />
 										Go to Homepage
@@ -100,14 +101,14 @@ export function GeneralErrorBoundary({
 						</div>
 
 						{/* Support section */}
-						<div className="mb-6 border-t border-border pt-6 text-center">
+						<div className="mb-6 border-border border-t pt-6 text-center">
 							<p className="mb-3 text-muted-foreground">
 								Need help? We are ready to assist you.
 							</p>
 							<div>
 								<SmartLink
-									to={getModuleUrl("web", "support")}
 									className="inline-flex items-center gap-2 font-medium text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+									to={getModuleUrl("web", "support")}
 								>
 									<Icons.mail className="size-4" />
 									Contact Support
@@ -117,17 +118,17 @@ export function GeneralErrorBoundary({
 
 						{/* Error details toggle */}
 						<div>
-							<button
-								onClick={() => setShowDetails(!showDetails)}
+							<Button
 								className="flex w-full items-center justify-center gap-2 py-2 text-muted-foreground transition-colors hover:text-foreground"
+								onClick={() => setShowDetails(!showDetails)}
 							>
-								<span className="text-sm font-medium">
+								<span className="font-medium text-sm">
 									{showDetails ? "Hide" : "Show"} Error Details
 								</span>
 								<div>
 									<Icons.chevronDown className="size-4" />
 								</div>
-							</button>
+							</Button>
 
 							{showDetails ? (
 								<div className="overflow-hidden">
@@ -149,10 +150,10 @@ export function GeneralErrorBoundary({
 											</div>
 										) : (
 											<div>
-												<h3 className="mb-2 text-sm font-semibold text-foreground">
+												<h3 className="mb-2 font-semibold text-foreground text-sm">
 													Technical Details:
 												</h3>
-												<div className="rounded border bg-muted p-3 font-mono text-sm text-muted-foreground">
+												<div className="rounded border bg-muted p-3 font-mono text-muted-foreground text-sm">
 													{unexpectedErrorHandler(error)}
 												</div>
 											</div>

@@ -18,7 +18,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
-import { useRedirectTo } from "@repo/utils/hooks/use-redirect-to"
+
 import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back"
 import { getImgSrc, useIsPending } from "@repo/utils/misc"
 import {
@@ -94,7 +94,7 @@ export function AuthForm({
 	})
 	return (
 		<div className="relative z-10 w-full max-w-md">
-			<Button onClick={() => goBack("/")} variant="link" className="mb-4">
+			<Button className="mb-4" onClick={() => goBack("/")} variant="link">
 				<Icons.arrowLeft className="h-6 w-8" /> Back
 			</Button>
 			<Card className="border-0 bg-card/80 shadow-xl backdrop-blur-sm">
@@ -103,8 +103,8 @@ export function AuthForm({
 					<Form
 						{...getFormProps(form)}
 						action={`/auth/${action}`}
-						method="post"
 						className="space-y-4"
+						method="post"
 					>
 						<HoneypotInputs />
 						<input
@@ -121,21 +121,28 @@ export function AuthForm({
 						</div>
 						{isSignin ? (
 							<div className="space-y-2">
+								{/** biome-ignore lint/suspicious/noExplicitAny: allow any here to make zod happy */}
 								<Label htmlFor={(fields as any).password.id}>Password</Label>
+
 								<Input
+									// biome-ignore lint/suspicious/noExplicitAny: allow any to make zod happy
 									{...getInputProps((fields as any).password, {
 										type: "password",
 									})}
 									placeholder="••••••"
 								/>
-								<FormError errors={(fields as any).password.errors} />
+
+								<FormError
+									// biome-ignore lint/suspicious/noExplicitAny: allow any to make zod happy
+									errors={(fields as any).password.errors}
+								/>
 							</div>
 						) : null}
 						{isSignin ? (
 							<div className="flex justify-between">
 								<Label
+									className="flex items-center gap-2 text-muted-foreground text-sm"
 									htmlFor={fields.rememberMe.id}
-									className="flex items-center gap-2 text-sm text-muted-foreground"
 								>
 									<input
 										{...getInputProps(fields.rememberMe, {
@@ -147,18 +154,18 @@ export function AuthForm({
 								</Label>
 
 								<Link
+									className="text-blue-700 text-sm dark:text-blue-500"
 									to={"/auth/forgot-password"}
-									className="text-sm text-blue-700 dark:text-blue-500"
 								>
 									Forgot your password?
 								</Link>
 							</div>
 						) : null}
 						<Button
-							type="submit"
+							aria-label={formContent.button[action]}
 							className="w-full"
 							disabled={isSubmitting}
-							aria-label={formContent.button[action]}
+							type="submit"
 						>
 							{formContent.button[action]}
 							{isSubmitting ? (
@@ -166,8 +173,8 @@ export function AuthForm({
 							) : null}
 						</Button>
 						<FormError
-							errors={form.allErrors.root || form.errors}
 							className="-mt-3"
+							errors={form.allErrors.root || form.errors}
 						/>
 					</Form>
 					<FormFooter action={action} />
@@ -182,9 +189,9 @@ function FormHeader({ action }: { action: Action }) {
 		<CardHeader className="text-center">
 			<div className="mx-auto flex w-full items-center justify-center pb-4">
 				<img
-					src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
 					alt="TekBreed"
 					className="size-10"
+					src={getImgSrc({ fileKey: "tekbreedlogo.png" })}
 				/>
 			</div>
 			<CardTitle className="text-2xl">{formContent.title[action]}</CardTitle>
@@ -194,12 +201,11 @@ function FormHeader({ action }: { action: Action }) {
 }
 
 function FormFooter({ action }: { action: Action }) {
-	const redirectTo = useRedirectTo()
 	return (
 		<>
 			<div className="relative">
 				<div className="absolute inset-0 flex items-center">
-					<div className="w-full border-t border-border"></div>
+					<div className="w-full border-border border-t"></div>
 				</div>
 				<div className="relative flex justify-center text-sm">
 					<span className="rounded-md bg-background px-2 text-muted-foreground">
@@ -209,19 +215,19 @@ function FormFooter({ action }: { action: Action }) {
 			</div>
 			<div className="w-full">
 				<ConnectionForm
-					redirectTo={redirectTo}
-					providerName="github"
 					action={action}
+					providerName="github"
+					// redirectTo={redirectTo}
 				/>
 			</div>
 			<div className="text-center">
-				<p className="text-sm text-muted-foreground">
+				<p className="text-muted-foreground text-sm">
 					{formContent.redirect[action]}{" "}
 					<Link
+						className="font-medium text-blue-600 hover:underline dark:text-blue-400"
 						to={{
 							pathname: action === "signin" ? "/auth/signup" : "/auth/signin",
 						}}
-						className="font-medium text-blue-600 hover:underline dark:text-blue-400"
 					>
 						{action === "signin" ? "Sign up" : "Sign in"}
 					</Link>

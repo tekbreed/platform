@@ -27,12 +27,12 @@ export function MainNav() {
 							{learning.map((link) => {
 								const Icon = link.icon
 								return (
-									<DropdownMenuItem key={link.name} asChild>
+									<DropdownMenuItem asChild key={link.name}>
 										<SmartLink
-											to={link.path}
 											className="flex items-center gap-2 font-bold capitalize"
+											to={link.path}
 										>
-											{Icon ? <Icon className="size-4" aria-hidden /> : null}
+											{Icon ? <Icon aria-hidden className="size-4" /> : null}
 											{link.name}
 										</SmartLink>
 									</DropdownMenuItem>
@@ -49,10 +49,10 @@ export function MainNav() {
 							{services.map((link) => {
 								// const Icon = link.icon;
 								return (
-									<DropdownMenuItem key={link.name} asChild>
+									<DropdownMenuItem asChild key={link.name}>
 										<SmartLink
-											to={link.path}
 											className="flex items-center gap-2 font-bold capitalize"
+											to={link.path}
 										>
 											{/* {Icon ? <Icon className="size-4" aria-hidden /> : null} */}
 											{link.name}
@@ -64,9 +64,9 @@ export function MainNav() {
 					</DropdownMenu>
 					{platform.map((link) => (
 						<SmartLink
+							className="font-semibold capitalize"
 							key={link.name}
 							to={link.path}
-							className="font-semibold capitalize"
 						>
 							{link.name}
 						</SmartLink>

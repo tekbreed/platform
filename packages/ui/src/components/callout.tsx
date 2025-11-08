@@ -56,7 +56,7 @@ export function Callout({
 
 				<div className="flex-1 space-y-1">
 					{title && (
-						<p className={cn("text-sm font-medium", style.title)}>{title}</p>
+						<p className={cn("font-medium text-sm", style.title)}>{title}</p>
 					)}
 					<div className={cn("text-sm leading-relaxed", style.content)}>
 						{children}

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: allow for debugging mocks */
 import { faker } from "@faker-js/faker"
 import { type HttpHandler, HttpResponse, http } from "msw"
 import { z } from "zod/v4"
@@ -73,7 +74,11 @@ export const mockMetadata = {
 function calculateSimilarity(vector1: number[], vector2: number[]): number {
 	// Simple mock similarity - in real scenarios this would be cosine similarity
 	const randomBase = Math.random() * 0.3 + 0.7 // 0.7 to 1.0 range
-	const hash = vector1.reduce((acc, val, idx) => acc + val * vector2[idx], 0)
+	// Guard against missing entries on the other vector; treat undefined as 0
+	const hash = vector1.reduce(
+		(acc, val, idx) => acc + val * (vector2[idx] ?? 0),
+		0,
+	)
 	return Math.min(1.0, Math.abs(hash * 0.0001) + randomBase)
 }
 

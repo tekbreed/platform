@@ -38,6 +38,7 @@ declare global {
 export function init() {
 	const parsed = schema.safeParse(process.env)
 	if (parsed.success === false) {
+		// biome-ignore lint/suspicious/noConsole: allow console for debugging purpose
 		console.error(
 			"❌ Invalid environment variables:",
 			parsed.error.flatten().fieldErrors,

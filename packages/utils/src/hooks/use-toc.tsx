@@ -374,7 +374,7 @@ export const useTOC = ({
 		if (onError) {
 			onError(err, context)
 		} else {
-			console.error(errorMessage, err)
+			// console.error(errorMessage, err)
 		}
 	})
 
@@ -497,9 +497,9 @@ export const useTOC = ({
 				})
 
 				if (validHeadings.length === 0) {
-					console.warn(
-						`No valid headings found with selector "${selectors}" in container "${containerId}"`,
-					)
+					// console.warn(
+					// 	`No valid headings found with selector "${selectors}" in container "${containerId}"`,
+					// )
 					setHeadings([])
 					setIsLoading(false)
 					return

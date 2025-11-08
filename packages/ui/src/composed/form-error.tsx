@@ -24,11 +24,10 @@ export function FormError({ errors, className }: FormErrorProps) {
 	if (errorArray.length === 0) return null
 
 	return (
-		<div role="alert" className={cn("text-sm text-destructive", className)}>
+		<div className={cn("text-destructive text-sm", className)} role="alert">
 			{errorArray.map((error, index) => (
-				<p role="listitem" key={index}>
-					{error}
-				</p>
+				// biome-ignore lint/suspicious/noArrayIndexKey: list rarely changes
+				<li key={index}>{error}</li>
 			))}
 		</div>
 	)

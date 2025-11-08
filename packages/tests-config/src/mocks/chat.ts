@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: for debugging mocks */
 import { faker } from "@faker-js/faker"
 import { type HttpHandler, HttpResponse, http } from "msw"
 
@@ -74,6 +75,7 @@ export const handlers: HttpHandler[] = [
 				mockConversations.set(conversationKey, [])
 			}
 
+			// biome-ignore lint/style/noNonNullAssertion: I don't know
 			const conversation = mockConversations.get(conversationKey)!
 			conversation.push({
 				role: "user",

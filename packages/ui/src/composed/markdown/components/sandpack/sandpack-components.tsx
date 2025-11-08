@@ -52,30 +52,30 @@ export function SandpackTabs({
 	return (
 		<div className="ml-auto flex items-center gap-2">
 			<Tabs
-				value={activeView}
-				onValueChange={(value) => setActiveView(value as ViewProps)}
 				className="h-7"
+				onValueChange={(value) => setActiveView(value as ViewProps)}
+				value={activeView}
 			>
 				<TabsList className="h-7 bg-muted p-1">
 					<TabsTrigger
+						className="h-7 rounded-md px-3 font-medium text-xs data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
 						value="editor"
-						className="h-7 rounded-md px-3 text-xs font-medium data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
 					>
 						<Code className="mr-1.5 size-3.5" />
 						Editor
 					</TabsTrigger>
 					{!isMobile && (
 						<TabsTrigger
+							className="h-7 rounded-md px-3 font-medium text-xs data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
 							value="split"
-							className="h-7 rounded-md px-3 text-xs font-medium data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
 						>
 							<Layout className="mr-1.5 size-3.5" />
 							Split
 						</TabsTrigger>
 					)}
 					<TabsTrigger
+						className="h-7 rounded-md px-3 font-medium text-xs data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
 						value="preview"
-						className="h-7 rounded-md px-3 text-xs font-medium data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
 					>
 						<Eye className="mr-1.5 size-3.5" />
 						Preview
@@ -98,11 +98,11 @@ export function RunButton() {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						variant="default"
-						size="sm"
-						className="h-6 rounded-md bg-violet-500 text-xs text-white hover:bg-violet-600"
-						onClick={() => sandpack.runSandpack()}
+						className="h-6 rounded-md bg-violet-500 text-white text-xs hover:bg-violet-600"
 						disabled={sandpack.status === "running"}
+						onClick={() => sandpack.runSandpack()}
+						size="sm"
+						variant="default"
 					>
 						<Play className="mr-1 size-3" />
 						Run
@@ -128,11 +128,11 @@ export function RefreshButton() {
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						variant="ghost"
-						size="icon"
+						aria-label="Reset files"
 						className="size-6 rounded-md"
 						onClick={() => sandpack.resetAllFiles()}
-						aria-label="Reset files"
+						size="icon"
+						variant="ghost"
 					>
 						<RefreshCw className="size-3.5" />
 					</Button>
@@ -164,10 +164,10 @@ export function CopyCode() {
 
 	return (
 		<Button
-			onClick={copyToClipboard}
-			variant="ghost"
-			size="sm"
 			className="h-6 rounded-md px-2 text-xs"
+			onClick={copyToClipboard}
+			size="sm"
+			variant="ghost"
 		>
 			{copied ? (
 				<>
@@ -206,10 +206,10 @@ export function ShowConsole({ showConsole, setShowConsole }: ShowConsoleProps) {
 
 	return (
 		<Button
-			variant="ghost"
-			size="sm"
 			className="h-6 rounded-md px-3 text-xs"
 			onClick={toggleConsole}
+			size="sm"
+			variant="ghost"
 		>
 			<Terminal className="mr-1 size-3.5" />
 			Console

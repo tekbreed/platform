@@ -36,19 +36,19 @@
 		"//#format-and-lint:fix": {
 			"cache": false
 		},
+		"//#test": {
+			"persistent": true
+		},
+		"//#test:run": {
+			"outputs": ["coverage/**"]
+		},
 		"typecheck": {
 			"dependsOn": ["^typecheck"]
 		},
-		"lint:fix": {
-			"dependsOn": ["^lint:fix"]
-		},
 		"build": {
-			"dependsOn": ["^build", "^db:generate"],
+			"dependsOn": ["^db:generate", "^build"],
 			"outputs": ["build/**"],
 			"inputs": ["$TURBO_DEFAULT$", ".env*"]
-		},
-		"start": {
-			"dependsOn": ["build"]
 		},
 		"dev": {
 			"with": ["cms#dev"],
@@ -73,18 +73,15 @@
 		},
 		"db:studio": {
 			"cache": false,
-			"persistent": false
-		},
-		"test": {
 			"persistent": true
 		},
-		"test:run": {
+		"test:e2e": {
 			"persistent": true
 		},
-
-		"test:e2e": {},
 		"test:e2e:run": {},
-		"test:e2e:ui": {},
+		"test:e2e:ui": {
+			"persistent": true
+		},
 		"test:e2e:report": {}
 	}
 }

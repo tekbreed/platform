@@ -32,10 +32,10 @@ type IconName = keyof typeof iconMap
 
 export function Features({ content }: { content: Promise<HomePageContent> }) {
 	return (
-		<section className="w-full. mx-auto pt-12 pb-24">
+		<section className="mx-auto w-full pt-12 pb-24">
 			<div className="container w-full">
 				<div className="mx-auto max-w-3xl text-center">
-					<h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
 						Why Choose TekBreed?
 					</h2>
 					<p className="mt-4 text-lg text-muted-foreground">
@@ -46,7 +46,13 @@ export function Features({ content }: { content: Promise<HomePageContent> }) {
 				<div className="mx-auto mt-16 grid w-full max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 					<React.Suspense
 						fallback={Array.from({ length: 6 }).map((_, i) => (
-							<Skeleton key={i} className="h-65 w-90" />
+							<Skeleton
+								className="h-65 w-90"
+								key={`fixed-${
+									// biome-ignore lint/suspicious/noArrayIndexKey: this list doesnt change
+									i
+								}`}
+							/>
 						))}
 					>
 						<Await resolve={content}>
@@ -54,7 +60,7 @@ export function Features({ content }: { content: Promise<HomePageContent> }) {
 								features.map((feature) => {
 									const IconComponent = iconMap[feature.icon as IconName]
 									return (
-										<Card key={feature.name} className="text-center">
+										<Card className="text-center" key={feature.name}>
 											<CardHeader>
 												<IconComponent className="mx-auto h-12 w-12 text-primary" />
 												<CardTitle className="text-xl">

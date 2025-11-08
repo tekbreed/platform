@@ -6,11 +6,9 @@ import { HoneypotInputs } from "remix-utils/honeypot/react"
 import type { SEOHandle } from "@nasa-gcn/remix-seo"
 import { getFormProps, getInputProps, useForm } from "@conform-to/react"
 import { parseWithZod } from "@conform-to/zod/v4"
-import { motion } from "framer-motion"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { prisma } from "@repo/database"
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -25,10 +23,13 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 import { Verification } from "@repo/ui/email/verification"
+
 import { sendEmail } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
 import { EmailSchema } from "@repo/utils/user-validation"
+
+import { prisma } from "@repo/database"
 
 import type { Route } from "./+types/forgot-password"
 import { prepareVerification } from "./verify.server"
@@ -87,7 +88,7 @@ export async function action({ request }: Route.ActionArgs) {
 	const response = await sendEmail({
 		to: user.email,
 		subject: `TekBreed Password Reset`,
-		react: <Verification verificationUrl={verifyUrl.toString()} code={otp} />,
+		react: <Verification code={otp} verificationUrl={verifyUrl.toString()} />,
 	})
 
 	if (response.status === "success") {
@@ -121,12 +122,12 @@ export default function ForgotPasswordRoute({
 	return (
 		<>
 			{/* {metadata} */}
-			<div className="flex !h-[90%]">
+			<div className="!h-[90%] flex">
 				<Card className="m-auto max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form
 						{...getFormProps(form)}
-						method="post"
 						className="mx-auto w-full space-y-6"
+						method="post"
 					>
 						<HoneypotInputs />
 						<CardHeader>
@@ -141,8 +142,8 @@ export default function ForgotPasswordRoute({
 								<Label htmlFor={fields.email.id}>Email</Label>
 								<Input
 									{...getInputProps(fields.email, { type: "email" })}
-									placeholder="johndoe@example.com"
 									className="border-border bg-background"
+									placeholder="johndoe@example.com"
 								/>
 								<FormError errors={fields.email.errors} />
 							</div>
@@ -151,10 +152,10 @@ export default function ForgotPasswordRoute({
 						<CardFooter>
 							<div className="flex w-full justify-end">
 								<div className="flex gap-6">
-									<Button variant={"outline"} asChild>
+									<Button asChild variant={"outline"}>
 										<Link to={"/auth/signin"}>Cancel</Link>
 									</Button>
-									<Button type="submit" disabled={isSubmitting}>
+									<Button disabled={isSubmitting} type="submit">
 										Recover password
 										{isSubmitting ? (
 											<Icons.loader2 className="ml-2 animate-spin" />

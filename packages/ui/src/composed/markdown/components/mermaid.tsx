@@ -4,6 +4,7 @@ import { useTheme } from "remix-themes"
 
 import { createId as cuid } from "@paralleldrive/cuid2"
 import mermaid from "mermaid"
+import { toast } from "sonner"
 
 export function Mermaid({ chart }: { chart: string }) {
 	const ref = React.useRef<HTMLDivElement>(null)
@@ -29,7 +30,7 @@ export function Mermaid({ chart }: { chart: string }) {
 					}
 				})
 				.catch((err) => {
-					console.error("Mermaid rendering error:", err)
+					toast.error("Mermaid rendering error", { description: err })
 					setError("Failed to render diagram")
 					if (ref.current) {
 						ref.current.innerHTML = `<div class="text-red-500 p-4 border border-red-300 rounded">Error rendering diagram: ${err.message}</div>`
@@ -42,5 +43,5 @@ export function Mermaid({ chart }: { chart: string }) {
 		return <div className="mermaid text-red-500">{error}</div>
 	}
 
-	return <div ref={ref} className="mermaid flex justify-center" />
+	return <div className="mermaid flex justify-center" ref={ref} />
 }

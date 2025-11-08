@@ -62,8 +62,7 @@ export async function handleOnboarding(request: Request, formData: FormData) {
 				}
 
 				return { ...data, session }
-			} catch (e) {
-				console.error(e)
+			} catch (_e) {
 				ctx.addIssue({
 					path: ["root"],
 					code: "custom",

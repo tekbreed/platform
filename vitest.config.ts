@@ -5,14 +5,7 @@ import { defineProject } from "vitest/config"
 
 export default defineProject({
 	test: {
-		exclude: [
-			"**/build/**",
-			"**/dist/**",
-			"**/node_modules/**",
-			"**/e2e/**",
-			"**/tests/*.e2e.{test,spec}.{ts,tsx,js,jsx}",
-			"**/tests/e2e/**",
-		],
+		exclude: ["**/build/**", "**/dist/**", "**/node_modules/**", "**/e2e/**"],
 
 		// setupFiles: ["./vitest.setup.ts"],
 		includeSource: ["**/src/**/*.{ts,tsx}"],
@@ -26,7 +19,6 @@ export default defineProject({
 						"**/tests/**/*.browser.{test,spec}.{ts,tsx}",
 						"**/__tests__/**/*.browser.{test,spec}.{ts,tsx}",
 					],
-					exclude: ["**/tests/e2e/**"],
 					browser: {
 						enabled: true,
 						provider: playwright(),
@@ -41,7 +33,6 @@ export default defineProject({
 						"**/tests/**/*.unit.{test,spec}.ts",
 						"**/__tests__/**/*.unit.{test,spec}.ts",
 					],
-					exclude: ["**/tests/e2e/**"],
 					environment: "node",
 				},
 			},

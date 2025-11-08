@@ -17,6 +17,7 @@ import {
 } from "@repo/ui/components/input-otp"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back"
 import { useIsPending } from "@repo/utils/misc"
@@ -66,7 +67,7 @@ export default function VerifyPage({
 	const type = parseWithZoddType.success ? parseWithZoddType.data : null
 
 	const [form, fields] = useForm<z.infer<typeof VerifySchema>>({
-		id: "verify",
+		id: "verify-form",
 		lastResult: actionData ?? loaderData,
 		onValidate({ formData }) {
 			return parseWithZod(formData, { schema: VerifySchema })
@@ -99,7 +100,7 @@ export default function VerifyPage({
 					<Mail className="h-8 w-8 text-blue-600 dark:text-blue-400" />
 				</div>
 			</div>
-			<h1 className="mb-2 text-2xl font-bold">Verify your email</h1>
+			<h1 className="mb-2 font-bold text-2xl">Verify your email</h1>
 			<p className="text-muted-foreground">
 				We&apos;ve sent a verification code to
 			</p>
@@ -114,7 +115,7 @@ export default function VerifyPage({
 					<RectangleEllipsis className="h-8 w-8 text-blue-600 dark:text-blue-400" />
 				</div>
 			</div>
-			<h1 className="mb-2 text-2xl font-bold">Check your email</h1>
+			<h1 className="mb-2 font-bold text-2xl">Check your email</h1>
 			<p className="text-muted-foreground">
 				We&apos;ve sent you a code to reset your password
 			</p>
@@ -127,7 +128,7 @@ export default function VerifyPage({
 					<MailQuestion className="h-8 w-8 text-blue-600 dark:text-blue-400" />
 				</div>
 			</div>
-			<h1 className="mb-2 text-2xl font-bold">Check your email</h1>
+			<h1 className="mb-2 font-bold text-2xl">Check your email</h1>
 			<p className="text-muted-foreground">
 				We&apos;ve sent you a code to verify your email address
 			</p>
@@ -145,13 +146,14 @@ export default function VerifyPage({
 			<div className="container mx-auto flex min-h-screen items-center justify-center p-4">
 				<div className="w-full max-w-md rounded-xl bg-card p-8 shadow-lg">
 					{/* Back button */}
-					<button
-						onClick={() => goBack()}
+					<Button
 						className="mb-6 flex items-center text-muted-foreground transition-colors hover:text-foreground"
+						onClick={() => goBack()}
+						variant={"ghost"}
 					>
 						<ArrowLeft className="mr-2 h-4 w-4" />
 						Back
-					</button>
+					</Button>
 
 					<div className="mb-8 text-center">
 						{type ? headings[type] : "Invalid type"}
@@ -159,8 +161,8 @@ export default function VerifyPage({
 
 					<Form
 						{...getFormProps(form)}
-						method="post"
 						className="w-full"
+						method="post"
 						ref={formRef}
 					>
 						<HoneypotInputs />
@@ -179,24 +181,25 @@ export default function VerifyPage({
 						<div className="mx-auto mb-6 flex w-full justify-center">
 							<InputOTP
 								{...getInputProps(fields[codeQueryParam], { type: "text" })}
-								maxLength={OTP_LENGTH}
 								autoFocus
+								maxLength={OTP_LENGTH}
 							>
 								<InputOTPGroup>
 									{[...Array(OTP_LENGTH)].map((_, i) => (
-										<InputOTPSlot key={i} index={i} />
+										// biome-ignore lint/suspicious/noArrayIndexKey: the order of this list never changes
+										<InputOTPSlot index={i} key={i} />
 									))}
 								</InputOTPGroup>
 							</InputOTP>
 						</div>
 						<FormError
-							errors={fields[codeQueryParam].errors}
 							className="mb-6"
+							errors={fields[codeQueryParam].errors}
 						/>
 						<Button
-							type="submit"
 							className="mb-6 w-full"
 							disabled={isVerifying}
+							type="submit"
 						>
 							{type === "reset_password" ? "Reset Password" : "Verify Email"}
 							{isVerifying ? (
@@ -205,8 +208,8 @@ export default function VerifyPage({
 						</Button>
 						<FormError errors={form.errors} />
 					</Form>
-					<div className="mt-6 border-t border-border pt-6">
-						<p className="text-center text-xs text-muted-foreground">
+					<div className="mt-6 border-border border-t pt-6">
+						<p className="text-center text-muted-foreground text-xs">
 							Check your spam folder if you don&apos;t see the email. The code
 							expires in 10 minutes.
 						</p>

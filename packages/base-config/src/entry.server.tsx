@@ -38,7 +38,7 @@ export function handleRequest(...args: DocRequestArgs) {
 
 		const { pipe, abort } = renderToPipeableStream(
 			<NonceProvider value={nonce}>
-				<ServerRouter nonce={nonce} context={routerContext} url={request.url} />
+				<ServerRouter context={routerContext} nonce={nonce} url={request.url} />
 			</NonceProvider>,
 			{
 				[readyOption]() {
@@ -99,6 +99,7 @@ export function handleRequest(...args: DocRequestArgs) {
 				onError(error: unknown) {
 					responseStatusCode = 500
 					if (shellRendered) {
+						// biome-ignore lint/suspicious/noConsole: for debugging purpose, to be removed
 						console.error(error)
 					}
 				},

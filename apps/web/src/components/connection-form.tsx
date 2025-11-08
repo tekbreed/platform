@@ -2,6 +2,7 @@ import { Form } from "react-router"
 
 import { Button } from "@repo/ui/components/button"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { GITHUB_PROVIDER_NAME, type ProviderName } from "@repo/utils/connection"
 import { useIsPending } from "@repo/utils/misc"
 
@@ -33,17 +34,17 @@ export function ConnectionForm({
 	const isPending = useIsPending({ formAction })
 	return (
 		<Form
-			className="flex items-center justify-center gap-2"
 			action={formAction}
+			className="flex items-center justify-center gap-2"
 			method="POST"
 		>
 			{redirectTo ? (
-				<input type="hidden" name="redirectTo" value={redirectTo} />
+				<input name="redirectTo" type="hidden" value={redirectTo} />
 			) : null}
 			<Button
-				type="submit"
 				className="w-full"
 				disabled={isPending}
+				type="submit"
 				variant="secondary"
 			>
 				<span className="inline-flex items-center gap-1.5">

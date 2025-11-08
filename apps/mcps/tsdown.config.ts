@@ -4,5 +4,5 @@ export default defineConfig({
 	entry: "src/index.ts",
 	platform: "node",
 	outDir: "build",
-	external: ["hono", "@hono/*"],
+	external: ["hono", "@hono/*", "dotenv"],
 })

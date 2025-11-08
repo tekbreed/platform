@@ -83,9 +83,6 @@ export function bundleComponents(
 
 		// Security validation
 		if (!validateComponentCode(component.file.code)) {
-			console.warn(
-				`Component ${componentName} contains potentially dangerous code and will be skipped`,
-			)
 			return acc
 		}
 
@@ -123,6 +120,8 @@ marked.setOptions({
  * Uses marked for Markdown to HTML conversion and Turndown for HTML to Markdown conversion.
  * Includes sanitization of input using DOMPurify.
  */
+
+// biome-ignore lint/complexity/noStaticOnlyClass: this is just a simple class
 export class MarkdownConverter {
 	/**
 	 * Converts Markdown to sanitized HTML.
@@ -198,6 +197,7 @@ export async function withRetry<T>(
 				lastError = error
 			}
 			await new Promise((resolve) => setTimeout(resolve, retryDelays[attempt]))
+			// biome-ignore lint/suspicious/noConsole: allow console
 			console.warn(
 				`Retrying ${operationName}, attempt ${attempt + 1}/${maxRetries + 1}`,
 			)

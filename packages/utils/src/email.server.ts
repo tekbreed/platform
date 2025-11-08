@@ -22,8 +22,7 @@ export async function sendEmail(options: {
 		} else {
 			return { status: "error", error: error.message } as const
 		}
-	} catch (error) {
-		console.error("Send email error:", error)
+	} catch (_error) {
 		return { status: "error", error: "Failed to send email" } as const
 	}
 }
@@ -49,8 +48,7 @@ export async function subscribeUser(credentials: {
 		} else {
 			return { status: "error", error: error.message } as const
 		}
-	} catch (error) {
-		console.error("Subscribe user error:", error)
+	} catch (_error) {
 		return { status: "error", error: "Failed to subscribe user" } as const
 	}
 }
@@ -59,7 +57,6 @@ export async function listSubscribers(audienceId: string = RESEND_AUDIENCE_ID) {
 	try {
 		return await resend.contacts.list({ audienceId })
 	} catch (error) {
-		console.error(error)
-		throw error
+		return { error }
 	}
 }

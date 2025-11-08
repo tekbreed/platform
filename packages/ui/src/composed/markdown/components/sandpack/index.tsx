@@ -96,12 +96,10 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 		if (!isFullscreen && sandpackRef.current) {
 			sandpackRef.current.requestFullscreen().catch((err) => {
 				toast.error(getErrorMessage(err))
-				console.error(`Error attempting to enable fullscreen: ${err.message}`)
 			})
 		} else if (document.fullscreenElement) {
 			document.exitFullscreen().catch((err) => {
 				toast.error(getErrorMessage(err))
-				console.error(`Error attempting to exit fullscreen: ${err.message}`)
 			})
 		}
 	}, [isFullscreen])
@@ -124,6 +122,8 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 	 * Only depend on stringified version to avoid reference changes
 	 * Including 'sandpackTemplate.sandpackFiles' directly causes infinite re-renders
 	 */
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: JSON.stringify takes care of the changes
 	const refinedFiles = React.useMemo(() => {
 		const files = sandpackTemplate.sandpackFiles || []
 		if (!files.length) return undefined
@@ -141,24 +141,14 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 		)
 
 		return filesMap
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		JSON.stringify(
-			sandpackTemplate.sandpackFiles?.map((f) => ({
-				path: f.path,
-				code: f.code,
-				active: f.active,
-				hidden: f.hidden,
-				readOnly: f.readOnly,
-			})),
-		),
-	])
+	}, [JSON.stringify(sandpackTemplate.sandpackFiles)])
 
 	/**
 	 * Refine custom setup to map dependencies and devDependencies correctly
 	 * Including 'sandpackTemplate.customSetup' directly causes infinite re-renders
 	 */
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: JSON.stringify takes care of the changes
 	const refinedCustomSetup = React.useMemo(() => {
 		const setup = sandpackTemplate?.customSetup
 		if (!setup) return {}
@@ -166,11 +156,13 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 		return {
 			dependencies:
 				setup.dependencies?.reduce(
+					// biome-ignore lint/performance/noAccumulatingSpread: Ignore
 					(acc, dep) => ({ ...acc, [dep.name]: dep.version }),
 					{},
 				) || {},
 			devDependencies:
 				setup.devDependencies?.reduce(
+					// biome-ignore lint/performance/noAccumulatingSpread: Ignore
 					(acc, dep) => ({ ...acc, [dep.name]: dep.version }),
 					{},
 				) || {},
@@ -198,10 +190,9 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 	)
 
 	return (
-		<div ref={sandpackRef} className={containerClassName}>
+		<div className={containerClassName} ref={sandpackRef}>
 			<SandpackProvider
-				theme={refinedTheme}
-				template={sandpackTemplate.template}
+				customSetup={refinedCustomSetup}
 				files={refinedFiles}
 				options={{
 					autorun: options.autorun,
@@ -214,11 +205,12 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 						"sp-editor": "sandpack-editor",
 					},
 				}}
-				customSetup={refinedCustomSetup}
+				template={sandpackTemplate.template}
+				theme={refinedTheme}
 			>
 				<div className={headerClassName}>
 					<div className="flex items-center gap-2">
-						<div className="flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium">
+						<div className="flex items-center gap-1 rounded-md px-3 py-1.5 font-medium text-sm">
 							<Code className="size-4" />
 							<span className="capitalize">{templateLabel}</span>
 						</div>
@@ -227,15 +219,15 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 						{shouldShowTabs && (
 							<SandpackTabs
 								activeView={activeView}
-								setActiveView={setActiveView}
 								isMobile={isMobile}
+								setActiveView={setActiveView}
 							/>
 						)}
 						<Button
+							aria-label="Toggle fullscreen"
+							className="ml-4 size-7"
 							onClick={toggleFullscreen}
 							size="icon"
-							className="ml-4 size-7"
-							aria-label="Toggle fullscreen"
 						>
 							{isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
 						</Button>
@@ -243,8 +235,8 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 				</div>
 
 				<div
-					ref={containerRef}
 					className="flex h-full"
+					ref={containerRef}
 					style={{
 						height: isFullscreen ? "calc(100vh - 80px)" : options.editorHeight,
 					}}
@@ -260,19 +252,19 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 							<>
 								<div className="h-full w-1/2 overflow-hidden">
 									<SandpackCodeEditor
-										showLineNumbers={options.showLineNumbers}
-										showInlineErrors={options.showInlineErrors}
-										showTabs={options.showTabs}
-										extensions={[autocompletion()]}
-										wrapContent
 										className="h-full w-full rounded-none border-none"
+										extensions={[autocompletion()]}
+										showInlineErrors={options.showInlineErrors}
+										showLineNumbers={options.showLineNumbers}
+										showTabs={options.showTabs}
+										wrapContent
 									/>
 								</div>
 
 								<div className="h-full w-1/2 overflow-hidden border-l">
 									<Preview
-										showConsole={showConsole}
 										setShowConsole={setShowConsole}
+										showConsole={showConsole}
 									/>
 								</div>
 							</>
@@ -280,19 +272,19 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 							<div className="h-full w-full">
 								{shouldShowEditor && !showPreview && (
 									<SandpackCodeEditor
-										showLineNumbers={options.showLineNumbers}
+										className="h-full w-full rounded-none border-none"
+										extensions={[autocompletion()]}
 										showInlineErrors={options.showInlineErrors}
+										showLineNumbers={options.showLineNumbers}
 										showTabs={options.showTabs}
 										wrapContent
-										extensions={[autocompletion()]}
-										className="h-full w-full rounded-none border-none"
 									/>
 								)}
 
 								{showPreview && !shouldShowEditor && (
 									<Preview
-										showConsole={showConsole}
 										setShowConsole={setShowConsole}
+										showConsole={showConsole}
 									/>
 								)}
 							</div>

@@ -8,7 +8,6 @@ import { StatusCodes } from "http-status-codes"
 import { Loader2 } from "lucide-react"
 import { z } from "zod/v4"
 
-import { prisma } from "@repo/database/client"
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -22,12 +21,15 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Verification } from "@repo/ui/email/verification"
+
 import { requireUserId } from "@repo/utils/auth.server"
 import { sendEmail } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
 import { EmailSchema } from "@repo/utils/user-validation"
 import { verifySessionStorage } from "@repo/utils/verification.server"
+
+import { prisma } from "@repo/database/client"
 
 import { prepareVerification } from "../auth/verify.server"
 import type { Route } from "./+types/change-email"
@@ -94,7 +96,7 @@ export async function action({ request }: Route.ActionArgs) {
 	const response = await sendEmail({
 		to: email,
 		subject: `TekBreed Email Change Verification`,
-		react: <Verification verificationUrl={verifyUrl.toString()} code={otp} />,
+		react: <Verification code={otp} verificationUrl={verifyUrl.toString()} />,
 	})
 
 	if (response.status === "success") {
@@ -136,12 +138,12 @@ export default function ChangeEmail({
 	return (
 		<>
 			{/* {metadata} */}
-			<div className="flex !h-[90%]">
+			<div className="!h-[90%] flex">
 				<Card className="m-auto w-full max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form
 						{...getFormProps(form)}
-						method="post"
 						className="mx-auto w-full space-y-6"
+						method="post"
 					>
 						<HoneypotInputs />
 						<CardHeader>
@@ -159,8 +161,8 @@ export default function ChangeEmail({
 								<Label htmlFor={fields.email.id}>New Email</Label>
 								<Input
 									{...getInputProps(fields.email, { type: "email" })}
-									placeholder="tonymax@tekbreed.com"
 									className="border-border bg-background"
+									placeholder="tonymax@tekbreed.com"
 								/>
 								<FormError errors={fields.email.errors} />
 							</div>
@@ -169,10 +171,10 @@ export default function ChangeEmail({
 						<CardFooter>
 							<div className="flex w-full justify-end">
 								<div className="flex gap-6">
-									<Button variant={"outline"} asChild>
+									<Button asChild variant={"outline"}>
 										<Link to={"/profile"}>Cancel</Link>
 									</Button>
-									<Button type="submit" disabled={isSubmitting}>
+									<Button disabled={isSubmitting} type="submit">
 										Send confirmation{" "}
 										{isSubmitting ? (
 											<Loader2 className="ml-2 animate-spin" />

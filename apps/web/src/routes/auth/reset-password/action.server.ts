@@ -3,9 +3,10 @@ import { data, redirect } from "react-router"
 import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 
-import { prisma } from "@repo/database"
 import { getPasswordHash } from "@repo/utils/auth.server"
 import { verifySessionStorage } from "@repo/utils/verification.server"
+
+import { prisma } from "@repo/database"
 
 import { ResetPasswordSchema } from "./index"
 import { requireResetPasswordEmail } from "./loader.server"

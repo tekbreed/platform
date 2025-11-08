@@ -5,24 +5,24 @@ import { withRetry } from "../misc.server"
 
 type Metadata = Record<string, unknown>
 
-interface ProcessedChunk {
-	id: string
-	text: string
-	metadata: Metadata
-}
+// interface ProcessedChunk {
+// 	id: string
+// 	text: string
+// 	metadata: Metadata
+// }
 
-interface EnhancedMetadata extends Metadata {
-	documentId: string
-	chunkIndex: number
-	title?: string
-	url?: string
-	contentType: "code" | "documentation" | "tutorial" | "general"
-	difficulty?: "beginner" | "intermediate" | "advanced"
-	topics?: string[]
-	timestamp: string
-	language?: string
-	sourceType: "upload" | "web" | "manual"
-}
+// interface EnhancedMetadata extends Metadata {
+// 	documentId: string
+// 	chunkIndex: number
+// 	title?: string
+// 	url?: string
+// 	contentType: "code" | "documentation" | "tutorial" | "general"
+// 	difficulty?: "beginner" | "intermediate" | "advanced"
+// 	topics?: string[]
+// 	timestamp: string
+// 	language?: string
+// 	sourceType: "upload" | "web" | "manual"
+// }
 
 interface VectorQueryOptions {
 	topK?: number
@@ -39,47 +39,44 @@ const vectorIndex = new Index({
 	token: UPSTASH_VECTOR_REST_TOKEN,
 })
 
-export async function upsertEmbeddings(
-	documentId: string,
-	chunks: ProcessedChunk[],
-	embeddings: number[][],
-	additionalMetadata: Partial<EnhancedMetadata> = {},
-): Promise<void> {
-	invariant(documentId, "documentId is required")
-	invariant(
-		chunks.length === embeddings.length,
-		"Chunks and embeddings length mismatch",
-	)
+// export async function upsertEmbeddings(
+// 	documentId: string,
+// 	chunks: ProcessedChunk[],
+// 	embeddings: number[][],
+// 	additionalMetadata: Partial<EnhancedMetadata> = {},
+// ): Promise<void> {
+// 	invariant(documentId, "documentId is required")
+// 	invariant(
+// 		chunks.length === embeddings.length,
+// 		"Chunks and embeddings length mismatch",
+// 	)
 
-	if (chunks.length === 0) {
-		console.warn("No chunks provided for upserting")
-		return
-	}
+// 	if (chunks.length === 0) {
+// 		// biome-ignore lint/suspicious/noConsole: allow for debugging
+// 		console.warn("No chunks provided for upserting")
+// 		return
+// 	}
 
-	try {
-		const timestamp = new Date().toISOString()
-		const vectors = chunks.map((chunk, i) => ({
-			id: chunk.id,
-			vector: embeddings[i],
-			metadata: {
-				text: chunk.text,
-				documentId,
-				chunkIndex: i,
-				timestamp,
-				contentType: "general",
-				sourceType: "upload",
-				...chunk.metadata,
-				...additionalMetadata,
-			} as EnhancedMetadata,
-		}))
+// 	try {
+// 		const timestamp = new Date().toISOString()
+// 		const vectors = chunks.map((chunk, i) => ({
+// 			id: chunk.id,
+// 			vector: embeddings[i],
+// 			metadata: {
+// 				text: chunk.text,
+// 				documentId,
+// 				chunkIndex: i,
+// 				timestamp,
+// 				contentType: "general",
+// 				sourceType: "upload",
+// 				...chunk.metadata,
+// 				...additionalMetadata,
+// 			} as EnhancedMetadata,
+// 		}))
 
-		await withRetry(() => vectorIndex.upsert(vectors), "upsertEmbeddings")
-		console.log(`Successfully upserted ${vectors.length} vectors for document`)
-	} catch (error) {
-		console.error("Upstash upsert error:", error)
-		throw new Error(`Failed to upsert vectors: ${getErrorMessage(error)}`)
-	}
-}
+// 		await withRetry(() => vectorIndex.upsert(vectors), "upsertEmbeddings")
+// 	} catch (_error) {}
+// }
 
 export async function queryVector(
 	vector: number[],
@@ -100,7 +97,6 @@ export async function queryVector(
 			includeMetadata,
 		})
 	} catch (error) {
-		console.error("Upstash query error:", error)
 		throw new Error(`Failed to query vectors: ${getErrorMessage(error)}`)
 	}
 }
@@ -108,13 +104,8 @@ export async function queryVector(
 export async function deleteVectorsByIds(ids: string[]): Promise<void> {
 	invariant(ids.length, "At least one ID is required")
 	try {
-		const response = await withRetry(
-			() => vectorIndex.delete(ids),
-			"deleteVectorsByIds",
-		)
-		console.log(`Successfully deleted ${response.deleted} vectors for document`)
+		await withRetry(() => vectorIndex.delete(ids), "deleteVectorsByIds")
 	} catch (error) {
-		console.error("Upstash delete error:", error)
 		throw new Error(`Failed to delete vectors: ${getErrorMessage(error)}`)
 	}
 }
@@ -124,13 +115,11 @@ export async function deleteVectorsByDocumentId(
 ): Promise<void> {
 	invariant(documentId, "documentId is required")
 	try {
-		const response = await withRetry(
+		await withRetry(
 			() => vectorIndex.delete(documentId),
 			"deleteVectorsByDocumentId",
 		)
-		console.log(`Successfully deleted ${response.deleted} vectors for document`)
 	} catch (error) {
-		console.error("Upstash delete error:", error)
 		throw new Error(`Failed to delete vectors: ${getErrorMessage(error)}`)
 	}
 }

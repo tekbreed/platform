@@ -18,7 +18,7 @@ import {
 } from "./constants"
 
 const anthropicClient = new Anthropic({
-	apiKey: process.env.ANTHROPIC_API_KEY!,
+	apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
 export const MODELS = {
@@ -150,7 +150,7 @@ export async function callClaudeAPI(
 
 		const model =
 			thinkingEnabled || context.model === "SONNET"
-				? MODELS["SONNET"]
+				? MODELS.SONNET
 				: MODELS[context.model ?? "HAIKU"]
 
 		const systemPrompt =
@@ -162,7 +162,7 @@ export async function callClaudeAPI(
 				: (context.systemPrompt as string)
 
 		const maxTokens =
-			thinkingEnabled && model === MODELS["SONNET"]
+			thinkingEnabled && model === MODELS.SONNET
 				? config.sonnetMaxTokens
 				: config.haikuMaxTokens
 
@@ -341,7 +341,6 @@ export async function callClaudeAPI(
 			},
 		}
 	} catch (error: unknown) {
-		console.error("Claude API error:", error)
 		throw new Error(`Failed to call Claude API: ${getErrorMessage(error)}`)
 	}
 }

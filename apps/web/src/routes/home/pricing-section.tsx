@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: allow */
 "use client"
 
 import { useState } from "react"
@@ -264,11 +265,11 @@ export function PricingSection() {
 		aiEnabled: boolean = false,
 	) => (
 		<Card
-			key={plan.name}
 			className={`relative flex flex-col ${plan.popular ? "border-primary shadow-lg" : ""}`}
+			key={plan.name}
 		>
 			{plan.popular && (
-				<Badge className="absolute -top-3 left-1/2 -translate-x-1/2">
+				<Badge className="-top-3 -translate-x-1/2 absolute left-1/2">
 					Most Popular
 				</Badge>
 			)}
@@ -276,7 +277,7 @@ export function PricingSection() {
 				<CardTitle className="text-2xl">{plan.name}</CardTitle>
 				<CardDescription>{plan.description}</CardDescription>
 				<div className="mt-4">
-					<span className="text-4xl font-bold">
+					<span className="font-bold text-4xl">
 						{plan.isContact
 							? plan.price
 							: plan.isUsageBased && !plan.isContact
@@ -287,7 +288,7 @@ export function PricingSection() {
 						<span className="text-muted-foreground">/{plan.period}</span>
 					)}
 					{plan.isUsageBased && !plan.isContact && (
-						<span className="mt-1 block text-sm text-muted-foreground">
+						<span className="mt-1 block text-muted-foreground text-sm">
 							{plan.basePrice > 0
 								? `Base: $${plan.basePrice}/month + usage`
 								: "Pay only for what you use"}
@@ -298,7 +299,7 @@ export function PricingSection() {
 			<CardContent className="flex-1">
 				<ul className="space-y-3">
 					{plan.features.map((feature: string) => (
-						<li key={feature} className="flex items-start space-x-3">
+						<li className="flex items-start space-x-3" key={feature}>
 							<Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
 							<span className="text-sm">{feature}</span>
 						</li>
@@ -307,9 +308,9 @@ export function PricingSection() {
 						showAI &&
 						plan.aiFeatures &&
 						plan.aiFeatures.map((feature: string) => (
-							<li key={feature} className="flex items-start space-x-3">
+							<li className="flex items-start space-x-3" key={feature}>
 								<Bot className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-500" />
-								<span className="text-sm text-blue-600">{feature}</span>
+								<span className="text-blue-600 text-sm">{feature}</span>
 							</li>
 						))}
 				</ul>
@@ -333,7 +334,7 @@ export function PricingSection() {
 		<section className="bg-gradient-to-b from-background to-muted/20 py-24">
 			<div className="container mx-auto px-4">
 				<div className="mx-auto max-w-3xl text-center">
-					<h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
 						Simple, Transparent Pricing
 					</h2>
 					<p className="mt-4 text-lg text-muted-foreground">
@@ -342,45 +343,45 @@ export function PricingSection() {
 				</div>
 
 				<div className="mx-auto mt-16 max-w-7xl">
-					<Tabs defaultValue="individual" className="w-full">
+					<Tabs className="w-full" defaultValue="individual">
 						<TabsList className="mb-8 grid h-auto w-full grid-cols-4">
 							<TabsTrigger
+								className="font-medium text-sm md:text-base"
 								value="individual"
-								className="text-sm font-medium md:text-base"
 							>
 								Individual Plans
 							</TabsTrigger>
 							<TabsTrigger
+								className="font-medium text-sm md:text-base"
 								value="team"
-								className="text-sm font-medium md:text-base"
 							>
 								Team Plans
 							</TabsTrigger>
 							<TabsTrigger
+								className="font-medium text-sm md:text-base"
 								value="ai-only"
-								className="text-sm font-medium md:text-base"
 							>
 								AI Only Plans
 							</TabsTrigger>
 							<TabsTrigger
+								className="font-medium text-sm md:text-base"
 								value="api-only"
-								className="text-sm font-medium md:text-base"
 							>
 								API Plans
 							</TabsTrigger>
 						</TabsList>
 
 						{/* Individual Plans */}
-						<TabsContent value="individual" className="space-y-6">
+						<TabsContent className="space-y-6" value="individual">
 							<div className="flex items-center justify-center space-x-2 rounded-lg bg-muted/50 p-2">
 								<Switch
-									id="individual-ai"
 									checked={individualAIEnabled}
+									id="individual-ai"
 									onCheckedChange={setIndividualAIEnabled}
 								/>
 								<Label
+									className="cursor-pointer font-medium text-sm"
 									htmlFor="individual-ai"
-									className="cursor-pointer text-sm font-medium"
 								>
 									Include AI Features (+$10-40/month)
 								</Label>
@@ -393,16 +394,16 @@ export function PricingSection() {
 						</TabsContent>
 
 						{/* Team Plans */}
-						<TabsContent value="team" className="space-y-6">
+						<TabsContent className="space-y-6" value="team">
 							<div className="flex items-center justify-center space-x-2 rounded-lg bg-muted/50 p-2">
 								<Switch
-									id="team-ai"
 									checked={teamAIEnabled}
+									id="team-ai"
 									onCheckedChange={setTeamAIEnabled}
 								/>
 								<Label
+									className="cursor-pointer font-medium text-sm"
 									htmlFor="team-ai"
-									className="cursor-pointer text-sm font-medium"
 								>
 									Include AI Features (+$100-200/month)
 								</Label>
@@ -422,7 +423,7 @@ export function PricingSection() {
 						</TabsContent>
 
 						{/* API Only Plans */}
-						<TabsContent value="api-only" className="space-y-8">
+						<TabsContent className="space-y-8" value="api-only">
 							<div className="mx-auto max-w-2xl">
 								<Card>
 									<CardHeader>
@@ -438,23 +439,23 @@ export function PricingSection() {
 									</CardHeader>
 									<CardContent className="space-y-4">
 										<div className="space-y-2">
-											<Label htmlFor="api-requests" className="text-base">
+											<Label className="text-base" htmlFor="api-requests">
 												Estimated monthly API requests
 											</Label>
 											<Input
 												id="api-requests"
+												min="0"
+												onChange={(e) => setApiRequests(Number(e.target.value))}
+												step="1000"
 												type="number"
 												value={apiRequests}
-												onChange={(e) => setApiRequests(Number(e.target.value))}
-												min="0"
-												step="1000"
 											/>
 										</div>
 										<div className="flex items-center justify-between rounded-lg border bg-background p-4">
-											<span className="text-sm text-muted-foreground">
+											<span className="text-muted-foreground text-sm">
 												{apiRequests.toLocaleString()} requests/month
 											</span>
-											<span className="text-xs text-muted-foreground">
+											<span className="text-muted-foreground text-xs">
 												Prices update in cards below
 											</span>
 										</div>
@@ -473,16 +474,16 @@ export function PricingSection() {
 									</CardHeader>
 									<CardContent className="space-y-4">
 										<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-											<Button variant="outline" className="justify-start">
+											<Button className="justify-start" variant="outline">
 												<Check className="mr-2 h-4 w-4" />
 												View API Documentation
 											</Button>
-											<Button variant="outline" className="justify-start">
+											<Button className="justify-start" variant="outline">
 												<Zap className="mr-2 h-4 w-4" />
 												API Playground
 											</Button>
 										</div>
-										<p className="text-sm text-muted-foreground">
+										<p className="text-muted-foreground text-sm">
 											All API plans include access to comprehensive
 											documentation, code examples, and a testing playground.
 										</p>

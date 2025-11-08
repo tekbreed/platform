@@ -94,7 +94,6 @@ export class GitHubProvider implements AuthProvider {
 		})
 		const rawJson = await response.json()
 		const result = GitHubUserSchema.safeParse(rawJson)
-		console.log(result)
 
 		return {
 			displayName: result.success ? result.data.login : "Unknown",

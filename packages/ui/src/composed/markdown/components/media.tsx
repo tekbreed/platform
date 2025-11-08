@@ -16,6 +16,7 @@ export function Img({
 			)}
 			loading="lazy"
 			{...props}
+			alt={props.alt}
 		/>
 	)
 }
@@ -39,13 +40,13 @@ export function Iframe({
 	if (!videoId)
 		return (
 			<EmptyState
-				title="Video not found"
-				description="Please contact support if you believe this is an error."
 				action={{
 					label: "Contact support",
 					// This is supposed to be a link
 					onClick: () => getModuleUrl("web", "support"),
 				}}
+				description="Please contact support if you believe this is an error."
+				title="Video not found"
 			/>
 		)
 
@@ -56,10 +57,8 @@ export function Iframe({
 			})}
 		>
 			<iframe
-				src={getVideoSrc({ type, videoId })}
-				title={srcTitle[type]}
+				allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
 				allowFullScreen
-				loading="lazy"
 				className={cn(
 					{
 						"aspect-video w-full border-0": type === "youtube",
@@ -67,9 +66,11 @@ export function Iframe({
 					},
 					className,
 				)}
-				sandbox="allow-scripts allow-same-origin allow-presentation"
+				loading="lazy"
 				referrerPolicy="strict-origin-when-cross-origin"
-				allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+				sandbox="allow-scripts allow-same-origin allow-presentation"
+				src={getVideoSrc({ type, videoId })}
+				title={srcTitle[type]}
 			/>
 		</div>
 	)

@@ -31,12 +31,12 @@ export function AuthButtons() {
 		<div className="flex items-center gap-4">
 			<ThemeToggle />
 			{!user ? (
-				<Button className="hidden lg:flex" asChild>
+				<Button asChild className="hidden lg:flex">
 					<SmartLink to={getModuleUrl("web", `auth/signin`)}>Sign In</SmartLink>
 				</Button>
 			) : null}
 			{userIsAdmin ? (
-				<Button size={"icon"} variant={"outline"} asChild>
+				<Button asChild size={"icon"} variant={"outline"}>
 					<SmartLink to={getModuleUrl("admin")}>
 						<Icons.doorClosed />
 					</SmartLink>
@@ -44,7 +44,7 @@ export function AuthButtons() {
 			) : null}
 			{user ? (
 				<DropdownMenu>
-					<DropdownMenuTrigger className="hidden lg:block" asChild>
+					<DropdownMenuTrigger asChild className="hidden lg:block">
 						<Avatar className="size-8 cursor-pointer border border-border">
 							<AvatarImage
 								src={getImgSrc({
@@ -62,8 +62,8 @@ export function AuthButtons() {
 					<DropdownMenuContent align="start">
 						<DropdownMenuItem asChild>
 							<SmartLink
-								to={getModuleUrl("web", "profile")}
 								className="font-bold"
+								to={getModuleUrl("web", "profile")}
 							>
 								<Icons.userPen className="mr-2 size-4" /> Profile
 							</SmartLink>
@@ -75,10 +75,10 @@ export function AuthButtons() {
 			) : null}
 
 			<Button
-				size={"icon"}
-				variant={"ghost"}
 				className="block lg:hidden"
 				onClick={openMobileNav}
+				size={"icon"}
+				variant={"ghost"}
 			>
 				<Icons.menu className="size-10" />
 			</Button>

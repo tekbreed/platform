@@ -40,7 +40,7 @@ export function EmptyState({
 			</EmptyHeader>
 			{action ? (
 				<EmptyContent>
-					<Button onClick={action.onClick} variant="outline" size="sm">
+					<Button onClick={action.onClick} size="sm" variant="outline">
 						{action.label}
 					</Button>
 				</EmptyContent>

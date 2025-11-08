@@ -1,5 +1,5 @@
 declare module "sandpack-file-explorer" {
-	import React from "react"
+	import type React from "react"
 
 	export interface SandpackFileExplorerProps {
 		className?: string

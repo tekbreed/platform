@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes"
 
 import { Markdown } from "@repo/ui/composed/markdown"
 import { Header } from "@repo/ui/composed/page-header"
+
 import { getPage } from "@repo/utils/content.server/system/utils"
 import { invariant, invariantResponse } from "@repo/utils/misc"
 
@@ -22,9 +23,9 @@ export default function LegalRoute({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<>
-			<Header title={pageContent.title} description={pageContent.description} />
+			<Header description={pageContent.description} title={pageContent.title} />
 			<section className="mx-auto mt-6 max-w-3xl">
-				<Markdown source={pageContent.content} className="pt-0" />
+				<Markdown className="pt-0" source={pageContent.content} />
 			</section>
 		</>
 	)

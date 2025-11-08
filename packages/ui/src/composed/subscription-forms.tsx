@@ -36,6 +36,7 @@ export function SubscriptionForm() {
 		shouldValidate: "onSubmit",
 	})
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Ignore
 	React.useEffect(() => {
 		if (fetcher.data?.response?.status === "success") {
 			window.setTimeout(() => {
@@ -45,47 +46,46 @@ export function SubscriptionForm() {
 				form.reset()
 			}, 0)
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [fetcher.data?.response?.status])
 
 	return (
 		<div className="rounded-2xl border border-border bg-card p-8 shadow-lg md:p-12">
-			<h2 className="mb-4 text-3xl font-bold">Stay Updated</h2>
+			<h2 className="mb-4 font-bold text-3xl">Stay Updated</h2>
 			<p className="mb-4 text-lg text-muted-foreground">
 				Subscribe to get notified about new content.
 			</p>
 
 			<fetcher.Form
 				{...getFormProps(form)}
-				method="post"
 				action="/subscribe"
 				className="mx-auto max-w-lg gap-4 sm:flex-row"
+				method="post"
 			>
 				<HoneypotInputs />
 				<div className="mx-auto mb-4 flex flex-col gap-4 md:flex-row">
 					<div className="w-full">
 						<Input
 							{...getInputProps(fields.name, { type: "text" })}
+							className="mb-2 flex h-12 w-full rounded-full border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed"
 							name="name"
 							placeholder="Tony Max"
-							className="mb-2 flex h-12 w-full rounded-full border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
 						/>
 						<FormError errors={fields.name.errors} />
 					</div>
 					<div className="w-full">
 						<Input
 							{...getInputProps(fields.email, { type: "email" })}
+							className="mb-2 flex h-12 w-full rounded-full border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:font-medium file:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed"
 							name="email"
 							placeholder="tonymax@tekbreed.com"
-							className="mb-2 flex h-12 w-full rounded-full border-2 px-6 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed"
 						/>
 						<FormError errors={fields.email.errors} />
 					</div>
 				</div>
 				<Button
-					type="submit"
-					disabled={fetcher.state !== "idle"}
 					className="h-12 rounded-full px-8"
+					disabled={fetcher.state !== "idle"}
+					type="submit"
 				>
 					Subscribe{" "}
 					{fetcher.state !== "idle" ? (
@@ -95,7 +95,7 @@ export function SubscriptionForm() {
 				<FormError errors={form.allErrors.root || form.errors} />
 			</fetcher.Form>
 
-			<p className="mt-4 text-sm text-muted-foreground/80">
+			<p className="mt-4 text-muted-foreground/80 text-sm">
 				We respect your privacy. Unsubscribe at any time.
 			</p>
 		</div>

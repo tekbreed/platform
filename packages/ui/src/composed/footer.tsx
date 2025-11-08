@@ -23,7 +23,7 @@ export function Footer() {
 				"p hidden": hideFooter,
 			})}
 		>
-			<footer className={cn("border-t border-border py-12")}>
+			<footer className={cn("border-border border-t py-12")}>
 				<div className="container mx-auto px-4">
 					<div className="flex flex-col items-start justify-between md:flex-row">
 						<section className="mb-6 md:mb-0">
@@ -38,8 +38,8 @@ export function Footer() {
 									{learning.map((item) => (
 										<li key={item.name}>
 											<SmartLink
+												className="text-muted-foreground text-sm capitalize"
 												to={item.path}
-												className="text-sm text-muted-foreground capitalize"
 											>
 												{item.name}
 											</SmartLink>
@@ -54,8 +54,8 @@ export function Footer() {
 									{services.map((item) => (
 										<li key={item.name}>
 											<SmartLink
+												className="text-muted-foreground text-sm capitalize"
 												to={item.path}
-												className="text-sm text-muted-foreground capitalize"
 											>
 												{item.name}
 											</SmartLink>
@@ -70,8 +70,8 @@ export function Footer() {
 									{platform.map((item) => (
 										<li key={item.name}>
 											<SmartLink
+												className="text-muted-foreground text-sm capitalize"
 												to={item.path}
-												className="text-sm text-muted-foreground capitalize"
 											>
 												{item.name}
 											</SmartLink>
@@ -86,8 +86,8 @@ export function Footer() {
 									{legal.map((item) => (
 										<li key={item.name}>
 											<SmartLink
+												className="text-muted-foreground text-sm capitalize"
 												to={item.path}
-												className="text-sm text-muted-foreground capitalize"
 											>
 												{item.name}
 											</SmartLink>
@@ -102,8 +102,8 @@ export function Footer() {
 									{social.map((item) => (
 										<li key={item.name}>
 											<SmartLink
+												className="text-muted-foreground text-sm capitalize"
 												to={item.path}
-												className="text-sm text-muted-foreground capitalize"
 											>
 												{item.name}
 											</SmartLink>
@@ -114,7 +114,7 @@ export function Footer() {
 						</section>
 					</div>
 
-					<div className="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
+					<div className="mt-12 border-border border-t pt-8 text-center text-muted-foreground text-sm">
 						© {new Date().getFullYear()} TekBreed. All rights reserved.
 					</div>
 				</div>

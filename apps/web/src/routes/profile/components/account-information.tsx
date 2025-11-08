@@ -9,6 +9,7 @@ import { Input } from "@repo/ui/components/input"
 import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
+
 import { useIsPending } from "@repo/utils/misc"
 import { EmailSchema, NameSchema } from "@repo/utils/user-validation"
 
@@ -45,9 +46,9 @@ export function AccountInformation() {
 	})
 
 	return (
-		<Container title="Basic Information" className="mb-8">
-			<fetcher.Form {...getFormProps(form)} method="post" className="space-y-6">
-				<input type="hidden" name="intent" value={ACCOUNT_INFORMATION_INTENT} />
+		<Container className="mb-8" title="Basic Information">
+			<fetcher.Form {...getFormProps(form)} className="space-y-6" method="post">
+				<input name="intent" type="hidden" value={ACCOUNT_INFORMATION_INTENT} />
 
 				{/* Basic Information */}
 				<div className="space-y-4">
@@ -56,8 +57,8 @@ export function AccountInformation() {
 							<Label htmlFor={fields.name.id}>Name</Label>
 							<Input
 								{...getInputProps(fields.name, { type: "text" })}
+								className="border-border bg-background"
 								defaultValue={user.name}
-								className="h-12 border-border bg-background !text-lg"
 							/>
 							<FormError errors={fields.name.errors} />
 						</div>
@@ -65,8 +66,8 @@ export function AccountInformation() {
 							<Label htmlFor={fields.email.id}>Email</Label>
 							<Input
 								{...getInputProps(fields.email, { type: "email" })}
+								className="border-border bg-background"
 								defaultValue={user.email}
-								className="h-12 border-border bg-background !text-lg"
 								readOnly
 							/>
 							<FormError errors={fields.email.errors} />
@@ -75,7 +76,7 @@ export function AccountInformation() {
 				</div>
 				<FormError errors={form.errors} />
 				<div className="flex justify-end">
-					<Button type="submit" disabled={isSaving}>
+					<Button disabled={isSaving} type="submit">
 						{isSaving ? (
 							<Icons.loader2 className="ml-2 animate-spin" />
 						) : (

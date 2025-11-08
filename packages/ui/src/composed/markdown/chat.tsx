@@ -73,8 +73,8 @@ export function ChatContent({
 					th: Th,
 					td: Td,
 				}}
-				remarkPlugins={[remarkGfm, remarkMath]}
 				rehypePlugins={[rehypeMathJaxSvg, rehypeInlineCodeProperty]}
+				remarkPlugins={[remarkGfm, remarkMath]}
 			>
 				{source}
 			</Markdown>

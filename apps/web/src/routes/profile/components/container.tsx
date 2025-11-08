@@ -18,8 +18,8 @@ export function Container({
 				className,
 			)}
 		>
-			<div className="border-b border-border p-6">
-				<h2 className="mb-2 text-xl font-bold">{title}</h2>
+			<div className="border-border border-b p-6">
+				<h2 className="mb-2 font-bold text-xl">{title}</h2>
 				{description ? <div>{description}</div> : null}
 			</div>
 			<div className="p-6">{children}</div>

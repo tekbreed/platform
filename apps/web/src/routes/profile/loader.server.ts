@@ -1,7 +1,7 @@
 import { prisma } from "@repo/database/client"
 // import { getSubscription as getSubscriptionFromPolar } from "@repo/utils/subcription";
 
-export async function getSubscription(userId: string) {
+export async function getSubscription(_userId: string) {
 	// const subscription = await prisma.subscription.findUnique({
 	//   where: { userId },
 	//   select: { subscriptionId: true },
@@ -35,7 +35,7 @@ export async function getUserProfle(userId: string) {
 	})
 }
 
-export async function getBookmarks(userId: string) {
+export async function getBookmarks(_userId: string) {
 	return []
 	// return prisma.bookmark.findMany({
 	//   where: { userId },
@@ -65,7 +65,7 @@ export async function getBookmarks(userId: string) {
 	// });
 }
 
-export async function getReports(userId: string) {
+export async function getReports(_userId: string) {
 	return []
 	// return prisma.contentReport.findMany({
 	//   where: { userId },

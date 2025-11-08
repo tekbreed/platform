@@ -5,12 +5,12 @@ import { LogOut } from "lucide-react"
 export function SignoutButton({ onClick }: { onClick?: () => void }) {
 	return (
 		<Form
-			method="post"
 			action="/auth/signout"
 			className="px-2 font-bold text-red-600 dark:text-red-500"
+			method="post"
 			onSubmit={onClick}
 		>
-			<button type="submit" className="flex items-center">
+			<button className="flex items-center" type="submit">
 				<LogOut className="mr-2 size-4 font-bold text-red-600 dark:text-red-500" />
 				Sign Out
 			</button>

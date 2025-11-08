@@ -131,12 +131,12 @@ export function FeaturesSection() {
 				</div>
 
 				<div className="mx-auto mt-16 max-w-4xl sm:mt-20 lg:mt-24">
-					<Accordion type="single" collapsible className="space-y-4">
+					<Accordion className="space-y-4" collapsible type="single">
 						{features.map((feature, index) => (
 							<AccordionItem
+								className="rounded-lg border bg-card/50 backdrop-blur-sm"
 								key={index}
 								value={`item-${index}`}
-								className="rounded-lg border bg-card/50 backdrop-blur-sm"
 							>
 								<AccordionTrigger className="px-6 py-4 hover:no-underline">
 									<div className="flex w-full items-center gap-4">
@@ -153,10 +153,10 @@ export function FeaturesSection() {
 												{feature.title}
 											</h3>
 											<Badge
+												className="mt-1 text-xs"
 												variant={
 													feature.isFirstRelease ? "default" : "secondary"
 												}
-												className="mt-1 text-xs"
 											>
 												{feature.isFirstRelease
 													? `${feature.releaseTimeline}`

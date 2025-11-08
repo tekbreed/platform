@@ -9,7 +9,7 @@ export function FounderQuoteSection() {
 				<div className="mx-auto max-w-4xl text-center">
 					<Quote className="mx-auto mb-8 h-12 w-12 text-primary" />
 
-					<blockquote className="mb-8 text-2xl leading-relaxed font-medium text-primary md:text-3xl">
+					<blockquote className="mb-8 font-medium text-2xl text-primary leading-relaxed md:text-3xl">
 						&quot;Every great developer started as a beginner. Our mission is to
 						bridge that gap with AI-powered learning that adapts to your pace,
 						challenges your thinking, and builds the confidence you need to
@@ -20,11 +20,11 @@ export function FounderQuoteSection() {
 						<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary">
 							<Avatar className="h-full w-full">
 								<AvatarFallback>CAS</AvatarFallback>
-								<AvatarImage src="/csc.png" alt="Christopher Sesugh Aondona" />
+								<AvatarImage alt="Christopher Sesugh Aondona" src="/csc.png" />
 							</Avatar>
 						</div>
 						<cite className="not-italic">
-							<div className="text-lg font-semibold text-card-foreground">
+							<div className="font-semibold text-card-foreground text-lg">
 								Christopher S. Aondona
 							</div>
 							<div className="font-medium text-primary">
