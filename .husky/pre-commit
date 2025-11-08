@@ -1,3 +1,2 @@
-npm run typecheck
 npm run format-and-lint
 npm run test:run

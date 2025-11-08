@@ -63,6 +63,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright Browsers
+        run: npm run test:e2e:install
+
       - name: Run Vitest tests
         run: npm run test:run
 
@@ -93,7 +96,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npm run test:e2e:install
 
       - name: Run Playwright tests
         run: npm run test:e2e:run
