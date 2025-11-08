@@ -76,12 +76,20 @@
 			"persistent": true
 		},
 		"test:e2e": {
-			"persistent": true
+			"persistent": true,
+			"dependsOn": ["^db:generate", "^build"]
 		},
-		"test:e2e:run": {},
+		"test:e2e:run": {
+			"dependsOn": ["^db:generate", "^build"]
+		},
 		"test:e2e:ui": {
-			"persistent": true
+			"persistent": true,
+			"dependsOn": ["^db:generate", "^build"]
 		},
-		"test:e2e:report": {}
+		"test:e2e:report": {
+			"persistent": true,
+			"outputs": ["coverage/**"],
+			"dependsOn": ["^db:generate", "^build"]
+		}
 	}
 }

@@ -20,6 +20,10 @@ export default defineConfig({
 	},
 	plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
 	test: {
+		coverage:{
+			provider:"v8",
+			reporter:["html"]
+		},
 		exclude: ["tests/e2e/"],
 	},
 })

@@ -6,6 +6,7 @@
 		"build": "react-router build",
 		"dev": "cross-env MOCKS=true react-router dev",
 		"start": "react-router-serve ./build/server/index.js",
+		"start:mocks": "cross-env MOCKS=true react-router-serve ./build/server/index.js",
 		"typecheck": "react-router typegen && tsc",
 		"test:e2e": "playwright test",
 		"test:e2e:run": "cross-env CI=true playwright test",

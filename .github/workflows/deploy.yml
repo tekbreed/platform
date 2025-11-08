@@ -1,4 +1,4 @@
-name: Manual Deploy
+name: Deploy
 
 on:
   workflow_dispatch:
@@ -44,6 +44,9 @@ jobs:
 
       - name: Deploy to Railway
         env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+          TURBO_REMOTE_ONLY: true
           APP_NAME: ${{ inputs.app }}
           ENVIRONMENT: ${{ inputs.environment }}
           RAILWAY_DEV_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}

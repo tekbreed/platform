@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test"
 import "dotenv/config"
 
-const PORT = process.env.PORT || "5173"
+const PORT = process.env.PORT! 
 
 export default defineConfig({
 	testDir: "./tests/e2e",
@@ -34,7 +34,8 @@ export default defineConfig({
 	],
 
 	webServer: {
-		command: process.env.CI ? "npm run start:mocks" : "npm run dev",
+		// command: process.env.CI ? "npm run start:mocks" : "npm run dev",
+		command: "npm run dev",
 		port: Number(PORT),
 		reuseExistingServer: true,
 		stdout: "pipe",
