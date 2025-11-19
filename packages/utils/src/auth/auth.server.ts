@@ -14,7 +14,7 @@ import {
 	type User,
 } from "@repo/database"
 
-import type { ProviderUser } from "./auth-providers/provider"
+import type { ProviderUser } from "../auth-providers/provider"
 import { providers } from "./connection.server"
 import { authSessionStorage } from "./session.server"
 

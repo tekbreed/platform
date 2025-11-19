@@ -1,7 +1,7 @@
 import { createCookieSessionStorage, redirect } from "react-router"
 
-import { invariant } from "./misc"
-import { onboardingSessionKey } from "./onboarding"
+import { invariant } from "../misc"
+import { onboardingSessionKey } from "../onboarding"
 import type { VerifyFunctionArgs } from "./verify"
 
 const isProduction = process.env.NODE_ENV === "production"

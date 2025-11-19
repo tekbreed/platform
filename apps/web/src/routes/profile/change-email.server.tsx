@@ -5,10 +5,10 @@ import { StatusCodes } from "http-status-codes"
 
 import { EmailChangeNotification } from "@repo/ui/email/email-change-notification"
 
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { sendEmail } from "@repo/utils/email.server"
 import { invariant } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import { prisma } from "@repo/database/client"
 

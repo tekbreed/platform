@@ -18,9 +18,6 @@ import {
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { checkHoneypot } from "@repo/utils/honeypot.server"
-import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back"
-import { useIsPending } from "@repo/utils/misc"
 import {
 	codeQueryParam,
 	redirectToQueryParam,
@@ -29,7 +26,11 @@ import {
 	VerificationTypeSchema,
 	type VerificationTypes,
 	VerifySchema,
-} from "@repo/utils/verify"
+} from "@repo/utils/auth/verify"
+import { checkHoneypot } from "@repo/utils/honeypot.server"
+import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back"
+import { generateMetadata } from "@repo/utils/meta"
+import { useIsPending } from "@repo/utils/misc"
 
 import type { Route } from "./+types/verify"
 import { validateRequest } from "./verify.server"
@@ -57,7 +58,6 @@ export default function VerifyPage({
 	loaderData,
 	actionData,
 }: Route.ComponentProps) {
-	// const metadata = generateMetadata({ title: "Verify" });
 	const goBack = useSmartGoBack()
 	const [searchParams] = useSearchParams()
 	const isVerifying = useIsPending()
@@ -91,10 +91,11 @@ export default function VerifyPage({
 				formRef.current.requestSubmit()
 			}
 		}
-	}, [fields, isVerifying])
+	}, [fields[codeQueryParam].value, isVerifying])
 
 	const onboarding = (
 		<>
+			{generateMetadata({ title: "Verify Credentials" })}
 			<div className="mb-4 flex justify-center">
 				<div className="flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30">
 					<Mail className="h-8 w-8 text-blue-600 dark:text-blue-400" />

@@ -34,8 +34,9 @@ export function App({
 	return (
 		<Document currentTheme={currentTheme} env={env} nonce={nonce} theme={theme}>
 			{!hideHeader ? <Header /> : null}
-			<main className="h-full min-h-full px-4 md:px-8">
+			<main className="h-full min-h-full px-8">
 				<Outlet />
+				{/* <GoogleAnalytics /> */}
 			</main>
 			<Footer />
 			<Toaster position="top-right" richColors />

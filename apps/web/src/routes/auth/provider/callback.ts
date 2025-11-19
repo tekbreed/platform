@@ -4,16 +4,16 @@ import {
 	authenticator,
 	getSessionExpirationDate,
 	getUserId,
-} from "@repo/utils/auth.server"
+} from "@repo/utils/auth/auth.server"
+import { handleNewSession } from "@repo/utils/auth/session.server"
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { combineHeaders, combineResponseInits } from "@repo/utils/misc"
 import { onboardingSessionKey } from "@repo/utils/onboarding"
 import {
 	destroyRedirectToHeader,
 	getRedirectCookieValue,
 } from "@repo/utils/redirect-cookie.server"
-import { handleNewSession } from "@repo/utils/session.server"
 import { createToastHeaders, redirectWithToast } from "@repo/utils/toast.server"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import { prisma } from "@repo/database"
 

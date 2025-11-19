@@ -10,7 +10,7 @@ import { SmartLink } from "@repo/ui/composed/smart-link"
 
 import { getModuleUrl } from "@repo/utils/constants/client"
 
-import type { HomePageContent } from "../utils/content/types"
+import type { HomePageContent } from "../../utils/content/types"
 
 export function Hero({ content }: { content: Promise<HomePageContent> }) {
 	return (
@@ -35,7 +35,7 @@ export function Hero({ content }: { content: Promise<HomePageContent> }) {
 					</React.Suspense>
 					<h1 className="font-bold text-4xl tracking-tight sm:text-6xl">
 						Transform your coding skills with{" "}
-						<span className="bg-gradient-to-r from-slate-400 to-slate-700 bg-clip-text text-transparent">
+						<span className="bg-linear-to-r from-slate-400 to-slate-700 bg-clip-text text-transparent">
 							AI-powered learning
 						</span>
 					</h1>

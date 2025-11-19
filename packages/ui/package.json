@@ -92,7 +92,6 @@
 		"lightningcss-linux-x64-musl": "^1.30.2"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*",
 		"@tailwindcss/cli": "^4.1.13",
 		"tailwindcss": "^4.1.13"

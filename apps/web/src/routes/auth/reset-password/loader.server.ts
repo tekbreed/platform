@@ -1,7 +1,7 @@
 import { redirect } from "react-router"
 
-import { requireAnonymous } from "@repo/utils/auth.server"
-import { verifySessionStorage } from "@repo/utils/verification.server"
+import { requireAnonymous } from "@repo/utils/auth/auth.server"
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 
 import { resetPasswordEmailSessionKey } from "../forgot-password"
 

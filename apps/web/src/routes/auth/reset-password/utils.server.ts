@@ -2,8 +2,8 @@ import { data, redirect } from "react-router"
 
 import { StatusCodes } from "http-status-codes"
 
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { invariant } from "@repo/utils/misc"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import { prisma } from "@repo/database"
 

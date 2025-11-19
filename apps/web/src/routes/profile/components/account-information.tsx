@@ -10,8 +10,8 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
+import { EmailSchema, NameSchema } from "@repo/utils/auth/user-validation"
 import { useIsPending } from "@repo/utils/misc"
-import { EmailSchema, NameSchema } from "@repo/utils/user-validation"
 
 import type { Route } from "../+types/index"
 import { Container } from "./container"

@@ -6,12 +6,12 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { sessionKey, signup } from "@repo/utils/auth.server"
+import { sessionKey, signup } from "@repo/utils/auth/auth.server"
+import { authSessionStorage } from "@repo/utils/auth/session.server"
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { subscribeUser } from "@repo/utils/email.server"
 import { invariant } from "@repo/utils/misc"
 import { onboardingSessionKey } from "@repo/utils/onboarding"
-import { authSessionStorage } from "@repo/utils/session.server"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import type { VerifyFunctionArgs } from "../verify.server"
 import { OnboardingSchema } from "."
@@ -90,7 +90,9 @@ export async function handleOnboarding(request: Request, formData: FormData) {
 	}
 
 	const { rememberMe, session, redirectTo, name, email } = submission.value
-	//Add user to newsletter
+	/**
+	 * Add user to newsletter
+	 */
 	void subscribeUser({ name, email })
 	const authSession = await authSessionStorage.getSession(
 		request.headers.get("cookie"),

@@ -1,6 +1,5 @@
 import { data, Form, Link, redirect } from "react-router"
 
-// import { generateMetadata } from "~/utils/meta";
 import { HoneypotInputs } from "remix-utils/honeypot/react"
 
 import type { SEOHandle } from "@nasa-gcn/remix-seo"
@@ -24,10 +23,11 @@ import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 import { Verification } from "@repo/ui/email/verification"
 
+import { EmailSchema } from "@repo/utils/auth/user-validation"
 import { sendEmail } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
+import { generateMetadata } from "@repo/utils/meta"
 import { useIsPending } from "@repo/utils/misc"
-import { EmailSchema } from "@repo/utils/user-validation"
 
 import { prisma } from "@repo/database"
 
@@ -108,8 +108,6 @@ export const handle: SEOHandle = {
 export default function ForgotPasswordRoute({
 	actionData,
 }: Route.ComponentProps) {
-	// const metadata = generateMetadata({ title: "Forgot Password" });
-
 	const isSubmitting = useIsPending()
 	const [form, fields] = useForm({
 		id: "forgot-password",
@@ -121,8 +119,8 @@ export default function ForgotPasswordRoute({
 	})
 	return (
 		<>
-			{/* {metadata} */}
-			<div className="!h-[90%] flex">
+			{generateMetadata({ title: "Forgot Password" })}
+			<div className="flex h-[90%]!">
 				<Card className="m-auto max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form
 						{...getFormProps(form)}

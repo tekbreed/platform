@@ -15,7 +15,7 @@ import {
 	Users,
 } from "lucide-react"
 
-import { requireUserId } from "@repo/utils/auth.server"
+import { requireUserId } from "@repo/utils//auth/auth.server"
 
 import type { Route } from "../profile/+types"
 import { handleActions } from "./action.server"

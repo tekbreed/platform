@@ -12,7 +12,8 @@
 	"dependencies": {
 		"@repo/database": "*",
 		"@repo/ui": "*",
-		"@repo/utils": "*"
+		"@repo/utils": "*",
+		"posthog-js": "^1.295.0"
 	},
 	"peerDependencies": {
 		"@react-router/node": "^7.9.4",
@@ -21,7 +22,6 @@
 		"react-router": "^7.9.4"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*"
 	}
 }

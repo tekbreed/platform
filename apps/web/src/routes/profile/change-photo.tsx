@@ -27,7 +27,7 @@ import {
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { requireUserId } from "@repo/utils/auth.server"
+import { requireUserId } from "@repo/utils/auth/auth.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import {
 	getImgSrc,

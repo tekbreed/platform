@@ -30,7 +30,6 @@
 	"devDependencies": {
 		"@react-router/dev": "^7.9.4",
 		"@repo/tests-config": "*",
-		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*",
 		"@tailwindcss/vite": "^4.1.13",
 		"react-router-devtools": "^5.1.3",

@@ -1,6 +1,6 @@
 import { redirect } from "react-router"
 
-import { signout } from "@repo/utils/auth.server"
+import { signout } from "@repo/utils/auth/auth.server"
 
 import type { Route } from "./+types/signout"
 

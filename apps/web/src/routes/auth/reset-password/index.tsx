@@ -1,6 +1,5 @@
 import { Form, Link } from "react-router"
 
-// import { generateMetadata } from "~/utils/meta";
 import { HoneypotInputs } from "remix-utils/honeypot/react"
 
 import { getFormProps, getInputProps, useForm } from "@conform-to/react"
@@ -21,9 +20,10 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
+import { PasswordAndConfirmPasswordSchema } from "@repo/utils/auth/user-validation"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
+import { generateMetadata } from "@repo/utils/meta"
 import { useIsPending } from "@repo/utils/misc"
-import { PasswordAndConfirmPasswordSchema } from "@repo/utils/user-validation"
 
 import type { Route } from "./+types/index"
 import { handlePasswordReset } from "./action.server"
@@ -46,7 +46,6 @@ export default function ResetPasswordRoute({
 	actionData,
 	loaderData,
 }: Route.ComponentProps) {
-	// const metadata = generateMetadata({ title: "Reset Password" });
 	const isUpdating = useIsPending()
 	const [form, fields] = useForm({
 		id: "reset-password",
@@ -58,7 +57,7 @@ export default function ResetPasswordRoute({
 	})
 	return (
 		<>
-			{/* {metadata} */}
+			{generateMetadata({ title: "Reset Password" })}
 			<motion.div
 				animate={{ opacity: 1, y: 0 }}
 				className="mx-auto w-full max-w-lg"

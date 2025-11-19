@@ -24,7 +24,7 @@ export function Footer() {
 			})}
 		>
 			<footer className={cn("border-border border-t py-12")}>
-				<div className="container mx-auto px-4">
+				<div className="container mx-auto px-8">
 					<div className="flex flex-col items-start justify-between md:flex-row">
 						<section className="mb-6 md:mb-0">
 							<Logo />

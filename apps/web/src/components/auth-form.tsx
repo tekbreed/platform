@@ -19,13 +19,13 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back"
-import { getImgSrc, useIsPending } from "@repo/utils/misc"
 import {
 	EmailSchema,
 	PasswordSchema,
 	RememberMeSchema,
-} from "@repo/utils/user-validation"
+} from "@repo/utils/auth/user-validation"
+import { useSmartGoBack } from "@repo/utils/hooks/use-smart-go-back"
+import { getImgSrc, useIsPending } from "@repo/utils/misc"
 
 import type { Route as SigninRoute } from "../routes/auth/signin/+types/index"
 import type { Route as SignupRoute } from "../routes/auth/signup/+types/index"

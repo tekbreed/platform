@@ -172,41 +172,40 @@ const aiOnlyPlans = [
 
 const apiPlans = [
 	{
-		name: "Pay As You Go",
-		description: "Perfect for testing and small projects",
-		price: "Usage-based",
-		period: "",
+		name: "Developer",
+		description: "For testing and small projects",
+		price: 0,
+		period: "month",
 		basePrice: 0,
 		features: [
-			"$0.01 per API request",
-			"5,000 free requests/month",
-			"Rate limit: 100 req/min",
+			"1,000 free API calls/month",
+			"$0.01 per additional call",
+			"Rate limit: 60 req/min",
 			"Basic support",
 			"Standard SLA (99.5%)",
-			"API documentation access",
+			"API documentation",
 		],
 		usageRate: 0.01,
-		freeRequests: 5000,
+		freeRequests: 1000,
 		popular: false,
 		isUsageBased: true,
 	},
 	{
 		name: "Professional",
 		description: "For production applications",
-		price: "$99 + usage",
+		price: "$49 + usage",
 		period: "month",
-		basePrice: 99,
+		basePrice: 49,
 		features: [
-			"$0.008 per API request",
-			"50,000 included requests/month",
-			"Rate limit: 1,000 req/min",
+			"10,000 included calls/month",
+			"$0.005 per additional call",
+			"Rate limit: 600 req/min",
 			"Priority support",
 			"Enhanced SLA (99.9%)",
-			"Custom webhooks",
-			"Advanced analytics dashboard",
+			"Webhooks & analytics",
 		],
-		usageRate: 0.008,
-		includedRequests: 50000,
+		usageRate: 0.005,
+		includedRequests: 10000,
 		popular: true,
 		isUsageBased: true,
 	},
@@ -216,14 +215,13 @@ const apiPlans = [
 		price: "Custom",
 		period: "",
 		features: [
-			"Volume-based discounts",
+			"Custom volume pricing",
 			"Unlimited requests",
 			"Custom rate limits",
 			"Dedicated infrastructure",
 			"24/7 premium support",
-			"Custom SLA (up to 99.99%)",
+			"Custom SLA (99.99%)",
 			"White-label options",
-			"Dedicated account manager",
 		],
 		popular: false,
 		isContact: true,
@@ -300,7 +298,7 @@ export function PricingSection() {
 				<ul className="space-y-3">
 					{plan.features.map((feature: string) => (
 						<li className="flex items-start space-x-3" key={feature}>
-							<Check className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-500" />
+							<Check className="mt-0.5 h-5 w-5 shrink-0 text-green-500" />
 							<span className="text-sm">{feature}</span>
 						</li>
 					))}
@@ -309,7 +307,7 @@ export function PricingSection() {
 						plan.aiFeatures &&
 						plan.aiFeatures.map((feature: string) => (
 							<li className="flex items-start space-x-3" key={feature}>
-								<Bot className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-500" />
+								<Bot className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
 								<span className="text-blue-600 text-sm">{feature}</span>
 							</li>
 						))}
@@ -331,7 +329,7 @@ export function PricingSection() {
 	)
 
 	return (
-		<section className="bg-gradient-to-b from-background to-muted/20 py-24">
+		<section className="bg-linear-to-b from-background to-muted/20 py-24">
 			<div className="container mx-auto px-4">
 				<div className="mx-auto max-w-3xl text-center">
 					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">

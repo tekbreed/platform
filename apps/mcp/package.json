@@ -1,5 +1,5 @@
 {
-	"name": "mcps",
+	"name": "mcp",
 	"type": "module",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",

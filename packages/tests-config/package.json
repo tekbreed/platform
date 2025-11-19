@@ -10,7 +10,6 @@
 		"@repo/database": "*"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "*",
 		"@repo/typescript-config": "*"
 	}
 }

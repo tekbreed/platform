@@ -10,14 +10,14 @@ import {
 	requireAnonymous,
 	sessionKey,
 	signupWithConnection,
-} from "@repo/utils/auth.server"
-import { ProviderNameSchema } from "@repo/utils/connection"
+} from "@repo/utils/auth/auth.server"
+import { ProviderNameSchema } from "@repo/utils/auth/connection"
+import { authSessionStorage } from "@repo/utils/auth/session.server"
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { subscribeUser } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { onboardingSessionKey } from "@repo/utils/onboarding"
-import { authSessionStorage } from "@repo/utils/session.server"
 import { redirectWithToast } from "@repo/utils/toast.server"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import { prisma } from "@repo/database"
 

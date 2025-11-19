@@ -1,8 +1,8 @@
 import { redirect } from "react-router"
 
-import { authenticator } from "@repo/utils/auth.server"
-import { ProviderNameSchema } from "@repo/utils/connection"
-import { handleMockAction } from "@repo/utils/connection.server"
+import { authenticator } from "@repo/utils/auth/auth.server"
+import { ProviderNameSchema } from "@repo/utils/auth/connection"
+import { handleMockAction } from "@repo/utils/auth/connection.server"
 import { getReferrerRoute } from "@repo/utils/misc"
 import { getRedirectCookieHeader } from "@repo/utils/redirect-cookie.server"
 

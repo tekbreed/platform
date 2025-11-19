@@ -20,15 +20,16 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { requireAnonymous } from "@repo/utils/auth.server"
-import { checkHoneypot } from "@repo/utils/honeypot.server"
-import { getImgSrc, useIsPending } from "@repo/utils/misc"
+import { requireAnonymous } from "@repo/utils/auth/auth.server"
 import {
 	EmailSchema,
 	NameSchema,
 	PasswordSchema,
 	RememberMeSchema,
-} from "@repo/utils/user-validation"
+} from "@repo/utils/auth/user-validation"
+import { checkHoneypot } from "@repo/utils/honeypot.server"
+import { generateMetadata } from "@repo/utils/meta"
+import { getImgSrc, useIsPending } from "@repo/utils/misc"
 
 import type { Route } from "./+types/index"
 import { handleOnboarding, requireOnboardingEmail } from "./onboarding.server"
@@ -63,7 +64,6 @@ export default function Onboarding({
 	actionData,
 	loaderData,
 }: Route.ComponentProps) {
-	// const metadata = generateMetadata({ title: "Onboarding" });
 	const isSubmitting = useIsPending()
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get("redirectTo")
@@ -81,8 +81,8 @@ export default function Onboarding({
 
 	return (
 		<>
-			{/* {metadata} */}
-			<div className="!h-[90%] flex">
+			{generateMetadata({ title: "Onboarding" })}
+			<div className="flex min-h-screen">
 				<Card className="m-auto w-full max-w-md border-0 bg-card/80 shadow-xl backdrop-blur-sm">
 					<CardHeader className="text-center">
 						<div className="mx-auto flex w-full items-center justify-center pb-4">

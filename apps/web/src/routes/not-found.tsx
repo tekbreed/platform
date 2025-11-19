@@ -1,10 +1,11 @@
 import { NotFoundUI } from "@repo/ui/composed/not-found-ui"
 
+import { generateMetadata } from "@repo/utils/meta"
+
 export default function NotFoundRoute() {
-	// const metadata = generateMetadata({ title: "Not Found" });
 	return (
 		<>
-			{/* {metadata} */}
+			{generateMetadata({ title: "404 |Not Found" })}
 			<NotFoundUI />
 		</>
 	)

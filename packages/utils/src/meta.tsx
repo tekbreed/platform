@@ -25,7 +25,7 @@ export function generateMetadata({
 			<title>{title}</title>
 			<meta content={description} name="description" />
 			<meta content={keywords} name="keywords" />
-			<meta content="Christopher S. Aondona (The Coding Simba)" name="author" />
+			<meta content="TekBreed" name="author" />
 
 			<meta content={title} property="og:title" />
 			<meta content={description} property="og:description" />

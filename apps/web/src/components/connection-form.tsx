@@ -3,7 +3,10 @@ import { Form } from "react-router"
 import { Button } from "@repo/ui/components/button"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { GITHUB_PROVIDER_NAME, type ProviderName } from "@repo/utils/connection"
+import {
+	GITHUB_PROVIDER_NAME,
+	type ProviderName,
+} from "@repo/utils/auth/connection"
 import { useIsPending } from "@repo/utils/misc"
 
 import type { Action } from "./auth-form"

@@ -1,6 +1,5 @@
 import { data, Form, useSearchParams } from "react-router"
 
-// import { generateMetadata } from "~/utils/meta";
 import { HoneypotInputs } from "remix-utils/honeypot/react"
 
 import { getFormProps, getInputProps, useForm } from "@conform-to/react"
@@ -21,10 +20,11 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { requireAnonymous } from "@repo/utils/auth.server"
+import { requireAnonymous } from "@repo/utils/auth/auth.server"
+import { RememberMeSchema } from "@repo/utils/auth/user-validation"
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
+import { generateMetadata } from "@repo/utils/meta"
 import { getImgSrc, useIsPending } from "@repo/utils/misc"
-import { RememberMeSchema } from "@repo/utils/user-validation"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import type { Route } from "./+types/index"
 import { handleProviderOnboarding, requireData } from "./provider.server"
@@ -64,7 +64,6 @@ export default function OnboardingProvider({
 	actionData,
 	loaderData,
 }: Route.ComponentProps) {
-	// const metadata = generateMetadata({ title: "Onboarding" });
 	const isSubmitting = useIsPending()
 	const [searchParams] = useSearchParams()
 	const redirectTo = searchParams.get("redirectTo")
@@ -82,7 +81,7 @@ export default function OnboardingProvider({
 
 	return (
 		<>
-			{/* {metadata} */}
+			{generateMetadata({ title: "Onboarding" })}
 			<div className="flex min-h-screen items-center justify-center">
 				<motion.div
 					animate={{ opacity: 1, y: 0 }}

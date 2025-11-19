@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes"
 
 import { prisma, type RoleName } from "@repo/database"
 
-import { requireUserId } from "./auth.server"
+import { requireUserId } from "./auth/auth.server"
 import { type PermissionString, parsePermissionString } from "./permissions"
 
 /**

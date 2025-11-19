@@ -4,12 +4,14 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { signin } from "@repo/utils/auth.server"
-import { handleNewSession } from "@repo/utils/session.server"
+import { signin } from "@repo/utils/auth/auth.server"
+import { handleNewSession } from "@repo/utils/auth/session.server"
+import { checkHoneypot } from "@repo/utils/honeypot.server"
 
 import { SigninSchema } from "@/components/auth-form"
 
 export async function handleSignIn(request: Request, formData: FormData) {
+	await checkHoneypot(formData)
 	const submission = await parseWithZod(formData, {
 		schema: SigninSchema.transform(async (data, ctx) => {
 			const { email, password } = data

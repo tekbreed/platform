@@ -2,7 +2,7 @@ import { Links, Meta, Scripts, ScrollRestoration } from "react-router"
 
 import { PreventFlashOnWrongTheme, type Theme } from "remix-themes"
 
-// import { Metrics } from "./metrics";
+import { PostHogProvider } from "./posthog"
 
 type DocumentProps = {
 	children: React.ReactNode
@@ -33,17 +33,19 @@ export function Document({
 				<Links />
 			</head>
 			<body className="min-h-screen">
-				<div className="flex flex-col">{children}</div>
-				<script
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: Ignore dangerouslySetInnerHTML here as it is needed and safe
-					dangerouslySetInnerHTML={{
-						__html: `window.env = ${JSON.stringify(env)}`,
-					}}
-					nonce={nonce}
-				/>
-				{/* <Metrics nonce={nonce} /> */}
-				<ScrollRestoration nonce={nonce} />
-				<Scripts nonce={nonce} />
+				<PostHogProvider>
+					<div className="flex flex-col">{children}</div>
+					<script
+						// biome-ignore lint/security/noDangerouslySetInnerHtml: Ignore dangerouslySetInnerHTML here as it is needed and safe
+						dangerouslySetInnerHTML={{
+							__html: `window.env = ${JSON.stringify(env)}`,
+						}}
+						nonce={nonce}
+					/>
+					{/* <Metrics nonce={nonce} /> */}
+					<ScrollRestoration nonce={nonce} />
+					<Scripts nonce={nonce} />
+				</PostHogProvider>
 			</body>
 		</html>
 	)

@@ -47,14 +47,14 @@ export function MainNav() {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="start" className="w-48">
 							{services.map((link) => {
-								// const Icon = link.icon;
+								const Icon = link.icon
 								return (
 									<DropdownMenuItem asChild key={link.name}>
 										<SmartLink
 											className="flex items-center gap-2 font-bold capitalize"
 											to={link.path}
 										>
-											{/* {Icon ? <Icon className="size-4" aria-hidden /> : null} */}
+											{Icon ? <Icon aria-hidden className="size-4" /> : null}
 											{link.name}
 										</SmartLink>
 									</DropdownMenuItem>

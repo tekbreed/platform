@@ -5,8 +5,6 @@ import type { z } from "zod/v4"
 import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 
-import { getDomainUrl } from "@repo/utils/misc"
-import { TOTP } from "@repo/utils/totp.server"
 import {
 	codeQueryParam,
 	redirectToQueryParam,
@@ -14,7 +12,9 @@ import {
 	typeQueryParam,
 	type VerificationTypes,
 	VerifySchema,
-} from "@repo/utils/verify"
+} from "@repo/utils/auth/verify"
+import { getDomainUrl } from "@repo/utils/misc"
+import { TOTP } from "@repo/utils/totp.server"
 
 import { prisma } from "@repo/database"
 

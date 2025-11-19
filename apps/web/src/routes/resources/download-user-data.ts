@@ -1,4 +1,4 @@
-import { requireUserId } from "@repo/utils/auth.server"
+import { requireUserId } from "@repo/utils/auth/auth.server"
 
 import { prisma } from "@repo/database/client"
 

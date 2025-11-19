@@ -1,10 +1,10 @@
 import { data } from "react-router"
 
-import { sessionKey, signout } from "@repo/utils/auth.server"
+import { sessionKey, signout } from "@repo/utils/auth/auth.server"
+import { authSessionStorage } from "@repo/utils/auth/session.server"
 import { getEnv } from "@repo/utils/env.server"
 import { honeypot } from "@repo/utils/honeypot.server"
 import { combineHeaders, getDomainUrl } from "@repo/utils/misc"
-import { authSessionStorage } from "@repo/utils/session.server"
 import { themeSessionResolver } from "@repo/utils/theme.server"
 import { getToast } from "@repo/utils/toast.server"
 

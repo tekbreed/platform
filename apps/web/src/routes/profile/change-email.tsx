@@ -22,12 +22,12 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Verification } from "@repo/ui/email/verification"
 
-import { requireUserId } from "@repo/utils/auth.server"
+import { requireUserId } from "@repo/utils/auth/auth.server"
+import { EmailSchema } from "@repo/utils/auth/user-validation"
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { sendEmail } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
-import { EmailSchema } from "@repo/utils/user-validation"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import { prisma } from "@repo/database/client"
 

@@ -20,11 +20,12 @@ import { Label } from "@repo/ui/components/label"
 import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
-import { getPasswordHash, requireUser } from "@repo/utils/auth.server"
+import { getPasswordHash, requireUser } from "@repo/utils/auth/auth.server"
+import { PasswordSchema } from "@repo/utils/auth/user-validation"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
+import { generateMetadata } from "@repo/utils/meta"
 import { useIsPending } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
-import { PasswordSchema } from "@repo/utils/user-validation"
 
 import { prisma } from "@repo/database/client"
 
@@ -40,7 +41,7 @@ export const CreatePasswordSchema = z
 			ctx.addIssue({
 				path: ["confirmPassword"],
 				code: "custom",
-				message: "The passwords must match",
+				message: "Passwords must match",
 			})
 		}
 	})
@@ -89,7 +90,7 @@ export async function action({ request }: Route.ActionArgs) {
 export default function CreatePasswordRoute({
 	actionData,
 }: Route.ComponentProps) {
-	// const metadata = generateMetadata({ title: "Create Password" });
+	const metadata = generateMetadata({ title: "Create Password" })
 	const isCreaating = useIsPending()
 	const [form, fields] = useForm({
 		id: "create-password",
@@ -101,7 +102,7 @@ export default function CreatePasswordRoute({
 	})
 	return (
 		<>
-			{/* {metadata} */}
+			{metadata}
 			<div className="!h-[90%] flex">
 				<Card className="m-auto w-full max-w-md bg-card/80 shadow-xl backdrop-blur-sm">
 					<Form {...getFormProps(form)} method="post">

@@ -24,11 +24,11 @@ import {
 	getPasswordHash,
 	requireUser,
 	verifyUserPassword,
-} from "@repo/utils/auth.server"
+} from "@repo/utils/auth/auth.server"
+import { PasswordSchema } from "@repo/utils/auth/user-validation"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
-import { PasswordSchema } from "@repo/utils/user-validation"
 
 import { prisma } from "@repo/database/client"
 

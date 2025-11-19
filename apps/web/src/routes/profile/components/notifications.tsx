@@ -127,7 +127,7 @@ export function Toggle({
 					type="checkbox"
 					{...props}
 				/>
-				<div className="peer rtl:peer-checked:after:-translate-x-full h-6 w-11 rounded-full bg-muted after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-border after:bg-background after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-background peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary" />
+				<div className="peer rtl:peer-checked:after:-translate-x-full h-6 w-11 rounded-full bg-muted after:absolute after:start-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:border-border after:bg-background after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-background peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary" />
 			</label>
 		</div>
 	)

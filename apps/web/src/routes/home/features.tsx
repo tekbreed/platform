@@ -14,7 +14,7 @@ import {
 import { Skeleton } from "@repo/ui/components/skeleton"
 import { Icons } from "@repo/ui/composed/icons"
 
-import type { HomePageContent } from "../utils/content/types"
+import type { HomePageContent } from "../../utils/content/types"
 
 const iconMap = {
 	bot: Icons.bot,

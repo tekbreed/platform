@@ -1,5 +1,7 @@
 import { useRouteLoaderData } from "react-router"
 
+import type { AuthenticatedUser } from "@/auth/user"
+
 /**
  * Type guard to check if a value is a valid user object.
  * Validates that the value is a non-null object with required user properties.
@@ -16,7 +18,7 @@ import { useRouteLoaderData } from "react-router"
  * }
  * ```
  */
-function isUser(user: unknown) {
+function isUser(user: unknown): user is AuthenticatedUser {
 	return (
 		!!user &&
 		typeof user === "object" &&
@@ -44,7 +46,7 @@ function isUser(user: unknown) {
  * ```
  */
 export function useOptionalUser() {
-	const data = useRouteLoaderData("root")
+	const data = useRouteLoaderData("root") as { user: AuthenticatedUser }
 	if (!data || !isUser(data.user)) {
 		return null
 	}

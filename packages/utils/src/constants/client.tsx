@@ -38,6 +38,16 @@ export const learningIcons = {
 	challenges: Trophy,
 }
 
+export const serviceIcons = {
+	lms: FileText,
+	chat: Play,
+	classroom: GraduationCap,
+	notes: Target,
+	"job-board": Trophy,
+	store: Target,
+	docs: Target,
+}
+
 export const learning = [
 	{
 		name: "articles",
@@ -71,12 +81,21 @@ export const learning = [
 ]
 
 export const services = [
-	{ name: "LMS", path: buildUrl("lms") },
-	{ name: "chat", path: buildUrl("chat") },
-	{ name: "classroom", path: buildUrl("classroom") },
-	{ name: "notes", path: buildUrl("notes") },
-	{ name: "job board", path: buildUrl("board") },
-	{ name: "store", path: buildUrl("store") },
+	{ name: "LMS", path: buildUrl("lms"), icon: serviceIcons.lms },
+	{ name: "chat", path: buildUrl("chat"), icon: serviceIcons.chat },
+	{
+		name: "classroom",
+		path: buildUrl("classroom"),
+		icon: serviceIcons.classroom,
+	},
+	{ name: "notes", path: buildUrl("notes"), icon: serviceIcons.notes },
+	{
+		name: "job board",
+		path: buildUrl("board"),
+		icon: serviceIcons["job-board"],
+	},
+	{ name: "store", path: buildUrl("store"), icon: serviceIcons.store },
+	{ name: "docs", path: buildUrl("docs"), icon: serviceIcons.docs },
 ]
 
 export const platform = [
@@ -84,7 +103,6 @@ export const platform = [
 	{ name: "support", path: buildUrl(undefined, "support") },
 	{ name: "FAQs", path: buildUrl(undefined, "faqs") },
 	{ name: "roadmap", path: buildUrl(undefined, "roadmap") },
-	{ name: "docs", path: buildUrl("docs") },
 	{ name: "sitemap", path: buildUrl(undefined, "sitemap.xml") },
 ]
 

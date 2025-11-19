@@ -1,7 +1,7 @@
 import { createCookieSessionStorage } from "react-router"
 
-import { GitHubProvider } from "./auth-providers/github.server"
-import type { AuthProvider } from "./auth-providers/provider"
+import { GitHubProvider } from "../auth-providers/github.server"
+import type { AuthProvider } from "../auth-providers/provider"
 import type { ProviderName } from "./connection"
 
 export const connectionSessionStorage = createCookieSessionStorage({

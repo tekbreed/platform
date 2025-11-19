@@ -4,6 +4,7 @@ import { Markdown } from "@repo/ui/composed/markdown"
 import { Header } from "@repo/ui/composed/page-header"
 
 import { getPage } from "@repo/utils/content.server/system/utils"
+import { generateMetadata } from "@repo/utils/meta"
 import { invariant, invariantResponse } from "@repo/utils/misc"
 
 import type { Route } from "./+types/legal"
@@ -23,6 +24,10 @@ export default function LegalRoute({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<>
+			{generateMetadata({
+				title: pageContent.title,
+				description: pageContent.description,
+			})}
 			<Header description={pageContent.description} title={pageContent.title} />
 			<section className="mx-auto mt-6 max-w-3xl">
 				<Markdown className="pt-0" source={pageContent.content} />

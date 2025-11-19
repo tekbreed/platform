@@ -4,9 +4,9 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
-import { sessionKey } from "@repo/utils/auth.server"
+import { sessionKey } from "@repo/utils/auth/auth.server"
+import { authSessionStorage } from "@repo/utils/auth/session.server"
 import { invariantResponse } from "@repo/utils/misc"
-import { authSessionStorage } from "@repo/utils/session.server"
 import { redirectWithToast } from "@repo/utils/toast.server"
 
 import { prisma } from "@repo/database/client"

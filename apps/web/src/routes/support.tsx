@@ -9,17 +9,18 @@ import {
 } from "@repo/ui/components/card"
 import { Header } from "@repo/ui/composed/page-header"
 
+import { generateMetadata } from "@repo/utils/meta"
 import { useChat } from "@repo/utils/providers/chat"
 
 export default function SupportRoute() {
 	const { toggleChat } = useChat()
 	return (
 		<>
+			{generateMetadata({ title: "Support" })}
 			<Header
 				description="Get help with your account, billing, and technical issues."
 				title="Support Center"
 			/>
-
 			<div className="container mx-auto my-20 w-full max-w-6xl space-y-12">
 				<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
 					<Card>

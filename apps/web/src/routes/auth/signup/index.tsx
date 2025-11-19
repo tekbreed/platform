@@ -1,5 +1,6 @@
-import { requireAnonymous } from "@repo/utils/auth.server"
+import { requireAnonymous } from "@repo/utils/auth/auth.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
+import { generateMetadata } from "@repo/utils/meta"
 
 import { AuthForm } from "@/components/auth-form"
 import type { Route } from "./+types/index"
@@ -18,8 +19,11 @@ export async function action({ request }: Route.ActionArgs) {
 
 export default function SignupRoute({ actionData }: Route.ComponentProps) {
 	return (
-		<div className="container mx-auto flex min-h-screen items-center justify-center">
-			<AuthForm action="signup" actionData={actionData} />
-		</div>
+		<>
+			{generateMetadata({ title: "Sign Up" })}
+			<div className="container mx-auto flex min-h-screen items-center justify-center">
+				<AuthForm action="signup" actionData={actionData} />
+			</div>
+		</>
 	)
 }

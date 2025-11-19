@@ -6,9 +6,9 @@ import { z } from "zod/v4"
 
 import { Verification } from "@repo/ui/email/verification"
 
+import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { sendEmail } from "@repo/utils/email.server"
 import { onboardingSessionKey } from "@repo/utils/onboarding"
-import { verifySessionStorage } from "@repo/utils/verification.server"
 
 import { prisma } from "@repo/database"
 
