@@ -2,10 +2,8 @@ import React from "react"
 
 import { useTheme } from "remix-themes"
 
-import { transformerNotationDiff } from "@shikijs/transformers"
+// import { transformerNotationDiff } from "@shikijs/transformers"
 import ShikiHighlighter, { type Element } from "react-shiki"
-
-import type { SandpackTemplate } from "@repo/utils/content/articles/types"
 
 import { Button } from "@/components/button"
 import { EmptyState } from "@/composed/empty-state"
@@ -34,7 +32,7 @@ interface CodeHighlightProps {
 	/** Shiki element node */
 	node?: Element
 	/** Array of Sandpack templates */
-	sandpackTemplates?: SandpackTemplate[]
+	sandpackTemplates?: any
 	/** Whether the code is inline */
 	inline?: boolean
 }
@@ -182,7 +180,7 @@ export function Code({
 				langClassName="left-2 !top-[3px] capitalize"
 				language={language}
 				theme={currentTheme}
-				transformers={[transformerNotationDiff({ matchAlgorithm: "v3" })]}
+				// transformers={[transformerNotationDiff({ matchAlgorithm: "v3" })]}
 				{...props}
 			>
 				{code}

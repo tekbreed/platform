@@ -20,7 +20,7 @@ on:
           - job-board
           - store
           - docs
-          - mcps
+          - mcp
           - apis
       environment:
         description: "Deploy to which environment?"

@@ -7,7 +7,7 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-RUN npm install -g turbo@2.6.0
+RUN npm install -g turbo@2.6.1
 COPY . .
 
 # ARG RAILWAY_SERVICE_NAME

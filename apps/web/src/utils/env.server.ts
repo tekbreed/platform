@@ -26,7 +26,6 @@ export const schema = z.object({
 	ALLOW_INDEXING: z.enum(["true", "false"]).optional(),
 	DISCORD_BOT_TOKEN: z.string(),
 	DISCORD_GUILD_ID: z.string(),
-	POSTHOG_API_KEY: z.string(),
 })
 
 declare global {
@@ -53,7 +52,6 @@ export function getEnv() {
 	return {
 		MODE: process.env.NODE_ENV,
 		ALLOW_INDEXING: process.env.ALLOW_INDEXING,
-		POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
 	}
 }
 

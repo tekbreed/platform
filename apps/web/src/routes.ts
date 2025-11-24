@@ -53,12 +53,12 @@ const routesRecord = {
 				"change-photo": "routes/profile/change-photo.tsx",
 			},
 		},
-		// articles: {
-		//   index: "routes/articles/index.tsx",
-		//   routes: {
-		//     ":articleSlug": "routes/articles/article.tsx",
-		//   },
-		// },
+		articles: {
+		  index: "routes/articles/index.tsx",
+		  routes: {
+		    ":articleSlug": "routes/articles/article.tsx",
+		  },
+		},
 		// tutorials: {
 		//   index: "routes/tutorials/index.tsx",
 		//   routes: {

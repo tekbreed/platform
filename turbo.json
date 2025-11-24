@@ -54,7 +54,8 @@
 			"with": ["cms#dev"],
 			"cache": false,
 			"persistent": true,
-			"dependsOn": ["^db:generate", "^dev"]
+			"dependsOn": ["^db:generate", "^dev"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"]
 		},
 		"db:generate": {
 			"cache": false
@@ -79,7 +80,7 @@
 			"persistent": true,
 			"dependsOn": ["^db:generate", "^build"]
 		},
-		"//#test:e2e:run": {
+		"test:e2e:run": {
 			"dependsOn": ["^db:generate", "^build"]
 		},
 		"test:e2e:ui": {

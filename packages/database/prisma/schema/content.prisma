@@ -1,0 +1,76 @@
+model Comment {
+  id        String   @id @default(ulid())
+  content   String
+  articleId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  parentId String?
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentReplies")
+
+  likes   Like[]
+  reports ContentReport[]
+
+  @@index([articleId])
+  @@index([userId])
+  @@index([parentId])
+}
+
+model Like {
+  id        String   @id @default(ulid())
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  articleId String?
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, articleId, commentId])
+  @@index([articleId])
+  @@index([commentId])
+}
+
+model ArticleView {
+  id        String   @id @default(ulid())
+  articleId String
+  createdAt DateTime @default(now())
+
+  userId String?
+  // user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([articleId])
+}
+
+model ContentReport {
+  id        String       @id @default(ulid())
+  reason    String
+  status    ReportStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  articleId String?
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  resolvedBy   User?   @relation("ResolvedReports", fields: [resolvedById], references: [id])
+  resolvedById String?
+
+  @@index([articleId])
+  @@index([commentId])
+  @@index([status])
+}
+
+enum ReportStatus {
+  PENDING
+  RESOLVED
+  DISMISSED
+}

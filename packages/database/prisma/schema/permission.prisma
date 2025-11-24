@@ -1,0 +1,64 @@
+model Permission {
+  id          String @id @default(ulid())
+  /// The action being permitted (e.g., CREATE, READ, UPDATE, DELETE).
+  action      Action
+  /// The entity the action applies to (e.g., USER, COMMENT).
+  entity      Entity
+  /// The access level for the action (e.g., OWN for records owned by the user, ANY for all records).
+  access      String
+  description String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  roles Role[]
+
+  @@unique([action, entity, access])
+}
+
+enum Action {
+  CREATE
+  READ
+  UPDATE
+  DELETE
+}
+
+enum Entity {
+  USER
+  COMMENT
+  CONTENT_REPORT
+  BOOKMARK
+  REVIEW
+  SETTINGS
+  TEAM
+  TEAM_MEMBER
+  TEAM_INVITE
+  TEAM_LEARNING_PATH
+  TEAM_CERTIFICATE
+  TEAM_ANALYTICS
+  TEAM_INTEGRATION
+  TEAM_SETTINGS
+}
+
+model Role {
+  id          String   @id @default(ulid())
+  name        RoleName @unique
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users       User[]
+  // teamMembers TeamMember[]
+  permissions Permission[]
+
+  @@index([name])
+}
+
+enum RoleName {
+  ADMIN
+  MODERATOR
+  USER
+  TEAM_OWNER
+  TEAM_ADMIN
+  TEAM_MEMBER
+}

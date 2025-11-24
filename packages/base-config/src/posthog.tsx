@@ -7,12 +7,11 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	const [hydrated, setHydrated] = React.useState(false)
 
 	React.useEffect(() => {
-		posthog.init("phc_ihNi5ypmKfTADWAuYO2c6Bc5zLOFh4LYZ6ayJmTM07h", {
+		posthog.init(env.POSTHOG_API_KEY, {
 			api_host: "https://us.i.posthog.com",
 			defaults: "2025-05-24",
 			person_profiles: "identified_only",
 		})
-
 		setHydrated(true)
 	}, [])
 
