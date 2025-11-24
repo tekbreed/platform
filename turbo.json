@@ -81,7 +81,6 @@
 			"dependsOn": ["^build"]
 		},
 		"test:e2e:run": {
-			"dependsOn": ["^build"]
 		},
 		"test:e2e:ui": {
 			"persistent": true,
