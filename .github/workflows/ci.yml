@@ -101,7 +101,7 @@ jobs:
         run: npm run test:e2e:install
 
       - name: Run Playwright tests on changed apps
-        run: npx turbo run test:e2e:run --filter=[HEAD^1]
+        run: npx turbo run test:e2e:run --filter="./apps/*" --filter="[HEAD^1]"
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
