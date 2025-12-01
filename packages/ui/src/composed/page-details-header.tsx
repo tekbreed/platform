@@ -4,8 +4,8 @@ import { format } from "date-fns"
 import { Calendar, Clock } from "lucide-react"
 import { readingTime } from "reading-time-estimator"
 
-import type { Article } from "@repo/utils/content/articles/types"
-import type { Tutorial } from "@repo/utils/content/turorials/types"
+import type { Article } from "@repo/utils/content.server/articles/types"
+import type { Tutorial } from "@repo/utils/content.server/turorials/types"
 import { getInitials } from "@repo/utils/misc"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar"

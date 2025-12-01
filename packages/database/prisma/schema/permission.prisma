@@ -29,15 +29,6 @@ enum Entity {
   CONTENT_REPORT
   BOOKMARK
   REVIEW
-  SETTINGS
-  TEAM
-  TEAM_MEMBER
-  TEAM_INVITE
-  TEAM_LEARNING_PATH
-  TEAM_CERTIFICATE
-  TEAM_ANALYTICS
-  TEAM_INTEGRATION
-  TEAM_SETTINGS
 }
 
 model Role {
@@ -48,7 +39,6 @@ model Role {
   updatedAt   DateTime @updatedAt
 
   users       User[]
-  // teamMembers TeamMember[]
   permissions Permission[]
 
   @@index([name])
@@ -58,7 +48,4 @@ enum RoleName {
   ADMIN
   MODERATOR
   USER
-  TEAM_OWNER
-  TEAM_ADMIN
-  TEAM_MEMBER
 }

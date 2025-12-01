@@ -119,7 +119,7 @@ export function GeneralErrorBoundary({
 						{/* Error details toggle */}
 						<div>
 							<Button
-								className="flex w-full items-center justify-center gap-2 py-2 text-muted-foreground transition-colors hover:text-foreground"
+								className="flex w-full items-center justify-center gap-2 py-2 transition-colors"
 								onClick={() => setShowDetails(!showDetails)}
 							>
 								<span className="font-medium text-sm">

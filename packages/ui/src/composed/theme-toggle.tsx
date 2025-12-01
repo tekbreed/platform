@@ -27,7 +27,7 @@ export function ThemeToggle() {
 
 	return (
 		<DropdownMenu onOpenChange={setDropDown} open={dropDown}>
-			<DropdownMenuTrigger asChild>
+			<DropdownMenuTrigger asChild disabled={isNavigating}>
 				{isNavigating ? (
 					<Button
 						arial-disabled={true}

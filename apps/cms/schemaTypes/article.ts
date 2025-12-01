@@ -65,18 +65,6 @@ export const article = defineType({
 			to: [{ type: "category" }],
 			validation: (Rule) => Rule.required().error("Category is required"),
 		}),
-		defineField({
-			name: "tags",
-			title: "Tags",
-			type: "array",
-			of: [
-				{
-					type: "reference",
-					to: [{ type: "tag" }],
-				},
-			],
-			validation: (Rule) => Rule.min(1).error("At least one tag is required."),
-		}),
 
 		defineField({
 			name: "excerpt",

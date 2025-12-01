@@ -1,7 +1,4 @@
-import { getModuleUrl } from "@repo/utils/constants/client"
-import { getVideoSrc } from "@repo/utils/misc"
-
-import { EmptyState } from "@/composed/empty-state"
+import { Iframe } from "@/composed/iframe"
 import { cn } from "@/lib/utils"
 
 export function Img({
@@ -11,7 +8,7 @@ export function Img({
 	return (
 		<img
 			className={cn(
-				"mx-auto my-6 max-w-full rounded-md border object-cover shadow-sm",
+				"mx-auto my-8 max-w-full rounded-md border object-cover shadow-sm",
 				className,
 			)}
 			loading="lazy"
@@ -27,51 +24,10 @@ interface MDXIframeProps {
 	className?: string
 }
 
-export function Iframe({
+export function MDXIframe({
 	videoId,
 	type = "youtube",
 	className,
 }: MDXIframeProps) {
-	const srcTitle = {
-		youtube: `YouTube video player`,
-		bunny: `Bunny video player`,
-	}
-
-	if (!videoId)
-		return (
-			<EmptyState
-				action={{
-					label: "Contact support",
-					// This is supposed to be a link
-					onClick: () => getModuleUrl("web", "support"),
-				}}
-				description="Please contact support if you believe this is an error."
-				title="Video not found"
-			/>
-		)
-
-	return (
-		<div
-			className={cn("no-pre w-full", {
-				"relative pt-[56.25%]": type === "bunny",
-			})}
-		>
-			<iframe
-				allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-				allowFullScreen
-				className={cn(
-					{
-						"aspect-video w-full border-0": type === "youtube",
-						"absolute top-0 h-full w-full border-none": type === "bunny",
-					},
-					className,
-				)}
-				loading="lazy"
-				referrerPolicy="strict-origin-when-cross-origin"
-				sandbox="allow-scripts allow-same-origin allow-presentation"
-				src={getVideoSrc({ type, videoId })}
-				title={srcTitle[type]}
-			/>
-		</div>
-	)
+	return <Iframe className={className} type={type} videoId={videoId} />
 }

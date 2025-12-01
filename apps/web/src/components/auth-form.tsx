@@ -20,6 +20,7 @@ import { FormError } from "@repo/ui/composed/form-error"
 import { Icons } from "@repo/ui/composed/icons"
 
 import {
+	AccountTypeSchema,
 	EmailSchema,
 	PasswordSchema,
 	RememberMeSchema,
@@ -32,16 +33,20 @@ import type { Route as SignupRoute } from "../routes/auth/signup/+types/index"
 import { ConnectionForm } from "./connection-form"
 import { FormConsent } from "./form-consent"
 
-const BaseSchema = z.object({
+const AuthFormSchema = z.object({
 	email: EmailSchema,
+	password: PasswordSchema.optional(),
+	accountType: AccountTypeSchema.optional(),
 	redirectTo: z.string().optional(),
 	rememberMe: RememberMeSchema,
 })
 
-export const SignupSchema = BaseSchema
+export const SignupSchema = AuthFormSchema.omit({
+	password: true,
+})
 
-export const SigninSchema = BaseSchema.extend({
-	password: PasswordSchema,
+export const SigninSchema = AuthFormSchema.omit({
+	accountType: true,
 })
 
 export type Action = "signin" | "signup"
@@ -87,7 +92,7 @@ export function AuthForm({
 		defaultValue: { redirectTo },
 		onValidate({ formData }) {
 			return parseWithZod(formData, {
-				schema: isSignin ? SigninSchema : SignupSchema,
+				schema: AuthFormSchema,
 			})
 		},
 		shouldValidate: "onSubmit",
@@ -107,10 +112,7 @@ export function AuthForm({
 						method="post"
 					>
 						<HoneypotInputs />
-						<input
-							{...getInputProps(fields.redirectTo, { type: "hidden" })}
-							// value={redirectTo ?? ""}
-						/>
+						<input {...getInputProps(fields.redirectTo, { type: "hidden" })} />
 						<div className="space-y-2">
 							<Label htmlFor={fields.email.id}>Email</Label>
 							<Input
@@ -121,21 +123,16 @@ export function AuthForm({
 						</div>
 						{isSignin ? (
 							<div className="space-y-2">
-								{/** biome-ignore lint/suspicious/noExplicitAny: allow any here to make zod happy */}
-								<Label htmlFor={(fields as any).password.id}>Password</Label>
+								<Label htmlFor={fields.password.id}>Password</Label>
 
 								<Input
-									// biome-ignore lint/suspicious/noExplicitAny: allow any to make zod happy
-									{...getInputProps((fields as any).password, {
+									{...getInputProps(fields.password, {
 										type: "password",
 									})}
 									placeholder="••••••"
 								/>
 
-								<FormError
-									// biome-ignore lint/suspicious/noExplicitAny: allow any to make zod happy
-									errors={(fields as any).password.errors}
-								/>
+								<FormError errors={fields.password.errors} />
 							</div>
 						) : null}
 						{isSignin ? (

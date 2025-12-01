@@ -4,14 +4,14 @@ import { Icons } from "@/composed/icons"
 import { cn } from "@/lib/utils"
 
 interface CalloutProps {
-	variant?: "tip" | "caution" | "danger"
+	variant?: "info" | "caution" | "danger"
 	title?: string
 	children: React.ReactNode
 	className?: string
 }
 
 const variants = {
-	tip: {
+	info: {
 		container:
 			"border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/30",
 		icon: "text-blue-600 dark:text-blue-400",
@@ -35,13 +35,13 @@ const variants = {
 }
 
 const icons = {
-	tip: Icons.info,
+	info: Icons.info,
 	caution: Icons.alertTriangle,
 	danger: Icons.xCircle,
 }
 
 export function Callout({
-	variant = "tip",
+	variant = "info",
 	title,
 	children,
 	className,
@@ -50,17 +50,17 @@ export function Callout({
 	const Icon = icons[variant]
 
 	return (
-		<div className={cn("rounded-lg border p-4", style.container, className)}>
-			<div className="flex gap-3">
-				<Icon className={cn("mt-0.5 size-5 shrink-0", style.icon)} />
+		<div className={cn("rounded-lg border px-4", style.container, className)}>
+			<div className="space-y-1">
+				<div className="-mb-4 flex items-center gap-2">
+					<Icon className={cn("size-5 shrink-0", style.icon)} />
+					<p className={cn("font-medium text-sm capitalize", style.title)}>
+						{title ?? variant}
+					</p>
+				</div>
 
-				<div className="flex-1 space-y-1">
-					{title && (
-						<p className={cn("font-medium text-sm", style.title)}>{title}</p>
-					)}
-					<div className={cn("text-sm leading-relaxed", style.content)}>
-						{children}
-					</div>
+				<div className={cn("text-sm leading-relaxed", style.content)}>
+					{children}
 				</div>
 			</div>
 		</div>

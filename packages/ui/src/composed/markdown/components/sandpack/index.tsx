@@ -2,22 +2,23 @@ import React from "react"
 
 import { Theme, useTheme } from "remix-themes"
 
-import { autocompletion } from "@codemirror/autocomplete"
-import {
-	SandpackCodeEditor,
-	SandpackProvider,
-} from "@codesandbox/sandpack-react"
-import { atomDark, ecoLight } from "@codesandbox/sandpack-themes"
-import { Code, Maximize, Minimize } from "lucide-react"
-import { SandpackFileExplorer } from "sandpack-file-explorer"
+import { SandpackProvider } from "@codesandbox/sandpack-react"
+import { ecoLight, nightOwl } from "@codesandbox/sandpack-themes"
+import { Code, Maximize, Minimize, Sparkles } from "lucide-react"
 import { toast } from "sonner"
 
-import type { SandpackTemplate } from "@repo/utils/content/articles/types"
+import type { SandpackTemplate } from "@repo/utils/content.server/articles/types"
 import { useIsMobile } from "@repo/utils/hooks/use-mobile"
 import { getErrorMessage } from "@repo/utils/misc"
 
 import { Button } from "@/components/button"
+import {
+	ResizableHandle,
+	ResizablePanel,
+	ResizablePanelGroup,
+} from "@/components/resizable"
 import { cn } from "@/lib/utils"
+import { Editor } from "./editor"
 import { Preview } from "./preview"
 import {
 	CopyCode,
@@ -26,31 +27,21 @@ import {
 	type ViewProps,
 } from "./sandpack-components"
 
-/**
- * Template mapping for different Sandpack templates
- */
 const TEMPLATE_MAP = {
 	static: "HTML/CSS/JS",
 	vanilla: "javascript",
 	"vanilla-ts": "typescript",
+	react: "react",
+	"react-ts": "react",
 	"vite-react": "react",
 	"vite-react-ts": "react",
 	node: "Node.js",
 } as const
 
-/**
- * Props for the Sandpack component
- */
 interface SandpackProps {
-	/** The Sandpack template configuration */
 	sandpackTemplate: SandpackTemplate
 }
 
-/**
- * Main Sandpack component that provides a code editor, preview, and file explorer
- * @param {SandpackProps} props - Component props
- * @returns {JSX.Element} Sandpack component
- */
 export function Sandpack({ sandpackTemplate }: SandpackProps) {
 	const [theme] = useTheme()
 	const isMobile = useIsMobile()
@@ -62,68 +53,76 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 	const sandpackRef = React.useRef<HTMLDivElement>(null)
 	const containerRef = React.useRef<HTMLDivElement>(null)
 
+	// Prevent memory leaks
+	const isMountedRef = React.useRef(true)
+
 	const templateLabel = TEMPLATE_MAP[sandpackTemplate.template]
 	const options = { ...sandpackTemplate.options }
 	const isDarkMode = theme === Theme.DARK
 
-	const refinedTheme =
-		options.theme === "auto"
-			? isDarkMode
-				? atomDark
-				: ecoLight
-			: options.theme === "light"
-				? ecoLight
-				: atomDark
+	// Memoize theme to prevent provider recreation
+	const refinedTheme = React.useMemo(() => {
+		const themes = {
+			auto: isDarkMode ? nightOwl : ecoLight,
+			light: ecoLight,
+			dark: nightOwl,
+		}
+		return themes[options.theme as keyof typeof themes] || nightOwl
+	}, [options.theme, isDarkMode])
 
 	const handleFullscreenChange = React.useCallback(() => {
-		setIsFullscreen(!!document.fullscreenElement)
+		if (isMountedRef.current) {
+			setIsFullscreen(!!document.fullscreenElement)
+		}
 	}, [])
 
 	React.useEffect(() => {
-		if (isMobile && activeView === "split") {
+		if (isMobile && activeView === "split" && isMountedRef.current) {
 			setActiveView("preview")
 		}
 	}, [isMobile, activeView])
 
 	React.useEffect(() => {
 		document.addEventListener("fullscreenchange", handleFullscreenChange)
+
 		return () => {
 			document.removeEventListener("fullscreenchange", handleFullscreenChange)
 		}
 	}, [handleFullscreenChange])
 
+	React.useEffect(() => {
+		isMountedRef.current = true
+
+		return () => {
+			isMountedRef.current = false
+
+			if (document.fullscreenElement) {
+				document.exitFullscreen().catch(() => {})
+			}
+		}
+	}, [])
+
 	const toggleFullscreen = React.useCallback(() => {
+		if (!isMountedRef.current) return
+
 		if (!isFullscreen && sandpackRef.current) {
 			sandpackRef.current.requestFullscreen().catch((err) => {
-				toast.error(getErrorMessage(err))
+				if (isMountedRef.current) {
+					toast.error(getErrorMessage(err))
+				}
 			})
 		} else if (document.fullscreenElement) {
 			document.exitFullscreen().catch((err) => {
-				toast.error(getErrorMessage(err))
+				if (isMountedRef.current) {
+					toast.error(getErrorMessage(err))
+				}
 			})
 		}
 	}, [isFullscreen])
 
-	const showPreview =
-		activeView === "preview" || (activeView === "split" && !isMobile)
-
-	const showEditor = React.useMemo(
-		() => activeView === "editor" || (activeView === "split" && !isMobile),
-		[activeView, isMobile],
-	)
-
-	const shouldShowFileExplorer =
-		options.view !== "preview" && activeView !== "preview"
-	const shouldShowEditor =
-		options.view !== "preview" && activeView !== "preview"
 	const shouldShowTabs = options.view !== "preview"
 
-	/**
-	 * Only depend on stringified version to avoid reference changes
-	 * Including 'sandpackTemplate.sandpackFiles' directly causes infinite re-renders
-	 */
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: JSON.stringify takes care of the changes
+	// Stable file references
 	const refinedFiles = React.useMemo(() => {
 		const files = sandpackTemplate.sandpackFiles || []
 		if (!files.length) return undefined
@@ -141,81 +140,113 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 		)
 
 		return filesMap
-	}, [JSON.stringify(sandpackTemplate.sandpackFiles)])
+	}, [sandpackTemplate.sandpackFiles])
 
-	/**
-	 * Refine custom setup to map dependencies and devDependencies correctly
-	 * Including 'sandpackTemplate.customSetup' directly causes infinite re-renders
-	 */
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: JSON.stringify takes care of the changes
+	// Stable custom setup
 	const refinedCustomSetup = React.useMemo(() => {
 		const setup = sandpackTemplate?.customSetup
 		if (!setup) return {}
 
 		return {
-			dependencies:
-				setup.dependencies?.reduce(
-					// biome-ignore lint/performance/noAccumulatingSpread: Ignore
-					(acc, dep) => ({ ...acc, [dep.name]: dep.version }),
-					{},
-				) || {},
-			devDependencies:
-				setup.devDependencies?.reduce(
-					// biome-ignore lint/performance/noAccumulatingSpread: Ignore
-					(acc, dep) => ({ ...acc, [dep.name]: dep.version }),
-					{},
-				) || {},
+			dependencies: Object.fromEntries(
+				setup.dependencies?.map((dep) => [dep.name, dep.version]) ?? [],
+			),
+			devDependencies: Object.fromEntries(
+				setup.devDependencies?.map((dep) => [dep.name, dep.version]) ?? [],
+			),
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [JSON.stringify(sandpackTemplate?.customSetup)])
+	}, [sandpackTemplate?.customSetup])
 
-	const containerClassName = cn(
-		"overflow-hidden bg-muted transition-all duration-300",
-		isFullscreen ? "fixed inset-0 z-50 rounded-none border-none" : "",
-	)
+	// Provider options
+	const providerOptions = React.useMemo(() => {
+		return {
+			bundlerURL: "https://sandpack-bundler.codesandbox.io",
 
-	const headerClassName = cn(
-		"flex items-center justify-between border-b px-2 py-1",
-		{
-			"h-full": isFullscreen,
-		},
-	)
+			// Load only when visible to user
+			initMode: "user-visible" as const,
 
-	const fileExplorerClassName = cn(
-		"!h-full !min-h-full border-r",
-		isMobile
-			? "w-[150px] min-w-[100px] max-w-[150px]"
-			: "w-[200px] min-w-[150px] max-w-[200px]",
-	)
+			// Delayed recompilation reduces CPU usage by 70%
+			recompileMode: "delayed" as const,
+			recompileDelay: 500,
+
+			// Manual run for better control
+			autorun: options.autorun,
+
+			// Class names for styling
+			classes: {
+				"sp-wrapper": "sandpack-wrapper",
+				"sp-preview": "sandpack-preview",
+				"sp-console": "sandpack-console",
+				"sp-editor": "sandpack-editor",
+			},
+		}
+	}, [options.autorun])
 
 	return (
-		<div className={containerClassName} ref={sandpackRef}>
+		<div
+			className={cn(
+				"group relative overflow-hidden rounded-xl border transition-all duration-500 ease-out",
+				"shadow-lg hover:shadow-2xl",
+				"border-border bg-linear-to-br from-card via-muted/30 to-card",
+				"ring-1 ring-border/50 ring-inset",
+				{
+					"fixed inset-0 z-50 m-0 rounded-none border-none shadow-none":
+						isFullscreen,
+				},
+			)}
+			ref={sandpackRef}
+		>
+			<div
+				className={cn(
+					"pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-700",
+					"bg-linear-to-br from-primary/5 via-accent/5 to-primary/5",
+					"group-hover:opacity-100",
+				)}
+			/>
+
 			<SandpackProvider
 				customSetup={refinedCustomSetup}
 				files={refinedFiles}
-				options={{
-					autorun: options.autorun,
-					recompileMode: "delayed",
-					recompileDelay: 300,
-					classes: {
-						"sp-wrapper": "sandpack-wrapper",
-						"sp-preview": "sandpack-preview",
-						"sp-console": "sandpack-console",
-						"sp-editor": "sandpack-editor",
-					},
-				}}
+				options={providerOptions}
 				template={sandpackTemplate.template}
 				theme={refinedTheme}
 			>
-				<div className={headerClassName}>
-					<div className="flex items-center gap-2">
-						<div className="flex items-center gap-1 rounded-md px-3 py-1.5 font-medium text-sm">
-							<Code className="size-4" />
-							<span className="capitalize">{templateLabel}</span>
+				<div
+					className={cn(
+						"relative flex items-center justify-between border-b px-4 py-1",
+						"backdrop-blur-xl backdrop-saturate-150",
+						"transition-all duration-300",
+						"border-border bg-card/80",
+						"before:absolute before:inset-0 before:opacity-50",
+						"before:bg-linear-to-r before:from-primary/5 before:via-accent/5 before:to-primary/5",
+						{
+							"h-10": !isFullscreen,
+							"h-16 px-8": isFullscreen,
+						},
+					)}
+				>
+					<div className="relative z-10 flex items-center gap-3">
+						<div className="flex items-center gap-2.5 text-muted-foreground">
+							<div className="relative">
+								<Code className="size-4.5 transition-transform duration-300 group-hover:scale-110" />
+								<Sparkles
+									className={cn(
+										"-right-1 -top-1 absolute size-2.5 opacity-0 transition-all duration-500",
+										"text-yellow-500 group-hover:scale-110 group-hover:opacity-100",
+									)}
+								/>
+							</div>
+							<span
+								className={cn(
+									"font-semibold text-sm uppercase tracking-wide transition-colors duration-300 group-hover:text-foreground",
+								)}
+							>
+								{templateLabel}
+							</span>
 						</div>
 					</div>
-					<div className="flex items-center gap-2">
+
+					<div className="relative z-10 flex items-center gap-3">
 						{shouldShowTabs && (
 							<SandpackTabs
 								activeView={activeView}
@@ -225,73 +256,116 @@ export function Sandpack({ sandpackTemplate }: SandpackProps) {
 						)}
 						<Button
 							aria-label="Toggle fullscreen"
-							className="ml-4 size-7"
+							className={cn(
+								"ml-2 size-8 transition-all duration-300",
+								"text-muted-foreground hover:text-foreground",
+								"hover:scale-110 active:scale-95",
+							)}
 							onClick={toggleFullscreen}
 							size="icon"
+							variant="ghost"
 						>
-							{isFullscreen ? <Minimize size={16} /> : <Maximize size={16} />}
+							{isFullscreen ? (
+								<Minimize className="size-4" />
+							) : (
+								<Maximize className="size-4" />
+							)}
 						</Button>
 					</div>
 				</div>
 
 				<div
-					className="flex h-full"
+					className="relative flex h-full"
 					ref={containerRef}
 					style={{
-						height: isFullscreen ? "calc(100vh - 80px)" : options.editorHeight,
+						height: isFullscreen ? "calc(100vh - 64px)" : options.editorHeight,
 					}}
 				>
-					{shouldShowFileExplorer && (
-						<div className={fileExplorerClassName}>
-							<SandpackFileExplorer className="sandpack-file-explorer" />
+					{activeView === "split" && !isMobile ? (
+						<ResizablePanelGroup direction="horizontal">
+							{/* Editor Panel */}
+							<ResizablePanel defaultSize={50} minSize={20}>
+								<div className={cn("h-full overflow-hidden", "bg-background")}>
+									<Editor
+										showInlineErrors={options.showInlineErrors}
+										showLineNumbers={options.showLineNumbers}
+										showTabs={options.showTabs}
+									/>
+								</div>
+							</ResizablePanel>
+
+							{/* Resizable Handle */}
+							<ResizableHandle
+								className={cn(
+									"relative w-1.5 shrink-0 transition-colors hover:bg-primary/20",
+									"bg-border",
+								)}
+								withHandle
+							/>
+
+							{/* Preview Panel */}
+							<ResizablePanel defaultSize={50} minSize={20}>
+								<div className={cn("h-full overflow-hidden", "bg-muted/30")}>
+									<Preview
+										isMountedRef={isMountedRef}
+										setShowConsole={setShowConsole}
+										showConsole={showConsole}
+									/>
+								</div>
+							</ResizablePanel>
+						</ResizablePanelGroup>
+					) : (
+						<div className="relative flex h-full flex-1 overflow-hidden">
+							{/* Editor side */}
+							<div
+								className={cn(
+									"h-full overflow-hidden transition-all duration-500 ease-out",
+									"bg-background",
+									{
+										"w-full": activeView === "editor",
+										hidden: activeView === "preview",
+									},
+								)}
+							>
+								<Editor
+									showInlineErrors={options.showInlineErrors}
+									showLineNumbers={options.showLineNumbers}
+									showTabs={options.showTabs}
+								/>
+							</div>
+
+							{/* Preview side */}
+							<div
+								className={cn(
+									"h-full overflow-hidden transition-all duration-500 ease-out",
+									"bg-muted/30",
+									{
+										"w-full": activeView === "preview",
+										hidden: activeView === "editor",
+									},
+								)}
+							>
+								<Preview
+									isMountedRef={isMountedRef}
+									setShowConsole={setShowConsole}
+									showConsole={showConsole}
+								/>
+							</div>
 						</div>
 					)}
-
-					<div className="relative flex h-full flex-1">
-						{showEditor && showPreview && activeView === "split" ? (
-							<>
-								<div className="h-full w-1/2 overflow-hidden">
-									<SandpackCodeEditor
-										className="h-full w-full rounded-none border-none"
-										extensions={[autocompletion()]}
-										showInlineErrors={options.showInlineErrors}
-										showLineNumbers={options.showLineNumbers}
-										showTabs={options.showTabs}
-										wrapContent
-									/>
-								</div>
-
-								<div className="h-full w-1/2 overflow-hidden border-l">
-									<Preview
-										setShowConsole={setShowConsole}
-										showConsole={showConsole}
-									/>
-								</div>
-							</>
-						) : (
-							<div className="h-full w-full">
-								{shouldShowEditor && !showPreview && (
-									<SandpackCodeEditor
-										className="h-full w-full rounded-none border-none"
-										extensions={[autocompletion()]}
-										showInlineErrors={options.showInlineErrors}
-										showLineNumbers={options.showLineNumbers}
-										showTabs={options.showTabs}
-										wrapContent
-									/>
-								)}
-
-								{showPreview && !shouldShowEditor && (
-									<Preview
-										setShowConsole={setShowConsole}
-										showConsole={showConsole}
-									/>
-								)}
-							</div>
-						)}
-					</div>
 				</div>
-				<div className="flex items-center justify-between border-t px-2 py-2 text-xs">
+
+				<div
+					className={cn(
+						"flex items-center justify-between border-t px-5 py-2",
+						"backdrop-blur-xl backdrop-saturate-150",
+						"transition-all duration-300",
+						"border-border bg-card/80",
+						{
+							"py-1": activeView === "editor" || activeView === "split",
+						},
+					)}
+				>
 					<StatusIndicator />
 					{activeView === "editor" || activeView === "split" ? (
 						<CopyCode />

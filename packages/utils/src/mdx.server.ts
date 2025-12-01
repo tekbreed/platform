@@ -14,7 +14,7 @@
  * - remark-flexible-containers: Custom container syntax
  */
 
-import { bundleMDX as bMDX } from "mdx-bundler"
+import { bundleMDX } from "mdx-bundler"
 import { rehypeInlineCodeProperty } from "react-shiki"
 import rehypeMathjax from "rehype-mathjax"
 import rehypeSlug from "rehype-slug"
@@ -40,7 +40,7 @@ import remarkMath from "remark-math"
  *
  * @example
  * ```ts
- * const { code, frontmatter } = await bundleMDX({
+ * const { code, frontmatter } = await bundleMarkdown({
  *   source: "# Hello World\n\nThis is MDX content",
  *   files: {
  *     "components/Button.tsx": "export const Button = () => <button>Click me</button>"
@@ -48,14 +48,14 @@ import remarkMath from "remark-math"
  * });
  * ```
  */
-export async function bundleMDX({
+export async function bundleMarkdown({
 	source,
 	files,
 }: {
 	source: string
 	files?: Record<string, string>
 }) {
-	return bMDX({
+	return bundleMDX({
 		source,
 		files,
 		mdxOptions(options) {

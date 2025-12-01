@@ -7,7 +7,7 @@ export default defineProject({
 	test: {
 		exclude: ["**/build/**", "**/dist/**", "**/node_modules/**", "**/e2e/**"],
 
-		// setupFiles: ["./vitest.setup.ts"],
+		setupFiles: ["./packages/tests-config/src/index.ts"],
 		includeSource: ["**/src/**/*.{ts,tsx}"],
 		projects: [
 			"apps/*",

@@ -51,6 +51,8 @@ export const sandpack = defineType({
 					{ title: "Static", value: "static" },
 					{ title: "Vanilla", value: "vanilla" },
 					{ title: "Vanilla TS", value: "vanilla-ts" },
+					{ title: "React", value: "react" },
+					{ title: "React TS", value: "react-ts" },
 					{ title: "Vite React", value: "vite-react" },
 					{ title: "Vite React TS", value: "vite-react-ts" },
 					{ title: "Node.js", value: "node" },

@@ -10,6 +10,7 @@ import {
 	Play,
 	RefreshCw,
 	Terminal,
+	Zap,
 } from "lucide-react"
 
 import { Button } from "@/components/button"
@@ -40,9 +41,7 @@ interface SandpackTabsProps {
 }
 
 /**
- * Tabs component for switching between editor, split, and preview views
- * @param {SandpackTabsProps} props - Component props
- * @returns {JSX.Element} Tabs component
+ * Stunning tabs with smooth transitions and gradient effects
  */
 export function SandpackTabs({
 	activeView,
@@ -52,13 +51,24 @@ export function SandpackTabs({
 	return (
 		<div className="ml-auto flex items-center gap-2">
 			<Tabs
-				className="h-7"
+				className="h-6"
 				onValueChange={(value) => setActiveView(value as ViewProps)}
 				value={activeView}
 			>
-				<TabsList className="h-7 bg-muted p-1">
+				<TabsList
+					className={cn(
+						"h-7 p-0.5 transition-all duration-300",
+						"backdrop-blur-sm",
+						"bg-muted/50 ring-1 ring-border",
+					)}
+				>
 					<TabsTrigger
-						className="h-7 rounded-md px-3 font-medium text-xs data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
+						className={cn(
+							"h-6 rounded px-3.5 font-semibold text-xs transition-all duration-300",
+							"data-[state=active]:shadow-lg",
+							"data-[state=active]:bg-primary data-[state=active]:text-primary-foreground",
+							"hover:scale-105 active:scale-95",
+						)}
 						value="editor"
 					>
 						<Code className="mr-1.5 size-3.5" />
@@ -66,7 +76,12 @@ export function SandpackTabs({
 					</TabsTrigger>
 					{!isMobile && (
 						<TabsTrigger
-							className="h-7 rounded-md px-3 font-medium text-xs data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
+							className={cn(
+								"h-6 rounded px-3.5 font-semibold text-xs transition-all duration-300",
+								"data-[state=active]:shadow-lg",
+								"data-[state=active]:bg-accent data-[state=active]:text-accent-foreground",
+								"hover:scale-105 active:scale-95",
+							)}
 							value="split"
 						>
 							<Layout className="mr-1.5 size-3.5" />
@@ -74,7 +89,12 @@ export function SandpackTabs({
 						</TabsTrigger>
 					)}
 					<TabsTrigger
-						className="h-7 rounded-md px-3 font-medium text-xs data-[state=active]:bg-violet-600 data-[state=active]:text-white dark:data-[state=active]:bg-violet-600 dark:data-[state=active]:text-white"
+						className={cn(
+							"h-6 rounded px-3.5 font-semibold text-xs transition-all duration-300",
+							"data-[state=active]:shadow-lg",
+							"data-[state=active]:bg-primary data-[state=active]:text-primary-foreground",
+							"hover:scale-105 active:scale-95",
+						)}
 						value="preview"
 					>
 						<Eye className="mr-1.5 size-3.5" />
@@ -87,29 +107,69 @@ export function SandpackTabs({
 }
 
 /**
- * Button component for running the Sandpack code
- * @returns {JSX.Element} Run button with tooltip
+ * Props for button components
  */
-export function RunButton() {
+interface ButtonWithMountProps {
+	isMountedRef?: React.RefObject<boolean>
+}
+
+/**
+ * Stunning run button with animation
+ */
+export function RunButton({ isMountedRef }: ButtonWithMountProps) {
 	const { sandpack } = useSandpack()
+	const localMountedRef = React.useRef(true)
+
+	React.useEffect(() => {
+		return () => {
+			localMountedRef.current = false
+		}
+	}, [])
+
+	const handleRun = React.useCallback(() => {
+		const isMounted = isMountedRef?.current ?? localMountedRef.current
+		if (isMounted && sandpack.status !== "running") {
+			sandpack.runSandpack()
+		}
+	}, [sandpack, isMountedRef])
+
+	const isRunning = sandpack.status === "running"
 
 	return (
 		<TooltipProvider>
 			<Tooltip>
 				<TooltipTrigger asChild>
 					<Button
-						className="h-6 rounded-md bg-violet-500 text-white text-xs hover:bg-violet-600"
-						disabled={sandpack.status === "running"}
-						onClick={() => sandpack.runSandpack()}
+						className={cn(
+							"h-7 rounded-lg px-3 font-semibold text-xs transition-all duration-300",
+							"hover:scale-105 active:scale-95",
+							isRunning
+								? "cursor-not-allowed opacity-50"
+								: "bg-primary text-primary-foreground hover:bg-primary/90",
+							"shadow-md hover:shadow-lg",
+						)}
+						disabled={isRunning}
+						onClick={handleRun}
 						size="sm"
-						variant="default"
+						variant="ghost"
 					>
-						<Play className="mr-1 size-3" />
+						<Play
+							className={cn(
+								"mr-1.5 size-3.5 transition-transform duration-300",
+								{
+									"animate-pulse": isRunning,
+								},
+							)}
+							fill="currentColor"
+						/>
 						Run
 					</Button>
 				</TooltipTrigger>
-				<TooltipContent side="bottom">
-					<p>Run code</p>
+				<TooltipContent className="font-medium text-xs" side="bottom">
+					<p className="flex items-center gap-1.5">
+						<Zap className="size-3" />
+						Run code
+					</p>
 				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
@@ -117,11 +177,27 @@ export function RunButton() {
 }
 
 /**
- * Button component for resetting all files in the Sandpack editor
- * @returns {JSX.Element} Reset button with tooltip
+ * Stunning refresh button with rotation animation
  */
-export function RefreshButton() {
+export function RefreshButton({ isMountedRef }: ButtonWithMountProps) {
 	const { sandpack } = useSandpack()
+	const localMountedRef = React.useRef(true)
+	const [isRotating, setIsRotating] = React.useState(false)
+
+	React.useEffect(() => {
+		return () => {
+			localMountedRef.current = false
+		}
+	}, [])
+
+	const handleReset = React.useCallback(() => {
+		const isMounted = isMountedRef?.current ?? localMountedRef.current
+		if (isMounted) {
+			setIsRotating(true)
+			sandpack.resetAllFiles()
+			setTimeout(() => setIsRotating(false), 600)
+		}
+	}, [sandpack, isMountedRef])
 
 	return (
 		<TooltipProvider>
@@ -129,15 +205,23 @@ export function RefreshButton() {
 				<TooltipTrigger asChild>
 					<Button
 						aria-label="Reset files"
-						className="size-6 rounded-md"
-						onClick={() => sandpack.resetAllFiles()}
+						className={cn(
+							"size-7 rounded-lg transition-all duration-300",
+							"hover:scale-110 active:scale-95",
+							"text-muted-foreground hover:bg-muted hover:text-foreground",
+						)}
+						onClick={handleReset}
 						size="icon"
 						variant="ghost"
 					>
-						<RefreshCw className="size-3.5" />
+						<RefreshCw
+							className={cn("size-4 transition-transform duration-600", {
+								"animate-spin": isRotating,
+							})}
+						/>
 					</Button>
 				</TooltipTrigger>
-				<TooltipContent side="bottom">
+				<TooltipContent className="font-medium text-xs" side="bottom">
 					<p>Reset files</p>
 				</TooltipContent>
 			</Tooltip>
@@ -146,8 +230,7 @@ export function RefreshButton() {
 }
 
 /**
- * Button component for copying the current file's code to clipboard
- * @returns {JSX.Element} Copy button with success state
+ * Copy button with smooth success animation
  */
 export function CopyCode() {
 	const { sandpack } = useSandpack()
@@ -155,28 +238,37 @@ export function CopyCode() {
 
 	const copyToClipboard = React.useCallback(() => {
 		const activeFileContent = sandpack.files[sandpack.activeFile]?.code || ""
-		navigator.clipboard.writeText(activeFileContent).then(() => {
-			setCopied(true)
-			const timer = setTimeout(() => setCopied(false), 2000)
-			return () => clearTimeout(timer)
-		})
-	}, [sandpack.files, sandpack.activeFile])
+		navigator.clipboard
+			.writeText(activeFileContent)
+			.then(() => {
+				setCopied(true)
+				setTimeout(() => setCopied(false), 2000)
+			})
+			.catch((_err) => {})
+	}, [sandpack])
 
 	return (
 		<Button
-			className="h-6 rounded-md px-2 text-xs"
+			className={cn(
+				"h-7 rounded-lg px-3 font-semibold text-xs transition-all duration-300",
+				"hover:scale-105 active:scale-95",
+				{
+					"bg-primary text-primary-foreground shadow-md": copied,
+					"text-muted-foreground hover:bg-muted hover:text-foreground": !copied,
+				},
+			)}
 			onClick={copyToClipboard}
 			size="sm"
 			variant="ghost"
 		>
 			{copied ? (
 				<>
-					<Check className="text-blue-600" />
-					Copied
+					<Check className="mr-1.5 size-3.5 animate-bounce" />
+					Copied!
 				</>
 			) : (
 				<>
-					<Copy className="text-muted-foreground" />
+					<Copy className="mr-1.5 size-3.5" />
 					Copy Code
 				</>
 			)}
@@ -195,9 +287,7 @@ interface ShowConsoleProps {
 }
 
 /**
- * Button component for toggling the console visibility
- * @param {ShowConsoleProps} props - Component props
- * @returns {JSX.Element} Console toggle button
+ * Stunning console toggle button
  */
 export function ShowConsole({ showConsole, setShowConsole }: ShowConsoleProps) {
 	const toggleConsole = React.useCallback(() => {
@@ -206,7 +296,15 @@ export function ShowConsole({ showConsole, setShowConsole }: ShowConsoleProps) {
 
 	return (
 		<Button
-			className="h-6 rounded-md px-3 text-xs"
+			className={cn(
+				"h-7 rounded-lg px-3 font-semibold text-xs transition-all duration-300",
+				"hover:scale-105 active:scale-95",
+				{
+					"bg-primary text-primary-foreground shadow-md": showConsole,
+					"text-muted-foreground hover:bg-muted hover:text-foreground":
+						!showConsole,
+				},
+			)}
 			onClick={toggleConsole}
 			size="sm"
 			variant="ghost"
@@ -218,34 +316,72 @@ export function ShowConsole({ showConsole, setShowConsole }: ShowConsoleProps) {
 }
 
 /**
- * Component for displaying the current status of the Sandpack editor
- * @returns {JSX.Element} Status indicator with color and text
+ * Status indicator with animated dot
  */
 export function StatusIndicator() {
 	const { sandpack } = useSandpack()
-	const [status, setStatus] = React.useState({
-		color: "bg-amber-500",
-		text: "Initializing...",
-	})
 
-	React.useEffect(() => {
-		const statusMap: Record<string, { color: string; text: string }> = {
-			idle: { color: "bg-emerald-500", text: "Ready" },
-			error: { color: "bg-red-500", text: "Error" },
-			timeout: { color: "bg-red-500", text: "Timeout" },
-			running: { color: "bg-blue-500", text: "Running" },
-			initial: { color: "bg-amber-500", text: "Initializing..." },
-		}
+	const statusMap: Record<
+		string,
+		{ color: string; text: string; ring: string }
+	> = {
+		idle: {
+			color: "bg-emerald-500",
+			text: "Ready",
+			ring: "ring-emerald-500/20",
+		},
+		error: {
+			color: "bg-red-500",
+			text: "Error",
+			ring: "ring-red-500/20",
+		},
+		timeout: {
+			color: "bg-red-500",
+			text: "Timeout",
+			ring: "ring-red-500/20",
+		},
+		running: {
+			color: "bg-blue-500",
+			text: "Running",
+			ring: "ring-blue-500/20",
+		},
+		initial: {
+			color: "bg-amber-500",
+			text: "Initializing...",
+			ring: "ring-amber-500/20",
+		},
+	}
 
-		setStatus(
-			statusMap[sandpack.status] || { color: "bg-muted", text: "Unknown" },
-		)
-	}, [sandpack.status])
+	const status = statusMap[sandpack.status] || {
+		color: "bg-slate-500",
+		text: "Unknown",
+		ring: "ring-slate-500/20",
+	}
 
 	return (
-		<div className="flex items-center gap-1.5 text-sm">
-			<div className={cn("size-2 rounded-full", status.color)} />
-			<span>{status.text}</span>
+		<div className="flex items-center gap-2.5 font-medium text-muted-foreground text-xs transition-all duration-300">
+			<div className="relative flex items-center justify-center">
+				<div
+					className={cn(
+						"size-2.5 rounded-full transition-colors duration-300",
+						status.color,
+					)}
+				/>
+				<div
+					className={cn(
+						"absolute inset-0 size-2.5 animate-ping rounded-full",
+						status.color,
+						"opacity-75",
+					)}
+				/>
+				<div
+					className={cn(
+						"absolute inset-[-4px] rounded-full ring-2",
+						status.ring,
+					)}
+				/>
+			</div>
+			<span className="font-semibold">{status.text}</span>
 		</div>
 	)
 }

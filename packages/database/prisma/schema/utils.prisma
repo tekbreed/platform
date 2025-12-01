@@ -1,0 +1,11 @@
+model Image {
+  id      String  @id @default(ulid())
+  fileKey String
+  altText String?
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

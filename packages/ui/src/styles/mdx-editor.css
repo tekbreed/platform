@@ -12,17 +12,17 @@
 	}
 
 	.code-block pre {
-		@apply !bg-muted !text-foreground my-6 rounded-lg px-4 py-3 font-mono;
+		@apply bg-muted text-foreground my-6 rounded-lg px-4 py-3 font-mono;
 	}
 
 	.code-block pre code {
-		@apply bg-transparent p-0 !text-sm text-inherit;
+		@apply bg-transparent p-0 text-sm text-inherit;
 	}
 
 	/* Syntax highlighting styles */
 	.code-block .hljs-comment,
 	.code-block .hljs-quote {
-		@apply !text-muted-foreground;
+		@apply text-muted-foreground!;
 	}
 
 	.code-block .hljs-variable,
@@ -34,7 +34,7 @@
 	.code-block .hljs-link,
 	.code-block .hljs-selector-id,
 	.code-block .hljs-selector-class {
-		@apply !text-destructive;
+		@apply text-destructive!;
 	}
 
 	.code-block .hljs-number,
@@ -44,31 +44,31 @@
 	.code-block .hljs-literal,
 	.code-block .hljs-type,
 	.code-block .hljs-params {
-		@apply !text-orange-600 dark:!text-orange-400;
+		@apply text-orange-600! dark:text-orange-400!;
 	}
 
 	.code-block .hljs-string,
 	.code-block .hljs-symbol,
 	.code-block .hljs-bullet {
-		@apply !text-green-600 dark:!text-green-400;
+		@apply text-green-600! dark:text-green-400!;
 	}
 
 	.code-block .hljs-title,
 	.code-block .hljs-section {
-		@apply !text-yellow-600 dark:!text-yellow-400;
+		@apply text-yellow-600! dark:text-yellow-400!;
 	}
 
 	.code-block .hljs-keyword,
 	.code-block .hljs-selector-tag {
-		@apply !text-blue-600 dark:!text-blue-400;
+		@apply text-blue-600! dark:text-blue-400!;
 	}
 
 	.code-block .hljs-emphasis {
-		@apply !italic;
+		@apply italic!;
 	}
 
 	.code-block .hljs-strong {
-		@apply !font-bold;
+		@apply font-bold!;
 	}
 
 	.prose p.is-editor-empty:first-child::before {

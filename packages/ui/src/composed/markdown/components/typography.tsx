@@ -107,7 +107,7 @@ export function P({
 	return (
 		<p
 			className={cn(
-				"text-[1.05em] text-foreground leading-7.5 tracking-wide [&:not(:first-child)]:mt-6",
+				"not-first:mt-6 text-[1.05em] text-foreground leading-7.5 tracking-wide",
 				className,
 			)}
 			{...props}
@@ -130,21 +130,24 @@ export function Pre({
 			childType === "iframe" ||
 			childType === "img" ||
 			(typeof childProps.className === "string" &&
-				childProps.className.includes("mermaid")) ||
-			(childType === "div" && childProps.className?.includes("no-pre"))
+				(childProps.className.includes("language-mermaid_diagram") ||
+					childProps.className.includes("language-youtube") ||
+					childProps.className.includes("language-bunny") ||
+					childProps.className.includes("language-sandpack") ||
+					childProps.className.includes("no-pre")))
 		) {
 			return <>{children}</>
 		}
 	}
 
 	return (
-		<pre className={cn("p-0", className)} {...props}>
+		<pre className={cn("rounded-lg p-0", className)} {...props}>
 			{children}
 		</pre>
 	)
 }
 
-type CalloutVariant = "tip" | "caution" | "danger"
+type CalloutVariant = "info" | "caution" | "danger"
 
 interface TitleChildProps {
 	className?: string
@@ -170,9 +173,9 @@ export function Div({
 
 	const variant = React.isValidElement<TitleChildProps>(titleChild)
 		? ((titleChild.props.className?.match(
-				/tip|caution|danger/,
-			)?.[0] as CalloutVariant) ?? "tip")
-		: null
+				/info|caution|danger/,
+			)?.[0] as CalloutVariant) ?? "info")
+		: "info"
 
 	if (variant) {
 		return (

@@ -1,6 +1,6 @@
-// import { article } from "./article"
-// import { author } from "./author"
-// import { category } from "./category"
+import { article } from "./article"
+import { author } from "./author"
+import { category } from "./category"
 // import { faqs } from "./faqs"
 // import { journey } from "./journey"
 import { page } from "./page"
@@ -10,11 +10,10 @@ import { page } from "./page"
 // import { module } from "./program/module"
 // import { subModule } from "./program/sub-module"
 // import { test } from "./program/test"
-// import { reactComponent } from "./react-component"
+import { reactComponent } from "./react-component"
 // import { roadmap } from "./roadmap"
-// import { sandpack } from "./sandpack"
+import { sandpack } from "./sandpack"
 import { homePage } from "./system/home-page"
-// import { tag } from "./tag"
 // import { teamMember } from "./team-member"
 // import { tutorial, tutorialModule } from "./tutorial"
 // import { tutorialLesson } from "./tutorial/lesson"
@@ -30,12 +29,11 @@ export const schemaTypes = [
 	// tutorial,
 	// tutorialModule,
 	// tutorialLesson,
-	// article,
-	// author,
-	// category,
-	// tag,
-	// sandpack,
-	// reactComponent,
+	article,
+	author,
+	category,
+	sandpack,
+	reactComponent,
 	// roadmap,
 	// journey,
 	// faqs,

@@ -3,7 +3,7 @@ import * as React from "react"
 import { motion } from "framer-motion"
 import { getMDXComponent } from "mdx-bundler/client"
 
-import type { SandpackTemplate } from "@repo/utils/content/articles/types"
+import type { SandpackTemplate } from "@repo/utils/content.server/articles/types"
 
 import {
 	Accordion,
@@ -103,7 +103,7 @@ export function Markdown({
 	return (
 		<div
 			className={cn(
-				"prose dark:prose-invert mx-auto min-w-full max-w-3xl",
+				"prose dark:prose-invert markdown-content mx-auto min-w-full max-w-3xl text-base",
 				className,
 			)}
 			id="markdown-content"

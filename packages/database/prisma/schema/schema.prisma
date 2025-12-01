@@ -1,8 +1,9 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../../src/generated/prisma"
-
-  // binaryTargets = ["native", "rhel-openssl-3.0.x"]
+  provider               = "prisma-client"
+  output                 = "../../src/generated/prisma"
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
 }
 
 datasource db {
@@ -17,51 +18,19 @@ model User {
 
   accountType AccountType @default(INDIVIDUAL)
 
-  totalTokensUsed Int       @default(0)
-  monthlyTokens   Int       @default(0)
-  lastTokenReset  DateTime?
-
   lastSeenAt DateTime?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
   image           Image?
   password        Password?
-  // subscription         Subscription?
   roles           Role[]
   sessions        Session[]
   connections     Connection[]
   likes           Like[]
   comments        Comment[]
-  // bookmarks            Bookmark[]
-  // tags                 Tag[]
-  // reviews              Review[]
-  // programs             Program[]
-  // courses              Course[]
-  // modules              Module[]
-  // subModules           SubModule[]
-  // lessons              Lesson[]
-  // enrollments          Enrollment[]
-  // certificates         Certificate[]
-  // timeSpent            TimeSpent[]
-  // teams                Team[]
-  // teamMembers          TeamMember[]
-  // teamInvites          TeamInvite[]
   contentReports  ContentReport[]
   resolvedReports ContentReport[] @relation("ResolvedReports")
-
-  // // Audit log relations
-  // auditLogs       AuditLog[]
-  // auditLogExports AuditLogExport[]
-
-  // // Challenge relations
-  // challengeSubmissions ChallengeSubmission[]
-  // challengeBadges      UserChallengeBadge[]
-  // leaderboardEntries   LeaderboardEntry[]
-  // userChallenges       UserChallenge[]
-
-  // // Conversation relations
-  // conversations Conversation[]
 
   @@index([lastSeenAt])
   @@index([createdAt])
@@ -77,23 +46,4 @@ model Password {
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
-}
-
-model Image {
-  id      String  @id @default(ulid())
-  fileKey String
-  altText String?
-
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String? @unique
-
-  // team         Team?         @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  // teamSettings TeamSettings? @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  // teamId       String?       @unique
-
-  // badge   Badge?  @relation(fields: [badgeId], references: [id], onDelete: Cascade)
-  // badgeId String? @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

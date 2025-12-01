@@ -9,7 +9,7 @@ model Comment {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   parentId String?
-  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: SetNull)
   replies  Comment[] @relation("CommentReplies")
 
   likes   Like[]
@@ -41,7 +41,7 @@ model ArticleView {
   articleId String
   createdAt DateTime @default(now())
 
-  userId String?
+  // userId String?
   // user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([articleId])

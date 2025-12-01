@@ -11,6 +11,7 @@ export function CodeBlockComponent({
 	return (
 		<NodeViewWrapper className="code-block">
 			<select
+				className="mb-2 rounded-md border border-border bg-background px-2 py-1 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
 				contentEditable={false}
 				defaultValue={defaultLanguage}
 				onChange={(event) => updateAttributes({ language: event.target.value })}

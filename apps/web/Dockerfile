@@ -29,11 +29,14 @@ RUN npm ci --legacy-peer-deps
 COPY --from=builder /app/out/full/ .
 
 RUN npx turbo run build
- 
+RUN npx prisma migrate deploy
 
 # Runner
 FROM base AS runner
 WORKDIR /app
+
+RUN curl -sSfL https://get.tur.so/install.sh | bash
+
 
 # ARG RAILWAY_SERVICE_NAME
 # For Dev
@@ -47,7 +50,15 @@ USER appuser
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/public ./public
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/build ./build
+
+# Database
+COPY --from=installer --chown=appuser:nodejs /app/packages/database/prisma ./packages/database/prisma
+COPY --from=installer --chown=appuser:nodejs /app/packages/database/src/generated ./packages/database/src/generated
+
+# Node Modules
 COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
+
+RUN npx turso db shell tekbreed-production < ./packages/database/prisma/migrations/<timestamp>_<your-migration-name>/migration.sql
 
 ENV NODE_ENV=production
 ENV PORT=8080

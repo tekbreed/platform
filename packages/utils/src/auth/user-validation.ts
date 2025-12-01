@@ -1,5 +1,7 @@
 import { z } from "zod/v4"
 
+import { AccountType } from "@repo/database"
+
 export const USERNAME_MIN_LENGTH = 3
 export const USERNAME_MAX_LENGTH = 20
 
@@ -38,3 +40,9 @@ export const RememberMeSchema = z
 	.boolean()
 	.optional()
 	.transform((val) => (val ? "true" : undefined))
+
+export const AccountTypeSchema = z
+	.nativeEnum(AccountType, {
+		error: "Please select an account type",
+	})
+	.default(AccountType.INDIVIDUAL)
