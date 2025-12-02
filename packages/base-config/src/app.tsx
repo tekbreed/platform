@@ -4,7 +4,7 @@ import { type Theme, useTheme } from "remix-themes"
 import { HoneypotProvider } from "remix-utils/honeypot/react"
 
 import { Toaster } from "@repo/ui/components/sonner"
-import { Footer } from "@repo/ui/composed/footer"
+// import { Footer } from "@repo/ui/composed/footer"
 import { Header } from "@repo/ui/composed/header/index"
 
 import type { HoneypotInputProps } from "@repo/utils/honeypot.server"
@@ -12,7 +12,7 @@ import type { Toast } from "@repo/utils/toast.server"
 import { useToast } from "@repo/utils/hooks/use-toast"
 import { ChatProvider } from "@repo/utils/providers/chat"
 import { DiscordProvider } from "@repo/utils/providers/discord"
-import { MobileNavProvider } from "@repo/utils/providers/mobile-nav"
+// import { MobileNavProvider } from "@repo/utils/providers/mobile-nav"
 import { useNonce } from "@repo/utils/providers/nonce"
 
 import { Document } from "./document"
@@ -37,7 +37,7 @@ export function App({
 			<main className="h-full min-h-full">
 				<Outlet />
 			</main>
-			<Footer />
+			{/* <Footer /> */}
 			<Toaster position="top-right" richColors />
 		</Document>
 	)
@@ -58,7 +58,7 @@ export function AppWithProviders({
 	const nonce = useNonce()
 	return (
 		<HoneypotProvider {...honeypotInputProps}>
-			<MobileNavProvider>
+			{/* <MobileNavProvider> */}
 				<ChatProvider>
 					<DiscordProvider>
 						<ThemedApp theme={theme}>
@@ -66,7 +66,7 @@ export function AppWithProviders({
 						</ThemedApp>
 					</DiscordProvider>
 				</ChatProvider>
-			</MobileNavProvider>
+			{/* </MobileNavProvider> */}
 		</HoneypotProvider>
 	)
 }

@@ -36,7 +36,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 							<Img
 								alt="TekBreed"
 								className="mx-auto h-auto w-full max-w-[80px]"
-								src="https://di867tnz6fwga.cloudfront.net/brand-kits/4131df7d-337f-4182-99ad-1dc8664a83be/primary/c56c3e12-1f19-4f5c-ab3d-042d351d4a59.png"
+								src="https://mail.tekbreed.com/images/tekbreed-logo.png"
 							/>
 						</Section>
 
@@ -141,7 +141,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 												alt="GitHub"
 												className="rounded-[4px]"
 												height="32"
-												src="https://new.email/static/emails/social/social-github.png"
+												src="https://mail.tekbreed.com/images/socials/social-github.png"
 												width="32"
 											/>
 										</Link>
@@ -153,7 +153,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 												alt="LinkedIn"
 												className="rounded-[4px]"
 												height="32"
-												src="https://new.email/static/emails/social/social-linkedin.png"
+												src="https://mail.tekbreed.com/images/socials/social-linkedin.png"
 												width="32"
 											/>
 										</Link>
@@ -165,7 +165,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 												alt="X (Twitter)"
 												className="rounded-[4px]"
 												height="32"
-												src="https://new.email/static/emails/social/social-x.png"
+												src="https://mail.tekbreed.com/images/socials/social-x.png"
 												width="32"
 											/>
 										</Link>
@@ -177,7 +177,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 												alt="YouTube"
 												className="rounded-[4px]"
 												height="32"
-												src="https://new.email/static/emails/social/social-youtube.png"
+												src="https://mail.tekbreed.com/images/socials/social-youtube.png"
 												width="32"
 											/>
 										</Link>
@@ -189,7 +189,7 @@ export const WaitlistEmail = (props: { firstName?: string }) => {
 												alt="Discord"
 												className="rounded-[4px]"
 												height="32"
-												src="https://new.email/static/emails/social/social-discord.png"
+												src="https://mail.tekbreed.com/images/socials/social-discord.png"
 												width="32"
 											/>
 										</Link>
