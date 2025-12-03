@@ -13,10 +13,14 @@
 
 import { execSync } from 'node:child_process';
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
-import { join, resolve, basename } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { join, resolve, basename, dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const DEFAULT_ENVIRONMENT = 'development';
-const MIGRATIONS_DIR = resolve(process.cwd(), 'packages/database/prisma/migrations');
+const MIGRATIONS_DIR = resolve(__dirname, '../prisma/migrations');
 
 /**
  * Construct the database name based on the environment

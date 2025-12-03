@@ -44,6 +44,12 @@ ARG RAILWAY_SERVICE_NAME
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
+# Install Turso CLI
+RUN apk add --no-cache curl && \
+    curl -sL https://get.tur.so/install.sh | bash
+
+ENV PATH="/root/.turso:$PATH"
+
 # Copy application files
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/public ./public
