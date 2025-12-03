@@ -134,7 +134,6 @@
 // });
 
 
-#!/usr/bin/env node
 
 /**
  * Apply Prisma migrations to a Turso (libSQL) database
