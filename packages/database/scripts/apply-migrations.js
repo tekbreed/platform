@@ -25,7 +25,7 @@ const MIGRATIONS_DIR = resolve(process.cwd(), 'packages/database/prisma/migratio
  */
 function getDbName() {
   const environment = process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT;
-  return `${environment}-tekbreed`;
+  return environment;
 }
 
 const DB_NAME = getDbName();
