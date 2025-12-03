@@ -8,6 +8,7 @@
 		"start": "react-router-serve ./build/server/index.js",
 		"start:mocks": "cross-env MOCKS=true react-router-serve ./build/server/index.js",
 		"typecheck": "react-router typegen && tsc",
+		"migrate:turso": "node ../../packages/database/scripts/apply-migrations.js",
 		"test:e2e": "playwright test",
 		"test:e2e:run": "cross-env CI=true playwright test",
 		"test:e2e:ui": "playwright test --ui",

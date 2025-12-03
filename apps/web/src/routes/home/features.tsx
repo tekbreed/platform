@@ -1,9 +1,8 @@
 import React from "react"
 
-import { Await, Link } from "react-router"
+import { Await } from "react-router"
 
 import { Badge } from "@repo/ui/components/badge"
-import { Button } from "@repo/ui/components/button"
 import {
 	Card,
 	CardContent,
@@ -32,7 +31,7 @@ type IconName = keyof typeof iconMap
 
 export function Features({ content }: { content: Promise<HomePageContent> }) {
 	return (
-		<section className="mx-auto w-full pt-12 pb-24">
+		<section className="mx-auto w-full pt-12 pb-24" id="features">
 			<div className="container mx-auto w-full">
 				<div className="mx-auto max-w-3xl text-center">
 					<h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
@@ -80,13 +79,13 @@ export function Features({ content }: { content: Promise<HomePageContent> }) {
 						</Await>
 					</React.Suspense>
 
-					<div className="col-span-full flex justify-center">
+					{/* <div className="col-span-full flex justify-center">
 						<Button asChild>
 							<Link prefetch="intent" to={"/about"}>
 								Learn more <Icons.arrowRight className="ml-4" />
 							</Link>
 						</Button>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</section>

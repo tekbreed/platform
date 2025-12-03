@@ -15,7 +15,7 @@
 			"react",
 			"vite/client",
 			"vitest/importMeta",
-			"@vitest/browser/providers/playwright",
+			"@vitest/browser-playwright",
 			"@prisma/client"
 		],
 		"target": "ES2022",

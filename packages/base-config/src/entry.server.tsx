@@ -11,6 +11,7 @@ import { contentSecurity } from "@nichtsam/helmet/content"
 import { createReadableStreamFromReadable } from "@react-router/node"
 import { isbot } from "isbot"
 
+import { getEnv, init } from "@repo/utils/env.server"
 import { avatarBaseUrl } from "@repo/utils/misc"
 import { NonceProvider } from "@repo/utils/providers/nonce"
 import {
@@ -21,6 +22,9 @@ import {
 
 export const streamTimeout = 5_000
 const sanityCdnBaseUrl = "*.sanity.io"
+
+init()
+global.env = getEnv()
 
 type DocRequestArgs = Parameters<HandleDocumentRequestFunction>
 

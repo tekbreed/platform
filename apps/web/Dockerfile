@@ -10,9 +10,9 @@ WORKDIR /app
 RUN npm install -g turbo@2.6.1
 COPY . .
 
-# ARG RAILWAY_SERVICE_NAME
-# For Dev
-ENV RAILWAY_SERVICE_NAME="web"
+ARG RAILWAY_SERVICE_NAME
+# Uncomment this line if you want to build a docker image on your local machine 
+# ENV RAILWAY_SERVICE_NAME="web"
  
 RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
@@ -29,39 +29,34 @@ RUN npm ci --legacy-peer-deps
 COPY --from=builder /app/out/full/ .
 
 RUN npx turbo run build
-RUN npx prisma migrate deploy
 
 # Runner
 FROM base AS runner
 WORKDIR /app
 
-RUN curl -sSfL https://get.tur.so/install.sh | bash
+ARG RAILWAY_SERVICE_NAME
 
-
-# ARG RAILWAY_SERVICE_NAME
-# For Dev
-ENV RAILWAY_SERVICE_NAME="web"
+# Uncomment this line if you want to build a docker image on your local machine 
+# ENV RAILWAY_SERVICE_NAME="web"
 
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
-USER appuser
-
+# Copy application files
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/public ./public
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/build ./build
 
-# Database
-COPY --from=installer --chown=appuser:nodejs /app/packages/database/prisma ./packages/database/prisma
-COPY --from=installer --chown=appuser:nodejs /app/packages/database/src/generated ./packages/database/src/generated
+# Copy database files (prisma, scripts, and generated code)
+COPY --from=installer --chown=appuser:nodejs /app/packages/database ./packages/database
 
-# Node Modules
+# Copy node_modules
 COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
 
-RUN npx turso db shell tekbreed-production < ./packages/database/prisma/migrations/<timestamp>_<your-migration-name>/migration.sql
+USER appuser
 
 ENV NODE_ENV=production
 ENV PORT=8080
 
-CMD ["npm", "run", "start"]
-
+# Run migrations and then start the application
+CMD ["sh", "-c", "node packages/database/scripts/apply-migrations.js && npm run start"]

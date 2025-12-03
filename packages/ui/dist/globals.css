@@ -4665,7 +4665,7 @@
       border-bottom-width: 1px;
     }
   }
-  .supports-\[backdrop-filter\]\:bg-background\/60 {
+  .supports-backdrop-filter\:bg-background\/60 {
     @supports (backdrop-filter: var(--tw)) {
       background-color: var(--background);
       @supports (color: color-mix(in lab, red, red)) {

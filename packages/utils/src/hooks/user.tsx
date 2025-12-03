@@ -45,11 +45,12 @@ function isUser(user: unknown): user is AuthenticatedUser {
  * }
  * ```
  */
-export function useOptionalUser() {
-	const data = useRouteLoaderData("root") as { user: AuthenticatedUser }
-	if (!data || !isUser(data.user)) {
+export function useOptionalUser(): AuthenticatedUser {
+	const data = useRouteLoaderData<{ user: AuthenticatedUser | null }>("root")
+	if (!isUser(data?.user)) {
 		return null
 	}
+
 	return data.user
 }
 
@@ -76,7 +77,7 @@ export function useOptionalUser() {
  * }
  * ```
  */
-export function useUser() {
+export function useUser(): NonNullable<AuthenticatedUser> {
 	const maybeUser = useOptionalUser()
 	if (!maybeUser) {
 		throw new Error(

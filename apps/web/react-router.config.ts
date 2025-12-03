@@ -4,6 +4,6 @@ export default {
 	ssr: true,
 	appDirectory: "src",
 	future:{
-		v8_middleware:true
+		v8_middleware:true,
 	}
 } satisfies Config

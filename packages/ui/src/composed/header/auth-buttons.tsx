@@ -1,7 +1,8 @@
 import { getModuleUrl } from "@repo/utils/constants/client"
 import { useOptionalUser } from "@repo/utils/hooks/user"
 import { getImgSrc } from "@repo/utils/misc"
-import { useMobileNav } from "@repo/utils/providers/mobile-nav"
+
+// import { useMobileNav } from "@repo/utils/providers/mobile-nav"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar"
 import { Button } from "@/components/button"
@@ -19,9 +20,9 @@ import { SignoutButton } from "../signout-button"
 
 export function AuthButtons() {
 	const user = useOptionalUser()
-	const { openMobileNav } = useMobileNav()
+	// const { openMobileNav } = useMobileNav()
 
-	// const image = user?.image;
+	const _image = user?.image
 	// const userIsAdmin = userHasRole(user, "ADMIN");
 
 	// const image = null;
@@ -30,11 +31,11 @@ export function AuthButtons() {
 	return (
 		<div className="flex items-center gap-4">
 			<ThemeToggle />
-			{!user ? (
+			{/* {!user ? (
 				<Button asChild className="hidden lg:flex">
 					<SmartLink to={getModuleUrl("web", `auth/signin`)}>Sign In</SmartLink>
 				</Button>
-			) : null}
+			) : null} */}
 			{userIsAdmin ? (
 				<Button asChild size={"icon"} variant={"outline"}>
 					<SmartLink to={getModuleUrl("admin")}>
@@ -74,14 +75,14 @@ export function AuthButtons() {
 				</DropdownMenu>
 			) : null}
 
-			<Button
+			{/* <Button
 				className="block lg:hidden"
 				onClick={openMobileNav}
 				size={"icon"}
 				variant={"ghost"}
 			>
 				<Icons.menu className="size-10" />
-			</Button>
+			</Button> */}
 		</div>
 	)
 }

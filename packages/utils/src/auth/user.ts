@@ -1,14 +1,11 @@
-import type { Action, Entity, RoleName } from "@repo/database"
+import type { Action, Entity, Image, RoleName } from "@repo/database"
 
 export type AuthenticatedUser = {
 	name: string
 	id: string
 	email: string
 	isSubscribedToNewsletter: boolean
-	image: {
-		fileKey: string
-		altText: string | null
-	} | null
+	image: Image | null
 	roles: {
 		name: RoleName
 		permissions: {

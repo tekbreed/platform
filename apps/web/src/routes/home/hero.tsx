@@ -8,8 +8,6 @@ import { BackgroundCanvas } from "@repo/ui/composed/background-canvas"
 import { Icons } from "@repo/ui/composed/icons"
 import { SmartLink } from "@repo/ui/composed/smart-link"
 
-import { getModuleUrl } from "@repo/utils/constants/client"
-
 import type { HomePageContent } from "../../utils/content/types"
 
 export function Hero({ content }: { content: Promise<HomePageContent> }) {
@@ -49,6 +47,24 @@ export function Hero({ content }: { content: Promise<HomePageContent> }) {
 						<div className="flex flex-col gap-4 sm:flex-row">
 							<Button asChild size="lg">
 								<SmartLink
+									className="flex items-center capitalize"
+									to="#waitlist"
+								>
+									join waitlist
+									<Icons.listOrdered className="ml-2 h-4 w-4" />
+								</SmartLink>
+							</Button>
+							<Button asChild size="lg" variant="outline">
+								<SmartLink
+									className="flex items-center capitalize"
+									to="#features"
+								>
+									learn more
+									<Icons.arrowRight className="ml-2 h-4 w-4" />
+								</SmartLink>
+							</Button>
+							{/* <Button asChild size="lg">
+								<SmartLink
 									className="capitalize"
 									to={getModuleUrl("lms", "courses")}
 								>
@@ -61,11 +77,11 @@ export function Hero({ content }: { content: Promise<HomePageContent> }) {
 									learn more
 									<Icons.arrowRight className="ml-2 h-4 w-4" />
 								</SmartLink>
-							</Button>
+							</Button> */}
 						</div>
 
 						{/* Secondary CTAs - Balanced 3-column */}
-						<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+						{/* <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 							<Button asChild size="lg" variant="secondary">
 								<SmartLink className="capitalize" to="/tutorials">
 									<Icons.code className="mr-2 h-4 w-4" />
@@ -87,7 +103,7 @@ export function Hero({ content }: { content: Promise<HomePageContent> }) {
 									challenges
 								</SmartLink>
 							</Button>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>
