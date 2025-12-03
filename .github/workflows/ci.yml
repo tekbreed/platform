@@ -183,19 +183,19 @@ jobs:
   #         path: playwright-report/
   #         retention-days: 30
 
-  ci-success:
-    name: CI Success
-    runs-on: ubuntu-latest
-    needs: [quality, unit-tests, e2e-tests]
-    if: always()
-    steps:
-      - name: Check all jobs status
-        run: |
-          if [[ "${{ needs.quality.result }}" != "success" ]] || \
-             [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
-             [[ "${{ needs.e2e-tests.result }}" != "success" ]]; then
-            echo "One or more jobs failed"
-            exit 1
-          fi
-          echo "All CI jobs passed successfully!"
+  # ci-success:
+  #   name: CI Success
+  #   runs-on: ubuntu-latest
+  #   needs: [quality, unit-tests, e2e-tests]
+  #   if: always()
+  #   steps:
+  #     - name: Check all jobs status
+  #       run: |
+  #         if [[ "${{ needs.quality.result }}" != "success" ]] || \
+  #            [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
+  #            [[ "${{ needs.e2e-tests.result }}" != "success" ]]; then
+  #           echo "One or more jobs failed"
+  #           exit 1
+  #         fi
+  #         echo "All CI jobs passed successfully!"
 
