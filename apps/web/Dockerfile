@@ -110,10 +110,11 @@ RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 appuser
 
 # Install Turso CLI globally
-RUN apt-get update -y && apt-get install -y curl bash && \
+RUN apt-get update -y && apt-get install -y --no-install-recommends curl bash xz-utils && \
     curl -sSfL https://get.tur.so/install.sh | bash && \
     mv /root/.turso/turso /usr/local/bin/turso && \
-    chmod +x /usr/local/bin/turso
+    chmod +x /usr/local/bin/turso && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copy application files
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
