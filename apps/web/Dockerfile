@@ -28,6 +28,8 @@ RUN npm ci --legacy-peer-deps
  
 COPY --from=builder /app/out/full/ .
 
+ENV DATABASE_URL="file:./dev.db"
+
 RUN npx turbo run build
 
 # Runner
