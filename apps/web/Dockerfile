@@ -46,7 +46,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 
 # Install Turso CLI
 RUN apk add --no-cache curl && \
-    curl -sL https://get.tur.so/install.sh | bash
+    curl -sSfL https://get.tur.so/install.sh | bash
 
 ENV PATH="/root/.turso:$PATH"
 
