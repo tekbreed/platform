@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const DEFAULT_ENVIRONMENT = 'development';
-const MIGRATIONS_DIR = resolve(__dirname, '../prisma/migrations');
+const MIGRATIONS_DIR = "./packages/database/prisma/migrations"
 
 /**
  * Construct the database name based on the environment
