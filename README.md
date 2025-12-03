@@ -228,4 +228,4 @@ We welcome contributions! Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) f
 
 ## 💬 Support
 
-[Add support information - Discord, email, issues, etc.]
+[Discord Server](https://discord.gg/tekbreed)
