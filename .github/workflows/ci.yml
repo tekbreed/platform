@@ -133,7 +133,7 @@ jobs:
       ALLOW_INDEXING: "false"
       DISCORD_BOT_TOKEN: "mock-discord-token"
       DISCORD_GUILD_ID: "mock-discord-guild-id"
-      POSTHOG_API_KEY: "mock-posthog-key"
+      POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5

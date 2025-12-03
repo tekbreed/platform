@@ -3,7 +3,6 @@ import { z } from "zod/v4"
 export const schema = z.object({
 	NODE_ENV: z.enum(["development", "test", "production"] as const),
 	SESSION_SECRET: z.string(),
-	ADMIN_PASSWORD: z.string(),
 	POLAR_ACCESS_TOKEN: z.string(),
 	POLAR_WEBHOOK_SECRET: z.string(),
 	POLAR_ORGANIZATION_ID: z.string(),
