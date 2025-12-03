@@ -1,4 +1,3 @@
-// #!/usr/bin/env node
 
 // /**
 //  * Apply Prisma migrations to Turso database
