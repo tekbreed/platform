@@ -15,7 +15,6 @@
 		"test:e2e:report": "playwright show-report"
 	},
 	"dependencies": {
-		"@portabletext/react": "^5.0.0",
 		"@react-router/node": "^7.9.4",
 		"@react-router/serve": "^7.9.4",
 		"@repo/base-config": "*",
