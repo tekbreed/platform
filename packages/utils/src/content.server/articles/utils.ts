@@ -1,6 +1,6 @@
 import type { QueryParams } from "@sanity/client"
 
-import { bundleMDX } from "@/mdx.server"
+import { bundleMarkdown } from "@/mdx.server"
 import { bundleComponents, MarkdownConverter } from "@/misc.server"
 import { client } from "../loader"
 import type { Args, Tag } from "../shared-types"
@@ -123,7 +123,7 @@ export async function getArticleDetails(slug: string) {
 
 	const refinedComponents = bundleComponents(article.reactComponents)
 
-	const { code } = await bundleMDX({
+	const { code } = await bundleMarkdown({
 		source: article.content,
 		files: refinedComponents,
 	})

@@ -1,4 +1,4 @@
-import { bundleMDX } from "@/mdx.server"
+import { bundleMarkdown } from "@/mdx.server"
 import { client } from "../loader"
 import {
 	faqQuery,
@@ -29,7 +29,7 @@ export async function getRoadmaps() {
 	return Promise.all(
 		(roadmap || []).map(async (roadmap) => ({
 			...roadmap,
-			content: (await bundleMDX({ source: roadmap.content })).code,
+			content: (await bundleMarkdown({ source: roadmap.content })).code,
 		})),
 	)
 }
@@ -52,7 +52,7 @@ export async function getJourneys() {
 	return Promise.all(
 		journey.map(async (journey) => ({
 			...journey,
-			content: (await bundleMDX({ source: journey.content })).code,
+			content: (await bundleMarkdown({ source: journey.content })).code,
 		})),
 	)
 }
@@ -93,7 +93,7 @@ export async function getTeamMembers() {
 	return Promise.all(
 		teamMember.map(async (teamMember) => ({
 			...teamMember,
-			bio: (await bundleMDX({ source: teamMember.bio })).code,
+			bio: (await bundleMarkdown({ source: teamMember.bio })).code,
 		})),
 	)
 }
@@ -116,7 +116,7 @@ export async function getTeamMembers() {
  */
 export async function getPage(slug: string) {
 	const page = await client.fetch<Page>(pageQuery, { slug })
-	const content = await bundleMDX({ source: page.content })
+	const content = await bundleMarkdown({ source: page.content })
 	return {
 		...page,
 		content: content.code,

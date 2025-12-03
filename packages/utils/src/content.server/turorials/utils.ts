@@ -1,6 +1,6 @@
 import type { QueryParams } from "@sanity/client"
-import { bundleMDX } from "mdx-bundler"
 
+import { bundleMarkdown } from "@/mdx.server"
 import { bundleComponents } from "@/misc.server"
 import { client } from "../loader"
 import type { Args } from "../shared-types"
@@ -91,7 +91,7 @@ export async function getTutorialDetails(tutorialId: string) {
 		tutorialId,
 	})
 	if (tutorial.overview) {
-		const { code } = await bundleMDX({ source: tutorial.overview })
+		const { code } = await bundleMarkdown({ source: tutorial.overview })
 		return {
 			...tutorial,
 			overview: code,
@@ -152,7 +152,7 @@ export async function getTutorialLessonDetails(lessonId: string) {
 	const lesson = await client.fetch<Lesson>(lessonDetailsQuery, { lessonId })
 	const refinedComponents = bundleComponents(lesson.reactComponents)
 
-	const { code } = await bundleMDX({
+	const { code } = await bundleMarkdown({
 		source: lesson.content,
 		files: refinedComponents,
 	})
