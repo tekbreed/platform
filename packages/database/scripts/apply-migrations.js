@@ -24,6 +24,7 @@ const MIGRATIONS_DIR = join(__dirname, "../prisma/migrations");
 
 const { TURSO_AUTH_TOKEN, RAILWAY_ENVIRONMENT_NAME, TURSO_DATABASE_URL } = process.env;
 
+
 if (!TURSO_AUTH_TOKEN) {
   console.error("❌ TURSO_AUTH_TOKEN is missing. Set it in Railway or CI secrets.");
   process.exit(1);
@@ -55,7 +56,11 @@ function getMigrationDirs() {
 }
 
 /**
- * Apply one migration using batch API
+ * Apply migrations per file
+ * Execute all statements at once using executeMultiple
+ * Note: This will stop at the first error and won't allow skipping individual "already exists" errors
+ * unless the SQL itself handles it (e.g. IF NOT EXISTS).
+ * Or it is handled in the code
  */
 async function applyMigration(migrationDir) {
   const migrationFile = join(migrationDir, "migration.sql");
@@ -70,23 +75,15 @@ async function applyMigration(migrationDir) {
 
   const sql = readFileSync(migrationFile, "utf8");
 
-  // Split statements by semicolon and remove empty strings
-  const statements = sql
-    .split(";")
-    .map((s) => s.trim())
-    .filter(Boolean);
-
-  if (statements.length === 0) {
-    console.log(`⚠️  Migration ${migrationName} contains no statements`);
-    return false;
-  }
-
   try {
-    // Execute all statements in a single batch
-    await client.batch(statements.map((stmt) => ({ sql: stmt })));
+    await client.executeMultiple(sql);
     console.log(`✅ Successfully applied: ${migrationName}`);
     return true;
   } catch (err) {
+    if (err.message && err.message.includes("already exists")) {
+      console.warn(`⚠️  Migration ${migrationName} already exists`);
+      return true
+    }
     console.error(`❌ Failed: ${migrationName}`, err);
     throw err;
   }
@@ -96,7 +93,7 @@ async function applyMigration(migrationDir) {
  * Main entrypoint
  */
 async function main() {
-  const environment = RAILWAY_ENVIRONMENT_NAME ?? "development";
+  const environment = RAILWAY_ENVIRONMENT_NAME;
 
   console.log("🚀 Starting migrations using libSQL batch API...");
   console.log(`Environment: ${environment}`);
