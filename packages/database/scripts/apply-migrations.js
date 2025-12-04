@@ -1,14 +1,13 @@
 /**
- * Apply Prisma migrations to a Turso (libSQL) database
- *
- * This script:
- *  - Reads migration.sql files from Prisma's migration folder
- *  - Sends them to Turso using "turso db shell"
- *  - Relies on TURSO_AUTH_TOKEN environment variable for authentication
+ * Apply Prisma migrations to a Turso (libSQL) database,
+ * then start the main application.
  *
  * Environment Variables:
- * - RAILWAY_ENVIRONMENT_NAME: environment name (development, production, etc.)
- * - TURSO_AUTH_TOKEN: Turso authentication token (required - automatically used by CLI)
+ * - RAILWAY_ENVIRONMENT_NAME
+ * - TURSO_AUTH_TOKEN
+ * - TURSO_DATABASE_URL
+ * - NODE_ENV
+ * - PORT
  */
 
 import { spawnSync } from 'node:child_process';
@@ -16,31 +15,38 @@ import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { join, dirname, basename } from 'node:path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 const DEFAULT_ENVIRONMENT = 'development';
 const MIGRATIONS_DIR = "./packages/database/prisma/migrations";
 
 /**
- * Get database name = environment
+ * Load & validate environment variables
+ */
+function loadEnv() {
+  const required = ["TURSO_AUTH_TOKEN", "TURSO_DATABASE_URL"];
+  for (const key of required) {
+    if (!process.env[key]) {
+      console.error(`❌ Missing required environment variable: ${key}`);
+      process.exit(1);
+    }
+  }
+
+  console.log("🔧 Loaded environment variables:");
+  console.log(" - RAILWAY_ENVIRONMENT_NAME:", process.env.RAILWAY_ENVIRONMENT_NAME);
+  console.log(" - NODE_ENV:", process.env.NODE_ENV);
+  console.log(" - PORT:", process.env.PORT);
+  console.log(" - TURSO_DATABASE_URL:", process.env.TURSO_DATABASE_URL ? "[SET]" : "[NOT SET]");
+}
+
+/**
+ * Get database name
  */
 function getDbName() {
   return process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT;
 }
-
 const DB_NAME = getDbName();
 
-// Validate required environment variables
-if (!process.env.TURSO_AUTH_TOKEN) {
-  console.error("❌ TURSO_AUTH_TOKEN is missing. Set it in Railway or locally.");
-  console.error("💡 The Turso CLI automatically uses this token - no login command needed.");
-  process.exit(1);
-}
-
 /**
- * Execute turso command piping SQL via STDIN
- * The TURSO_AUTH_TOKEN env var is automatically picked up by the CLI
+ * Execute turso shell with SQL
  */
 function tursoShell(sql) {
   const proc = spawnSync(
@@ -50,7 +56,7 @@ function tursoShell(sql) {
       input: sql,
       encoding: "utf8",
       stdio: ["pipe", "inherit", "inherit"],
-      env: process.env, // TURSO_AUTH_TOKEN is automatically used
+      env: process.env,
     }
   );
 
@@ -81,14 +87,13 @@ function applyMigration(migrationDir) {
   const migrationFile = join(migrationDir, "migration.sql");
 
   if (!existsSync(migrationFile)) {
-    console.warn(`⚠️  No migration.sql found in ${migrationDir}`);
+    console.warn(`⚠️ No migration.sql found in ${migrationDir}`);
     return false;
   }
 
   const migrationName = basename(migrationDir);
 
   console.log(`📦 Applying migration: ${migrationName}`);
-
   const sql = readFileSync(migrationFile, "utf8");
 
   try {
@@ -102,22 +107,38 @@ function applyMigration(migrationDir) {
 }
 
 /**
+ * Start the main application
+ */
+function startApplication() {
+  console.log("\n🚀 Starting application (npm run start)...\n");
+
+  const proc = spawnSync("npm", ["run", "start"], {
+    stdio: "inherit",
+    env: process.env,
+  });
+
+  if (proc.status !== 0) {
+    console.error("\n❌ Application failed to start.");
+    process.exit(proc.status);
+  }
+}
+
+/**
  * Main entry
  */
 async function main() {
-  const environment = process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT;
+  loadEnv();
 
-  console.log("🚀 Starting Turso migration process...");
-  console.log("🔑 Using TURSO_AUTH_TOKEN from environment (auto-detected by CLI)\n");
-  console.log(`Environment: ${environment}`);
+  console.log("\n🚀 Starting Turso migration process...");
+  console.log(`Environment: ${process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT}`);
   console.log(`Database: ${DB_NAME}`);
   console.log(`Migrations directory: ${MIGRATIONS_DIR}\n`);
 
   const migrationDirs = getMigrationDirs();
 
   if (migrationDirs.length === 0) {
-    console.log("✨ No migrations to apply");
-    return;
+    console.log("✨ No migrations to apply\n");
+    return startApplication();
   }
 
   console.log(`Found ${migrationDirs.length} migration(s)\n`);
@@ -127,7 +148,10 @@ async function main() {
     if (applyMigration(dir)) appliedCount++;
   }
 
-  console.log(`\n✨ Done! Applied ${appliedCount}/${migrationDirs.length} migration(s)`);
+  console.log(`\n✨ Done! Applied ${appliedCount}/${migrationDirs.length} migration(s)\n`);
+
+  // ⏩ Start application after successful migrations
+  startApplication();
 }
 
 main().catch(err => {
