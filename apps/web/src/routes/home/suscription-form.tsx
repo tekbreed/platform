@@ -33,7 +33,7 @@ export function SubscriptionForm() {
 	return (
 		<section className={cn("relative overflow-hidden py-24")} id="waitlist">
 			<div className="container relative z-10 mx-auto px-4">
-				<div className="mx-auto max-w-3xl rounded-lg border bg-card p-8 text-center shadow-sm">
+				<div className="mx-auto max-w-3xl rounded-lg border bg-card/70 p-8 text-center shadow-sm">
 					{!isSubscribed ? (
 						<>
 							<div className="mb-6 inline-flex items-center gap-2 rounded-full border bg-background/50 px-4 py-2 backdrop-blur-sm">
