@@ -1,4 +1,6 @@
 .react-router
 build
+.env
+.dockerignore
 node_modules
 README.md

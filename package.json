@@ -1,27 +1,55 @@
 {
-  "name": "platform",
-  "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint --fix",
-    "format": "prettier --write \"**/*.{ts,tsx,md,mdx}\"",
-    "typecheck": "turbo run typecheck"
-  },
-  "devDependencies": {
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.8",
-    "typescript": "5.9.2",
-    "@types/react": "19.1.13",
-    "@types/react-dom": "19.1.9"
-  },
-  "engines": {
-    "node": ">=22"
-  },
-  "packageManager": "npm@11.5.1",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+	"name": "platform",
+	"private": true,
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"test": "vitest",
+		"test:run": "cross-env CI=true vitest run --coverage",
+		"test:e2e": "turbo run test:e2e",
+		"test:e2e:run": "turbo run test:e2e:run",
+		"test:e2e:ui": "turbo run test:e2e:ui",
+		"test:e2e:report": "turbo run test:e2e:report",
+		"test:e2e:install": "playwright install --with-deps chromium",
+		"format-and-lint": "biome check .",
+		"format-and-lint:fix": "biome check . --write",
+		"typecheck": "turbo run typecheck",
+		"prepare": "husky"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.4",
+		"@faker-js/faker": "^10.1.0",
+		"@playwright/test": "^1.56.0",
+		"@types/fs-extra": "^11.0.4",
+		"@types/node": "^22",
+		"@types/react": "^19.1.13",
+		"@types/react-dom": "^19.1.9",
+		"@types/turndown": "^5.0.5",
+		"@vitejs/plugin-react": "^5.0.4",
+		"@vitest/browser": "^3.2.4",
+		"@vitest/browser-playwright": "^4.0.8",
+		"@vitest/coverage-v8": "^4.0.8",
+		"close-with-grace": "^2.3.0",
+		"cross-env": "^10.1.0",
+		"dotenv": "^16.0.3",
+		"husky": "^9.1.7",
+		"msw": "^2.11.5",
+		"playwright": "^1.56.0",
+		"tsdown": "^0.15.12",
+		"tsx": "^4.20.6",
+		"turbo": "^2.6.1",
+		"typescript": "5.9.2",
+		"vite": "^7.1.7",
+		"vitest": "^4.0.8",
+		"vitest-browser-react": "^1.0.1",
+		"zod": "^4.1.11"
+	},
+	"engines": {
+		"node": ">=22"
+	},
+	"packageManager": "npm@11.5.1",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	]
 }

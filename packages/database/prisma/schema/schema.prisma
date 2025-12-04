@@ -1,0 +1,49 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../../src/generated/prisma"
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id                       String  @id @default(ulid())
+  email                    String  @unique
+  name                     String
+  isSubscribedToNewsletter Boolean @default(false)
+
+  accountType AccountType @default(INDIVIDUAL)
+
+  lastSeenAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  image           Image?
+  password        Password?
+  roles           Role[]
+  sessions        Session[]
+  connections     Connection[]
+  likes           Like[]
+  comments        Comment[]
+  contentReports  ContentReport[]
+  resolvedReports ContentReport[] @relation("ResolvedReports")
+
+  @@index([lastSeenAt])
+  @@index([createdAt])
+}
+
+enum AccountType {
+  INDIVIDUAL
+  COMPANY
+}
+
+model Password {
+  hash String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+}

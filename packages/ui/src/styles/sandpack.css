@@ -1,0 +1,262 @@
+
+/* Base wrapper with smooth transitions */
+.sandpack-wrapper {
+	border-radius: 0.75rem;
+	overflow: hidden;
+	margin: 0.5rem 0;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth size transitions for all main components */
+.sandpack-preview,
+.sandpack-console,
+.sandpack-editor {
+	width: 100% !important;
+	height: 100% !important;
+	overflow: auto;
+	transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+	            opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Prevent flicker on view changes */
+.sandpack-preview {
+	will-change: height;
+	backface-visibility: hidden;
+	transform: translateZ(0);
+}
+
+.sandpack-console {
+	will-change: height, opacity;
+	backface-visibility: hidden;
+	transform: translateZ(0);
+}
+
+
+
+/* Smooth scrollbar styling */
+.sandpack-preview::-webkit-scrollbar,
+.sandpack-console::-webkit-scrollbar,
+.sandpack-editor::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.sandpack-preview::-webkit-scrollbar-track,
+.sandpack-console::-webkit-scrollbar-track,
+.sandpack-editor::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.sandpack-preview::-webkit-scrollbar-thumb,
+.sandpack-console::-webkit-scrollbar-thumb,
+.sandpack-editor::-webkit-scrollbar-thumb {
+	background: rgba(100, 116, 139, 0.3);
+	border-radius: 4px;
+	transition: background 0.2s ease;
+}
+
+.sandpack-preview::-webkit-scrollbar-thumb:hover,
+.sandpack-console::-webkit-scrollbar-thumb:hover,
+.sandpack-editor::-webkit-scrollbar-thumb:hover {
+	background: rgba(100, 116, 139, 0.5);
+}
+
+/* Dark mode scrollbar */
+.dark .sandpack-preview::-webkit-scrollbar-thumb,
+.dark .sandpack-console::-webkit-scrollbar-thumb,
+.dark .sandpack-editor::-webkit-scrollbar-thumb {
+	background: rgba(148, 163, 184, 0.3);
+}
+
+.dark .sandpack-preview::-webkit-scrollbar-thumb:hover,
+.dark .sandpack-console::-webkit-scrollbar-thumb:hover,
+.dark .sandpack-editor::-webkit-scrollbar-thumb:hover {
+	background: rgba(148, 163, 184, 0.5);
+}
+
+
+
+/* Smooth iframe loading */
+.sandpack-preview iframe {
+	transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Editor smooth focus transitions */
+.sandpack-editor .cm-editor {
+	transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Console smooth appearance */
+.sandpack-console {
+	animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideIn {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Fullscreen overrides with smooth transitions */
+:fullscreen .sandpack-wrapper,
+::-webkit-full-screen .sandpack-wrapper,
+::-moz-full-screen .sandpack-wrapper {
+	border-radius: 0;
+	margin: 0;
+	transition: border-radius 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:fullscreen .sandpack-preview,
+:fullscreen .sandpack-editor,
+:fullscreen .sandpack-console,
+:fullscreen .sandpack-file-explorer,
+::-webkit-full-screen .sandpack-preview,
+::-webkit-full-screen .sandpack-editor,
+::-webkit-full-screen .sandpack-console,
+::-webkit-full-screen .sandpack-file-explorer,
+::-moz-full-screen .sandpack-preview,
+::-moz-full-screen .sandpack-editor,
+::-moz-full-screen .sandpack-console,
+::-moz-full-screen .sandpack-file-explorer {
+	max-height: none !important;
+}
+
+/* Prevent layout shift during transitions */
+.sandpack-wrapper * {
+	box-sizing: border-box;
+}
+
+/* Smooth opacity transitions for switching views */
+.sandpack-editor.transitioning,
+.sandpack-preview.transitioning {
+	opacity: 0;
+	transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hardware acceleration for better performance */
+.sandpack-preview,
+.sandpack-console,
+.sandpack-editor {
+	transform: translateZ(0);
+	backface-visibility: hidden;
+	perspective: 1000px;
+}
+
+/* Loading state animation */
+.sandpack-preview[data-loading="true"] {
+	position: relative;
+}
+
+.sandpack-preview[data-loading="true"]::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		rgba(59, 130, 246, 0.5),
+		transparent
+	);
+	animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+	.sandpack-wrapper,
+	.sandpack-preview,
+	.sandpack-console,
+	.sandpack-editor,
+	.sandpack-preview iframe,
+	.sandpack-editor .cm-editor {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+/* Focus visible improvements */
+.sandpack-wrapper *:focus-visible {
+	outline: 2px solid rgba(59, 130, 246, 0.6);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Split view divider enhancement */
+.sandpack-wrapper [data-divider="true"] {
+	position: relative;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sandpack-wrapper [data-divider="true"]:hover {
+	box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+/* Tabs enhancement */
+.sandpack-wrapper [role="tablist"] {
+	backdrop-filter: blur(10px);
+}
+
+/* Error state styling */
+.sandpack-console [data-error="true"] {
+	animation: shake 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes shake {
+	0%, 100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-5px);
+	}
+	75% {
+		transform: translateX(5px);
+	}
+}
+
+.markdown-content code,
+.markdown-content span,
+.sandpack-wrapper .cm-editor,
+.sandpack-wrapper .cm-scroller,
+.sandpack-wrapper .cm-content,
+.sandpack-wrapper .sp-code-editor {
+	font-family: "JetBrains Mono", "Cascadia Code", monospace !important;
+	font-variant-ligatures: common-ligatures !important;
+	font-style: normal !important;
+	font-optical-sizing: auto !important;
+	font-weight: 400 !important;
+}
+
+/* Remove focus outline for editor */
+.sandpack-wrapper .cm-editor:focus-visible,
+.sandpack-wrapper .sp-code-editor:focus-visible,
+.sandpack-wrapper .cm-content:focus-visible {
+	outline: none !important;
+}
+
+	/* Increase line number font size */
+.sandpack-wrapper .cm-gutterElement {
+	font-size: 14px !important;
+	line-height: 22px !important; /* Adjust line height to align with code */
+}
+
+.markdown-content code,
+.markdown-content span {
+	font-size: 13px !important;
+	line-height: 22px !important;
+}

@@ -1,0 +1,19 @@
+import { Form } from "react-router"
+
+import { LogOut } from "lucide-react"
+
+export function SignoutButton({ onClick }: { onClick?: () => void }) {
+	return (
+		<Form
+			action="/auth/signout"
+			className="px-2 font-bold text-red-600 dark:text-red-500"
+			method="post"
+			onSubmit={onClick}
+		>
+			<button className="flex items-center" type="submit">
+				<LogOut className="mr-2 size-4 font-bold text-red-600 dark:text-red-500" />
+				Sign Out
+			</button>
+		</Form>
+	)
+}

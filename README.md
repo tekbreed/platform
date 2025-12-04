@@ -1,135 +1,231 @@
-# Turborepo starter
+# TekBreed Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+A modern monorepo platform built with cutting-edge web technologies, featuring multiple applications and shared packages for scalable development.
 
-## Using this example
+## 🏗️ Project Structure
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+This is a monorepo managed with [Turborepo](https://turbo.build/repo) and npm workspaces.
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+platform/
+├── apps/
+│   ├── web/          # Main web application (React Router v7)
+│   ├── cms/          # Content management system (Sanity Studio)
+│   ├── waitlist/     # Waitlist application
+│   └── ...           # Other applications
+├── packages/
+│   ├── database/     # Shared database layer (Prisma + Turso)
+│   ├── ui/           # Shared UI components (React + Tailwind CSS)
+│   ├── utils/        # Shared utilities and helpers
+│   ├── base-config/  # Shared configuration
+│   ├── tests-config/ # Shared testing configuration
+│   └── typescript-config/ # Shared TypeScript configuration
+└── docs/             # Documentation
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## 🚀 Quick Start
 
+### Prerequisites
+
+- **Node.js**: >= 22.0.0
+- **npm**: 11.5.1 (specified in `packageManager`)
+- **Git**: Latest version
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd platform
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   
+   Copy the example environment file for the web app:
+   ```bash
+   cp apps/web/.env.example apps/web/.env
+   ```
+   
+   Update the `.env` file with your actual values. See [Environment Variables](#environment-variables) for details.
+
+4. **Generate database client**
+   ```bash
+   npm run db:generate
+   ```
+
+5. **Start development servers**
+   
+   **Run all commands from the monorepo root using Turborepo.**
+   
+   Start all apps:
+   ```bash
+   npm run dev
+   ```
+   
+   Or start a specific app:
+   ```bash
+   turbo <app-name>#dev
+   # Examples:
+   turbo web#dev
+   turbo cms#dev
+   ```
+   
+   > [!NOTE]
+   > When starting an app, Turborepo automatically starts its dependencies first. For example, `turbo web#dev` will start the CMS app first (as defined in `turbo.json`), then start the web app.
+   
+   The web app will be available at `http://localhost:5173` (or the port specified in your `.env`).
+
+## 📦 Available Scripts
+
+### Root Level Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start all apps in development mode |
+| `npm run build` | Build all apps for production |
+| `npm run test` | Run unit tests in watch mode |
+| `npm run test:run` | Run unit tests once with coverage |
+| `npm run test:e2e` | Run e2e tests for all apps |
+| `npm run test:e2e:run` | Run e2e tests in CI mode |
+| `npm run test:e2e:ui` | Open Playwright UI for e2e tests |
+| `npm run test:e2e:report` | Show e2e test reports |
+| `npm run test:e2e:install` | Install Playwright browsers |
+| `npm run format-and-lint` | Check code formatting and linting |
+| `npm run format-and-lint:fix` | Fix code formatting and linting issues |
+| `npm run typecheck` | Run TypeScript type checking |
+
+### Turbo Commands
+
+**All commands should be run from the monorepo root.**
+
+Run commands for specific apps or packages:
+
+```bash
+# Development
+turbo <app-name>#dev       # Start specific app dev server
+turbo web#dev              # Example: Start web app
+turbo cms#dev              # Example: Start CMS
+
+# Building
+turbo <app-name>#build     # Build specific app
+turbo web#build            # Example: Build web app
+turbo build --filter=<app> # Alternative: Filter syntax
+
+# Testing
+turbo test                 # Run all unit tests (watch mode)
+turbo test:run             # Run unit tests once (CI mode)
+turbo test:e2e             # Run all e2e tests
+turbo test:e2e --filter=<app>  # Run e2e tests for specific app
+
+# Linting & Formatting
+turbo format-and-lint      # Check all packages
+turbo format-and-lint:fix  # Auto-fix issues
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+> [!IMPORTANT]
+> **Dependency Management**: Turborepo automatically handles app dependencies. When you run `turbo web#dev`, it will first start the CMS app (as web depends on it), then start the web app. This is configured in `turbo.json` under the `dev` task's `with` property.
+
+## 🔧 Environment Variables
+
+The platform uses various environment variables for configuration. Key variables include:
+
+- **Content Management**: Sanity Studio configuration
+- **Authentication**: Session secrets, OAuth credentials
+- **Database**: Turso database URL and auth token
+- **AI Services**: Anthropic and Voyage API keys
+- **Email**: Resend API configuration
+- **Storage**: Bunny CDN configuration
+- **Payments**: Polar subscription management
+
+See [`apps/web/.env.example`](./apps/web/.env.example) for a complete list with descriptions.
+
+## 🏛️ Architecture
+
+### Technology Stack
+
+- **Frontend**: React 19, React Router v7, Tailwind CSS v4
+- **Backend**: React Router (SSR), Node.js
+- **Database**: Prisma ORM with Turso (SQLite)
+- **CMS**: Sanity.io
+- **Authentication**: Custom auth with OAuth (GitHub)
+- **Testing**: Vitest (unit), Playwright (e2e)
+- **Code Quality**: Biome (linting & formatting)
+- **Monorepo**: Turborepo
+- **Package Manager**: npm workspaces
+
+### Apps
+
+- **[web](./apps/web/README.md)**: Main web application - the primary user-facing platform
+- **cms**: Sanity Studio for content management
+- **waitlist**: Waitlist management application
+
+### Shared Packages
+
+- **@repo/database**: Prisma schema and database utilities
+- **@repo/ui**: Reusable React components with Tailwind CSS
+- **@repo/utils**: Shared utility functions and helpers
+- **@repo/base-config**: Base React Router configuration and shared app settings
+- **@repo/tests-config**: Shared testing utilities and fixtures
+- **@repo/typescript-config**: Shared TypeScript configurations
+
+## 🧪 Testing
+
+### Unit Tests
+
+Unit tests are written with Vitest and can be run at the root level:
+
+```bash
+# Watch mode
+npm run test
+
+# Run once with coverage
+npm run test:run
 ```
 
-### Develop
+### E2E Tests
 
-To develop all apps and packages, run the following command:
+End-to-end tests use Playwright:
 
-```
-cd my-turborepo
+```bash
+# Run e2e tests
+npm run test:e2e
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+# Run in CI mode
+npm run test:e2e:run
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+# Open Playwright UI
+npm run test:e2e:ui
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+# View test report
+npm run test:e2e:report
 ```
 
-### Remote Caching
+## 🤝 Contributing
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+We welcome contributions! Please read our [CONTRIBUTING.md](./CONTRIBUTING.md) for details on:
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+- Code of conduct
+- Development workflow
+- Code style guidelines
+- Testing requirements
+- Pull request process
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## 📝 License
 
-```
-cd my-turborepo
+[Add your license information here]
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+## 🔗 Links
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
+- [Web App Documentation](./apps/web/README.md)
+- [Contributing Guidelines](./CONTRIBUTING.md)
+- [Turborepo Documentation](https://turbo.build/repo/docs)
+- [React Router Documentation](https://reactrouter.com/)
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+## 💬 Support
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+[Discord Server](https://discord.gg/tekbreed)

@@ -1,0 +1,146 @@
+[
+	{
+		"code": "MOCK_GITHUB_CODE_CODINGSIMBA",
+		"accessToken": "MOCK_GITHUB_CODE_CODINGSIMBA_mock_access_token",
+		"profile": {
+			"login": "Al_Larson11",
+			"id": "MOCK_GITHUB_CODE_CODINGSIMBA_profile_id",
+			"name": "Pam Oberbrunner",
+			"avatar_url": "https://github.com/ghost.png",
+			"emails": [
+				"Preston14@yahoo.com",
+				"Eleanora.Beier62@gmail.com",
+				"CODINGSIMBA@tekbreed.com"
+			]
+		},
+		"emails": [
+			{
+				"email": "Preston14@yahoo.com",
+				"verified": false,
+				"primary": false,
+				"visibility": "public"
+			},
+			{
+				"email": "Eleanora.Beier62@gmail.com",
+				"verified": true,
+				"primary": false,
+				"visibility": null
+			},
+			{
+				"email": "CODINGSIMBA@tekbreed.com",
+				"verified": true,
+				"primary": true,
+				"visibility": "public"
+			}
+		],
+		"primaryEmail": "CODINGSIMBA@tekbreed.com"
+	},
+	{
+		"code": "MOCK_GITHUB_CODE_TONY",
+		"accessToken": "MOCK_GITHUB_CODE_TONY_mock_access_token",
+		"profile": {
+			"login": "Adelia.Bednar82",
+			"id": "MOCK_GITHUB_CODE_TONY_profile_id",
+			"name": "Mr. Tony Maxy",
+			"avatar_url": "https://github.com/ghost.png",
+			"emails": [
+				"Elnora_Cartwright89@gmail.com",
+				"Eloisa.Emmerich@gmail.com",
+				"Jeff.Parisian@hotmail.com"
+			]
+		},
+		"emails": [
+			{
+				"email": "Elnora_Cartwright89@gmail.com",
+				"verified": false,
+				"primary": false,
+				"visibility": "public"
+			},
+			{
+				"email": "Eloisa.Emmerich@gmail.com",
+				"verified": true,
+				"primary": false,
+				"visibility": null
+			},
+			{
+				"email": "Jeff.Parisian@hotmail.com",
+				"verified": true,
+				"primary": true,
+				"visibility": "public"
+			}
+		],
+		"primaryEmail": "Jeff.Parisian@hotmail.com"
+	},
+	{
+		"code": "MOCK_CODE_GITHUB_CS",
+		"accessToken": "MOCK_CODE_GITHUB_CS_mock_access_token",
+		"profile": {
+			"login": "Genevieve.Corwin",
+			"id": "MOCK_CODE_GITHUB_CS_profile_id",
+			"name": "Dr. Archie Kozey V",
+			"avatar_url": "https://github.com/ghost.png",
+			"emails": [
+				"Ramiro.Hickle@gmail.com",
+				"Chauncey_Kohler10@hotmail.com",
+				"Aisha.Batz19@gmail.com"
+			]
+		},
+		"emails": [
+			{
+				"email": "Ramiro.Hickle@gmail.com",
+				"verified": false,
+				"primary": false,
+				"visibility": "public"
+			},
+			{
+				"email": "Chauncey_Kohler10@hotmail.com",
+				"verified": true,
+				"primary": false,
+				"visibility": null
+			},
+			{
+				"email": "Aisha.Batz19@gmail.com",
+				"verified": true,
+				"primary": true,
+				"visibility": "public"
+			}
+		],
+		"primaryEmail": "Aisha.Batz19@gmail.com"
+	},
+	{
+		"code": "MOCK_CODE_GITHUB_CC",
+		"accessToken": "MOCK_CODE_GITHUB_CC_mock_access_token",
+		"profile": {
+			"login": "Destiny34",
+			"id": 3643129851450077,
+			"name": "Larry Rogahn",
+			"avatar_url": "https://github.com/ghost.png",
+			"emails": [
+				"Precious.Runolfsdottir@gmail.com",
+				"Romaine.Ward4@gmail.com",
+				"Guido_Huels@yahoo.com"
+			]
+		},
+		"emails": [
+			{
+				"email": "Precious.Runolfsdottir@gmail.com",
+				"verified": false,
+				"primary": false,
+				"visibility": "public"
+			},
+			{
+				"email": "Romaine.Ward4@gmail.com",
+				"verified": true,
+				"primary": false,
+				"visibility": null
+			},
+			{
+				"email": "Guido_Huels@yahoo.com",
+				"verified": true,
+				"primary": true,
+				"visibility": null
+			}
+		],
+		"primaryEmail": "Guido_Huels@yahoo.com"
+	}
+]

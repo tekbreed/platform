@@ -9,12 +9,13 @@
 node_modules/
 
 # Project Specific
-/app/generated/
+/src/generated/
 /todo/
 
 # React Router
 .react-router/
 build/
+social-media*
 
 # Turbo
 .turbo/
@@ -32,3 +33,9 @@ tests-examples/
 # Vitest
 vitest-example/
 coverage/
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

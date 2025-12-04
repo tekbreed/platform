@@ -1,0 +1,183 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: "Which app to deploy?"
+        required: true
+        type: choice
+        options:
+          - waitlist
+          - web
+          - chat
+          - admin
+          - programs
+          - coding-challenges
+          - classroom
+          - notes
+          - teams
+          - job-board
+          - store
+          - docs
+          - mcp
+          - apis
+      environment:
+        description: "Deploy to which environment?"
+        required: true
+        type: choice
+        options:
+          - development
+          - production
+        default: development
+
+jobs:
+  deploy:
+    name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+          TURBO_REMOTE_ONLY: true
+          APP_NAME: ${{ inputs.app }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          RAILWAY_DEV_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}
+          RAILWAY_PROD_TOKEN: ${{ secrets.RAILWAY_PROD_TOKEN }}
+        run: |
+          # Set Railway token based on environment
+          if [ "${ENVIRONMENT}" = "production" ]; then
+            export RAILWAY_TOKEN="${RAILWAY_PROD_TOKEN}"
+          else
+            export RAILWAY_TOKEN="${RAILWAY_DEV_TOKEN}"
+          fi
+
+          # Set service ID based on app and environment
+          case "${APP_NAME}" in
+            waitlist)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            web)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            chat)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CHAT_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CHAT_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            admin)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_ADMIN_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_ADMIN_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            programs)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_PROGRAMS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_PROGRAMS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            coding-challenges)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            classroom)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CLASSROOM_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CLASSROOM_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            notes)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_NOTES_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_NOTES_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            teams)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_TEAMS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_TEAMS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            job-board)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_JOB_BOARD_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_JOB_BOARD_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            store)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_STORE_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_STORE_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            docs)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_DOCS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_DOCS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            mcps)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_MCPS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_MCPS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            apis)
+                if [ "${ENVIRONMENT}" = "production" ]; then
+                  SERVICE_ID="${{ secrets.RAILWAY_APIS_PROD_SERVICE_ID }}"
+                else
+                  SERVICE_ID="${{ secrets.RAILWAY_APIS_DEV_SERVICE_ID }}"
+                fi
+                ;;
+            *)
+              echo "❌ Unknown app: ${APP_NAME}"
+              exit 1
+              ;;
+          esac
+
+          # Validate required variables
+          if [ -z "${RAILWAY_TOKEN}" ]; then
+            echo "❌ RAILWAY_TOKEN not found for ${ENVIRONMENT} environment"
+            echo "Please ensure RAILWAY_DEV_TOKEN or RAILWAY_PROD_TOKEN secret is configured."
+            exit 1
+          fi
+
+          if [ -z "${SERVICE_ID}" ]; then
+            echo "❌ SERVICE_ID not found for ${APP_NAME} in ${ENVIRONMENT}"
+            echo "Please ensure the corresponding service ID secret is configured."
+            exit 1
+          fi
+
+          echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
+          railway up --service="${SERVICE_ID}" --detach
+        shell: sh

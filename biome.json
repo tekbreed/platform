@@ -1,0 +1,137 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.3.4/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"ignoreUnknown": false,
+		"includes": [
+			"**/src/**",
+			"!**/mockServiceWorker.js",
+			"!**/*.css",
+			"!**/apps/waitlist",
+			"!**/tsconfig.json",
+			"!**/tsconfig.*.json"
+		]
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineWidth": 80,
+		"bracketSpacing": true
+	},
+	"linter": {
+		"enabled": true,
+		"domains": {
+			"react": "recommended",
+			"test": "recommended"
+		},
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedImports": "error",
+				"noUnusedVariables": "error"
+			},
+			"suspicious": {
+				"noConsole": "warn"
+			},
+			"style": {
+				"useImportType": "error",
+				"useNodejsImportProtocol": "error"
+			},
+			"nursery": {
+				"useSortedClasses": "error"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"semicolons": "asNeeded"
+		}
+	},
+	"css": {
+		"linter": null,
+		"formatter": null,
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"useSortedAttributes": {
+					"level": "on",
+					"options": {
+						"sortOrder": "lexicographic"
+					}
+				},
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [
+							{ "type": true, "source": [":NODE:"] },
+							":NODE:",
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": ["react", "react-dom", "react/**", "react-dom/**"]
+							},
+							["react", "react-dom", "react/**", "react-dom/**"],
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": [
+									"react-router",
+									"react-router-dom",
+									"react-router/**",
+									"react-router-dom/**"
+								]
+							},
+							[
+								"react-router",
+								"react-router-dom",
+								"react-router/**",
+								"react-router-dom/**"
+							],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["remix-*", "remix-*/**"] },
+							["remix-*", "remix-*/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": [":PACKAGE:", "!@repo", "!@repo/**"] },
+							[":PACKAGE:", "!@repo", "!@repo/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/ui", "@repo/ui/**"] },
+							["@repo/ui", "@repo/ui/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/utils", "@repo/utils/**"] },
+							["@repo/utils", "@repo/utils/**"],
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": ["@repo/database", "@repo/database/**"]
+							},
+							["@repo/database", "@repo/database/**"],
+							":BLANK_LINE:",
+							{
+								"type": true,
+								"source": ["@repo/base-config", "@repo/base-config/**"]
+							},
+							["@repo/base-config", "@repo/base-config/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/**"] },
+							"@repo/**",
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@/**"] },
+							"@/**"
+						]
+					}
+				}
+			}
+		}
+	}
+}

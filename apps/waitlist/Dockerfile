@@ -1,22 +1,57 @@
-FROM node:20-alpine AS development-dependencies-env
-COPY . /app
-WORKDIR /app
-RUN npm ci
+FROM node:22-alpine AS base
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
-WORKDIR /app
-RUN npm ci --omit=dev
+# Builder
+FROM base AS builder
+RUN apk update
+RUN apk add --no-cache libc6-compat
 
-FROM node:20-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 WORKDIR /app
-RUN npm run build
 
-FROM node:20-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
+RUN npm install -g turbo@2.6.0
+COPY . .
+
+ARG RAILWAY_SERVICE_NAME
+# For Dev
+# ENV RAILWAY_SERVICE_NAME="waitlist"
+ 
+RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
+
+# Installer
+FROM base AS installer
+RUN apk update
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
+ 
+COPY --from=builder /app/out/json/ .
+
+RUN npm ci --legacy-peer-deps
+ 
+COPY --from=builder /app/out/full/ .
+
+RUN npx turbo run build
+ 
+
+# Runner
+FROM base AS runner
+WORKDIR /app
+
+ARG RAILWAY_SERVICE_NAME
+# For Dev
+# ENV RAILWAY_SERVICE_NAME="waitlist"
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 appuser
+
+USER appuser
+
+COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json
+COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/public ./public
+COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/build ./build
+COPY --from=installer --chown=appuser:nodejs /app/packages/database ./packages/database
+COPY --from=installer --chown=appuser:nodejs /app/node_modules ./node_modules
+
+ENV NODE_ENV=production
+ENV PORT=8080
+
 CMD ["npm", "run", "start"]
+

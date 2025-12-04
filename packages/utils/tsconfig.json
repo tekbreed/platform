@@ -3,10 +3,10 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@repo/utils/*": ["./src/*"],
+			"@/*": ["./src/*"],
 			"@repo/ui/*": ["../../packages/ui/src/*", "../../packages/ui/dist/*"]
 		}
 	},
-	"include": ["src"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules"]
 }

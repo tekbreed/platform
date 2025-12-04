@@ -1,84 +1,89 @@
-import React from "react";
-import { Theme, useTheme } from "remix-themes";
-import { Loader, Monitor, Moon, Sun } from "lucide-react";
-import { useNavigation } from "react-router";
-import { cn } from "@repo/ui/lib/utils";
-import { Button } from "../components/button.js";
+import React from "react"
+
+import { useNavigation } from "react-router"
+
+import { Theme, useTheme } from "remix-themes"
+
+import { Button } from "@/components/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@repo/ui/components/dropdown-menu";
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/dropdown-menu"
+import { VisuallyHidden } from "@/components/visually-hidden"
+import { cn } from "@/lib/utils"
+import { Icons } from "./icons"
 
 export function ThemeToggle() {
-  const [dropDown, setDropDown] = React.useState(false);
-  const navigation = useNavigation();
-  const [theme, setTheme, { definedBy }] = useTheme();
+	const [dropDown, setDropDown] = React.useState(false)
+	const [theme, setTheme, { definedBy }] = useTheme()
 
-  const isNavigating = navigation.state === "loading";
+	const navigation = useNavigation()
 
-  return (
-    <DropdownMenu open={dropDown} onOpenChange={setDropDown}>
-      <DropdownMenuTrigger asChild>
-        {isNavigating ? (
-          <Button
-            variant="outline"
-            size="icon"
-            className="relative rounded-full"
-            arial-disabled={true}
-          >
-            <Loader className="animate-spin" />
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            size="icon"
-            className="relative rounded-full"
-          >
-            {/* System Theme Icon */}
-            <Monitor
-              className={cn(
-                "absolute h-[1.2rem] w-[1.2rem] transition-all",
-                definedBy === "SYSTEM"
-                  ? "scale-100 rotate-0"
-                  : "scale-0 rotate-90",
-              )}
-              aria-hidden="true"
-            />
-            {/* Light Theme Icon */}
-            <Sun
-              className={cn(
-                "absolute h-[1.2rem] w-[1.2rem] transition-all",
-                theme === "light" ? "scale-100 rotate-0" : "scale-0 -rotate-90",
-              )}
-              aria-hidden="true"
-            />
-            {/* Dark Theme Icon */}
-            <Moon
-              className={cn(
-                "absolute h-[1.2rem] w-[1.2rem] transition-all",
-                theme === "dark" && definedBy !== "SYSTEM"
-                  ? "scale-100 rotate-0"
-                  : "scale-0 rotate-90",
-              )}
-              aria-hidden="true"
-            />
-            <span className="sr-only">Toggle theme</span>
-          </Button>
-        )}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme(null)}>
-          System
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme(Theme.LIGHT)}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme(Theme.DARK)}>
-          Dark
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+	const isNavigating = navigation.state === "loading"
+	const isLightTheme = theme === "light" && definedBy !== "SYSTEM"
+	const isDarkTheme = theme === "dark" && definedBy !== "SYSTEM"
+
+	return (
+		<DropdownMenu onOpenChange={setDropDown} open={dropDown}>
+			<DropdownMenuTrigger asChild disabled={isNavigating}>
+				{isNavigating ? (
+					<Button
+						arial-disabled={true}
+						className="relative rounded-full"
+						size="icon"
+						variant="outline"
+					>
+						<Icons.loader className="animate-spin" />
+					</Button>
+				) : (
+					<Button
+						className="relative rounded-full"
+						size="icon"
+						variant="outline"
+					>
+						{/* System Theme Icon */}
+						<Icons.monitor
+							aria-hidden="true"
+							className={cn(
+								"absolute h-[1.2rem] w-[1.2rem] transition-all",
+								definedBy === "SYSTEM"
+									? "rotate-0 scale-100"
+									: "rotate-90 scale-0",
+							)}
+						/>
+						{/* Light Theme Icon */}
+						<Icons.sun
+							aria-hidden="true"
+							className={cn(
+								"absolute h-[1.2rem] w-[1.2rem] transition-all",
+								isLightTheme ? "rotate-0 scale-100" : "-rotate-90 scale-0",
+							)}
+						/>
+						{/* Dark Theme Icon */}
+						<Icons.moon
+							aria-hidden="true"
+							className={cn(
+								"absolute h-[1.2rem] w-[1.2rem] transition-all",
+								isDarkTheme ? "rotate-0 scale-100" : "rotate-90 scale-0",
+							)}
+						/>
+						<VisuallyHidden>Toogle Theme</VisuallyHidden>
+					</Button>
+				)}
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end">
+				<DropdownMenuItem onClick={() => setTheme(null)}>
+					System
+				</DropdownMenuItem>
+				<DropdownMenuItem onClick={() => setTheme(Theme.LIGHT)}>
+					Light
+				</DropdownMenuItem>
+				<DropdownMenuItem onClick={() => setTheme(Theme.DARK)}>
+					Dark
+				</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	)
 }

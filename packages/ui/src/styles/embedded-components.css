@@ -1,0 +1,6 @@
+.mdx-embedded-wrapper {
+  @apply border-border bg-background relative my-6 rounded-md border p-4 shadow-sm;
+  @apply hover:border-border hover:shadow-md;
+  @apply dark:border-border dark:bg-background dark:hover:border-border;
+  @apply transition-all duration-200 ease-out;
+}

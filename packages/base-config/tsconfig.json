@@ -1,5 +1,5 @@
 {
-	"extends": "@repo/typescript-config/react-router.json",
+	"extends": "@repo/typescript-config/base.json",
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {

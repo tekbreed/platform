@@ -1,7 +1,8 @@
-import { type RouteConfig, index, route } from "@react-router/dev/routes";
+import { index, type RouteConfig, route } from "@react-router/dev/routes"
 
 export default [
-  index("routes/home.tsx"),
-  route("subscribe", "routes/subscribe.ts"),
-  route("set-theme", "routes/set-theme.ts"),
-] satisfies RouteConfig;
+	index("routes/home.tsx"),
+	route("set-theme", "routes/set-theme.ts"),
+	route("subscribe", "routes/resources/subscribe.tsx"),
+	route("media/:fileId", "routes/resources/media.ts"),
+] satisfies RouteConfig
