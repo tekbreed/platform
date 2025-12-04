@@ -4,7 +4,6 @@ import { type Theme, useTheme } from "remix-themes"
 import { HoneypotProvider } from "remix-utils/honeypot/react"
 
 import { Toaster } from "@repo/ui/components/sonner"
-import { Footer } from "@repo/ui/composed/footer"
 import { Header } from "@repo/ui/composed/header/index"
 
 import type { HoneypotInputProps } from "@repo/utils/honeypot.server"
@@ -37,7 +36,7 @@ export function App({
 			<main className="h-full min-h-full">
 				<Outlet />
 			</main>
-			<Footer />
+			{/* <Footer /> */}
 			<Toaster position="top-right" richColors />
 		</Document>
 	)
