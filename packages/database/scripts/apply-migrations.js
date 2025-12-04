@@ -90,7 +90,7 @@ async function main() {
 
   console.log("🚀 Starting migrations using libSQL client...");
   console.log(`Environment: ${environment}`);
-  console.log(`Database URL: ${DATABASE_URL}\n`);
+  console.log(`Database URL: ${TURSO_DATABASE_URL}\n`);
 
   const migrationDirs = getMigrationDirs();
 
