@@ -135,6 +135,7 @@ USER appuser
 
 ENV NODE_ENV=production
 ENV PORT=8080
+ARG TURSO_AUTH_TOKEN
 
 # CMD ["npm", "run", "start"]
 CMD ["sh", "-c", "node packages/database/scripts/apply-migrations.js && npm run start"]
