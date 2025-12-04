@@ -1,5 +1,4 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: allow */
-"use client"
 
 import { useState } from "react"
 
