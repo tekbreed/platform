@@ -1,9 +1,9 @@
 /**
- * Apply migrations to a Turso (libSQL) database using @libsql/client
+ * Apply migrations to a Turso (libSQL) database using @libsql/client batch API
  *
  * This script:
  * - Reads migration.sql files from Prisma's migrations folder
- * - Executes them using the libSQL client
+ * - Executes them using the libSQL client's batch method
  *
  * Environment Variables:
  * - RAILWAY_ENVIRONMENT_NAME: environment name (development, production, etc.)
@@ -16,7 +16,6 @@ import { join, basename, dirname } from "node:path";
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
 
 import { createClient } from "@libsql/client";
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -42,7 +41,6 @@ const client = createClient({
 
 /**
  * Get sorted migration directories
- * Migrations are timestamped, so we can sort them by name
  */
 function getMigrationDirs() {
   if (!existsSync(MIGRATIONS_DIR)) {
@@ -57,7 +55,7 @@ function getMigrationDirs() {
 }
 
 /**
- * Apply one migration
+ * Apply one migration using batch API
  */
 async function applyMigration(migrationDir) {
   const migrationFile = join(migrationDir, "migration.sql");
@@ -72,8 +70,20 @@ async function applyMigration(migrationDir) {
 
   const sql = readFileSync(migrationFile, "utf8");
 
+  // Split statements by semicolon and remove empty strings
+  const statements = sql
+    .split(";")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (statements.length === 0) {
+    console.log(`⚠️  Migration ${migrationName} contains no statements`);
+    return false;
+  }
+
   try {
-    await client.execute(sql);
+    // Execute all statements in a single batch
+    await client.batch(statements.map((stmt) => ({ sql: stmt })));
     console.log(`✅ Successfully applied: ${migrationName}`);
     return true;
   } catch (err) {
@@ -86,9 +96,9 @@ async function applyMigration(migrationDir) {
  * Main entrypoint
  */
 async function main() {
-  const environment = process.env.RAILWAY_ENVIRONMENT_NAME;
+  const environment = RAILWAY_ENVIRONMENT_NAME ?? "development";
 
-  console.log("🚀 Starting migrations using libSQL client...");
+  console.log("🚀 Starting migrations using libSQL batch API...");
   console.log(`Environment: ${environment}`);
   console.log(`Database URL: ${TURSO_DATABASE_URL}\n`);
 
@@ -108,7 +118,7 @@ async function main() {
 
   console.log(`\n✨ Applied ${appliedCount}/${migrationDirs.length} migration(s)`);
 
-  await client.close();
+  await client.close()
 }
 
 main().catch((err) => {
