@@ -1,11 +1,7 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: Testing */
 import { useEffect, useState } from "react"
 
-import {
-	type ActionFunctionArgs,
-	Link,
-	type LoaderFunctionArgs,
-	useFetcher,
-} from "react-router"
+import { Link, type LoaderFunctionArgs, useFetcher } from "react-router"
 
 import { format } from "date-fns"
 import { StatusCodes } from "http-status-codes"
@@ -52,7 +48,7 @@ export const links: Route.LinksFunction = () => [
 	},
 ]
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
 	const { articleSlug } = params
 	invariant(articleSlug, "Article slug is required")
 
@@ -109,7 +105,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 	}
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
+export async function action() {
 	// Mock action - just return success
 	return { success: true }
 }

@@ -24,8 +24,9 @@ const routesRecord = {
 		"media/:fileId": "routes/resources/media.ts",
 		discord: "routes/resources/discord.ts",
 		subscribe: "routes/resources/subscribe.tsx",
-		"content/webhook": "routes/resources/sanity-webhook.ts",
 		"download-user-data": "routes/resources/download-user-data.ts",
+		"webhooks/sanity": "routes/webhooks/sanity.ts",
+		"webhooks/polar": "routes/webhooks/polar.ts",
 	},
 
 	prefixed: {
@@ -54,10 +55,10 @@ const routesRecord = {
 			},
 		},
 		articles: {
-		  index: "routes/articles/index.tsx",
-		  routes: {
-		    ":articleSlug": "routes/articles/article.tsx",
-		  },
+			index: "routes/articles/index.tsx",
+			routes: {
+				":articleSlug": "routes/articles/article.tsx",
+			},
 		},
 		// tutorials: {
 		//   index: "routes/tutorials/index.tsx",

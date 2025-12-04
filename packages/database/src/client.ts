@@ -8,19 +8,20 @@ import { PrismaClient } from "./generated/prisma/client"
 const { NODE_ENV, DATABASE_URL, TURSO_DATABASE_URL, TURSO_AUTH_TOKEN } =
 	process.env
 
-if (!DATABASE_URL || !TURSO_DATABASE_URL || !TURSO_AUTH_TOKEN) {
-	throw new Error("DATABASE_URL, AUTH_TOKEN, or TURSO_AUTH_TOKEN not set.")
-}
-
 const isDev = NODE_ENV !== "production"
 
+if (isDev && !DATABASE_URL) {
+	throw new Error("DATABASE_URL not set.")
+} else if (!isDev && (!TURSO_DATABASE_URL || !TURSO_AUTH_TOKEN)) {
+	throw new Error("TURSO_DATABASE_URL or TURSO_AUTH_TOKEN not set.")
+}
+
 export const databaseConfig = isDev
-	? { url: DATABASE_URL }
-	: { url: TURSO_DATABASE_URL, authToken: TURSO_AUTH_TOKEN }
+	? { url: DATABASE_URL as string }
+	: { url: TURSO_DATABASE_URL as string, authToken: TURSO_AUTH_TOKEN as string }
 
 export const prisma = remember("prisma", () => {
 	const adapter = new PrismaLibSql(databaseConfig)
-
 	const LOG_THRESHOLD = 20
 
 	const client = new PrismaClient({

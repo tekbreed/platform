@@ -82,6 +82,7 @@ import {
 	Trophy,
 	Truck,
 	Undo,
+	User,
 	UserPen,
 	Users,
 	Video,
@@ -90,7 +91,7 @@ import {
 	Zap,
 } from "lucide-react"
 
-import { cn } from "@/lib/utils"
+import { cn } from "../lib/utils"
 
 export type Icon = LucideIcon
 
@@ -350,6 +351,7 @@ export const Icons = {
 	lightbulb: Lightbulb,
 	sparkles: Sparkles,
 	doorClosed: DoorClosed,
+	user: User,
 	userPen: UserPen,
 	x: X,
 	arrowLeft: ArrowLeft,

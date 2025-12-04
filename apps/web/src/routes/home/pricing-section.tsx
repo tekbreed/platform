@@ -3,8 +3,6 @@
 
 import { useState } from "react"
 
-import { Bot, Check, Zap } from "lucide-react"
-
 import { Badge } from "@repo/ui/components/badge"
 import { Button } from "@repo/ui/components/button"
 import {
@@ -24,6 +22,7 @@ import {
 	TabsList,
 	TabsTrigger,
 } from "@repo/ui/components/tabs"
+import { Icons } from "@repo/ui/composed/icons"
 
 const individualPlans = [
 	{
@@ -298,7 +297,7 @@ export function PricingSection() {
 				<ul className="space-y-3">
 					{plan.features.map((feature: string) => (
 						<li className="flex items-start space-x-3" key={feature}>
-							<Check className="mt-0.5 h-5 w-5 shrink-0 text-green-500" />
+							<Icons.check className="mt-0.5 h-5 w-5 shrink-0 text-green-500" />
 							<span className="text-sm">{feature}</span>
 						</li>
 					))}
@@ -307,7 +306,7 @@ export function PricingSection() {
 						plan.aiFeatures &&
 						plan.aiFeatures.map((feature: string) => (
 							<li className="flex items-start space-x-3" key={feature}>
-								<Bot className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
+								<Icons.bot className="mt-0.5 h-5 w-5 shrink-0 text-blue-500" />
 								<span className="text-blue-600 text-sm">{feature}</span>
 							</li>
 						))}
@@ -426,7 +425,7 @@ export function PricingSection() {
 								<Card>
 									<CardHeader>
 										<div className="flex items-center space-x-2">
-											<Zap className="size-5 text-blue-600" />
+											<Icons.zap className="size-5 text-blue-600" />
 											<CardTitle className="text-xl">
 												Usage Calculator
 											</CardTitle>
@@ -473,11 +472,11 @@ export function PricingSection() {
 									<CardContent className="space-y-4">
 										<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 											<Button className="justify-start" variant="outline">
-												<Check className="mr-2 h-4 w-4" />
+												<Icons.check className="mr-2 h-4 w-4" />
 												View API Documentation
 											</Button>
 											<Button className="justify-start" variant="outline">
-												<Zap className="mr-2 h-4 w-4" />
+												<Icons.zap className="mr-2 h-4 w-4" />
 												API Playground
 											</Button>
 										</div>

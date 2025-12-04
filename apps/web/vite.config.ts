@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite"
 import { defineConfig } from "vite"
 import tsconfigPaths from "vite-tsconfig-paths"
 
+
 const MODE = process.env.NODE_ENV
 
 export default defineConfig({
@@ -19,11 +20,5 @@ export default defineConfig({
 		// sourcemap: true,
 	},
 	plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
-	test: {
-		coverage:{
-			provider:"v8",
-			reporter:["html"]
-		},
-		exclude: ["tests/e2e/"],
-	},
+	
 })

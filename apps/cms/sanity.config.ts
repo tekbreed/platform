@@ -18,7 +18,7 @@ export default defineConfig({
 	title: "TekBreed",
 	icon: DashboardIcon,
 	projectId: "3alj5od9",
-	dataset: "production",
+	dataset: "development",
 	development: {
 		appId: "ljm4pzplzvu1c1so6ji09hhh",
 	},

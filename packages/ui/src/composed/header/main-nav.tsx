@@ -1,22 +1,22 @@
 "use client"
 
-import { learning, platform, services } from "@repo/utils/constants/client"
+// import { learning, platform, services } from "@repo/utils/constants/client"
 
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuTrigger,
-} from "@/components/dropdown-menu"
-import { Icons } from "@/composed/icons"
+// import {
+// 	DropdownMenu,
+// 	DropdownMenuContent,
+// 	DropdownMenuItem,
+// 	DropdownMenuTrigger,
+// } from "@/components/dropdown-menu"
+// import { Icons } from "@/composed/icons"
 import { Logo } from "@/composed/logo"
-import { SmartLink } from "../smart-link"
+// import { SmartLink } from "../smart-link"
 
 export function MainNav() {
 	return (
 		<div className="flex gap-6">
 			<Logo />
-			<nav className="hidden items-center space-x-6 font-medium text-sm md:flex">
+			{/* <nav className="hidden items-center space-x-6 font-medium text-sm md:flex">
 				<div className="hidden items-center gap-6 lg:flex">
 					<DropdownMenu>
 						<DropdownMenuTrigger className="hidden items-center gap-1 px-2 py-1 font-semibold focus:border-none lg:flex">
@@ -72,7 +72,7 @@ export function MainNav() {
 						</SmartLink>
 					))}
 				</div>
-			</nav>
+			</nav> */}
 		</div>
 	)
 }
