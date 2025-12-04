@@ -53,7 +53,7 @@ export function SubscriptionForm() {
 					) : null}
 
 					{isSubscribed ? (
-						<div className="mx-auto max-w-md rounded-2xl border bg-background/80 backdrop-blur-sm">
+						<div className="mx-auto max-w-md rounded-2xl backdrop-blur-sm">
 							<div className="mb-4 flex justify-center">
 								<div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-500/10">
 									<Icons.check className="h-8 w-8 text-green-500" />
