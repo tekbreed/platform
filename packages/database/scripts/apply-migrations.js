@@ -139,14 +139,13 @@
  * Apply Prisma migrations to a Turso (libSQL) database
  *
  * This script:
+ *  - Logs in the Turso CLI using TURSO_AUTH_TOKEN
  *  - Reads migration.sql files from Prisma's migration folder
  *  - Sends them to Turso using "turso db shell"
- *  - Relies on TURSO_AUTH_TOKEN for authentication
  *
  * Environment Variables:
  * - RAILWAY_ENVIRONMENT_NAME: environment name (development, production, etc.)
- * - TURSO_AUTH_TOKEN: Turso authentication token
- * - DATABASE_URL: libSQL connection URL (e.g. libsql://..)
+ * - TURSO_AUTH_TOKEN: Turso authentication token (required)
  */
 
 import { spawnSync } from 'node:child_process';
@@ -171,14 +170,25 @@ const DB_NAME = getDbName();
 
 // Validate required environment variables
 if (!process.env.TURSO_AUTH_TOKEN) {
-  console.error("❌ TURSO_AUTH_TOKEN is missing. Set it in Railway.");
+  console.error("❌ TURSO_AUTH_TOKEN is missing. Set it in Railway or locally.");
   process.exit(1);
 }
 
-// if (!process.env.DATABASE_URL) {
-//   console.error("❌ DATABASE_URL is missing. Set it in Railway.");
-//   process.exit(1);
-// }
+/**
+ * Authenticate Turso CLI using token
+ */
+function loginTurso() {
+  console.log("🔑 Logging in to Turso CLI...");
+  const result = spawnSync('turso', ['auth', 'login', '--token', process.env.TURSO_AUTH_TOKEN], {
+    stdio: 'inherit',
+    env: process.env,
+  });
+
+  if (result.status !== 0) {
+    console.error("❌ Turso CLI login failed. Check your TURSO_AUTH_TOKEN.");
+    process.exit(1);
+  }
+}
 
 /**
  * Execute turso command piping SQL via STDIN
@@ -249,6 +259,8 @@ function applyMigration(migrationDir) {
  * Main entry
  */
 async function main() {
+  loginTurso(); // <-- Authenticate first
+
   const environment = process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT;
 
   console.log("🚀 Starting Turso migration process...\n");
