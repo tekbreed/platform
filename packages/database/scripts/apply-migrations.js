@@ -1,72 +1,48 @@
 /**
- * Apply Prisma migrations to a Turso (libSQL) database,
- * then start the main application.
+ * Apply migrations to a Turso (libSQL) database using @libsql/client
+ *
+ * This script:
+ * - Reads migration.sql files from Prisma's migrations folder
+ * - Executes them using the libSQL client
  *
  * Environment Variables:
- * - RAILWAY_ENVIRONMENT_NAME
- * - TURSO_AUTH_TOKEN
- * - TURSO_DATABASE_URL
- * - NODE_ENV
- * - PORT
+ * - RAILWAY_ENVIRONMENT_NAME: environment name (development, production, etc.)
+ * - TURSO_AUTH_TOKEN: Turso authentication token (required)
+ * - TURSO_DATABASE_URL: Turso database URL (required)
  */
 
-import { spawnSync } from 'node:child_process';
-import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { join, dirname, basename } from 'node:path';
+import { fileURLToPath } from "node:url";
+import { join, basename, dirname } from "node:path";
+import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
 
-const DEFAULT_ENVIRONMENT = 'development';
-const MIGRATIONS_DIR = "./packages/database/prisma/migrations";
+import { createClient } from "@libsql/client";
 
-/**
- * Load & validate environment variables
- */
-function loadEnv() {
-  const required = ["TURSO_AUTH_TOKEN", "TURSO_DATABASE_URL"];
-  for (const key of required) {
-    if (!process.env[key]) {
-      console.error(`❌ Missing required environment variable: ${key}`);
-      process.exit(1);
-    }
-  }
 
-  console.log("🔧 Loaded environment variables:");
-  console.log(" - RAILWAY_ENVIRONMENT_NAME:", process.env.RAILWAY_ENVIRONMENT_NAME);
-  console.log(" - NODE_ENV:", process.env.NODE_ENV);
-  console.log(" - PORT:", process.env.PORT);
-  console.log(" - TURSO_DATABASE_URL:", process.env.TURSO_DATABASE_URL ? "[SET]" : "[NOT SET]");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const MIGRATIONS_DIR = join(__dirname, "../prisma/migrations");
+
+const { TURSO_AUTH_TOKEN, RAILWAY_ENVIRONMENT_NAME, TURSO_DATABASE_URL } = process.env;
+
+if (!TURSO_AUTH_TOKEN) {
+  console.error("❌ TURSO_AUTH_TOKEN is missing. Set it in Railway or CI secrets.");
+  process.exit(1);
 }
 
-/**
- * Get database name
- */
-function getDbName() {
-  return process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT;
+if (!TURSO_DATABASE_URL) {
+  console.error("❌ TURSO_DATABASE_URL is missing. Set it in Railway or CI secrets.");
+  process.exit(1);
 }
-const DB_NAME = getDbName();
 
-/**
- * Execute turso shell with SQL
- */
-function tursoShell(sql) {
-  const proc = spawnSync(
-    "turso",
-    ["db", "shell", DB_NAME],
-    {
-      input: sql,
-      encoding: "utf8",
-      stdio: ["pipe", "inherit", "inherit"],
-      env: process.env,
-    }
-  );
-
-  if (proc.status !== 0) {
-    throw new Error(`turso db shell exited with status ${proc.status}`);
-  }
-}
+const client = createClient({
+  url: TURSO_DATABASE_URL,
+  authToken: TURSO_AUTH_TOKEN,
+});
 
 /**
  * Get sorted migration directories
+ * Migrations are timestamped, so we can sort them by name
  */
 function getMigrationDirs() {
   if (!existsSync(MIGRATIONS_DIR)) {
@@ -75,86 +51,67 @@ function getMigrationDirs() {
   }
 
   return readdirSync(MIGRATIONS_DIR)
-    .map(entry => join(MIGRATIONS_DIR, entry))
-    .filter(path => statSync(path).isDirectory())
+    .map((entry) => join(MIGRATIONS_DIR, entry))
+    .filter((path) => statSync(path).isDirectory())
     .sort();
 }
 
 /**
  * Apply one migration
  */
-function applyMigration(migrationDir) {
+async function applyMigration(migrationDir) {
   const migrationFile = join(migrationDir, "migration.sql");
 
   if (!existsSync(migrationFile)) {
-    console.warn(`⚠️ No migration.sql found in ${migrationDir}`);
+    console.warn(`⚠️  No migration.sql found in ${migrationDir}`);
     return false;
   }
 
   const migrationName = basename(migrationDir);
-
   console.log(`📦 Applying migration: ${migrationName}`);
+
   const sql = readFileSync(migrationFile, "utf8");
 
   try {
-    tursoShell(sql);
+    await client.execute(sql);
     console.log(`✅ Successfully applied: ${migrationName}`);
     return true;
   } catch (err) {
-    console.error(`❌ Failed: ${migrationName}`);
+    console.error(`❌ Failed: ${migrationName}`, err);
     throw err;
   }
 }
 
 /**
- * Start the main application
- */
-function startApplication() {
-  console.log("\n🚀 Starting application (npm run start)...\n");
-
-  const proc = spawnSync("npm", ["run", "start"], {
-    stdio: "inherit",
-    env: process.env,
-  });
-
-  if (proc.status !== 0) {
-    console.error("\n❌ Application failed to start.");
-    process.exit(proc.status);
-  }
-}
-
-/**
- * Main entry
+ * Main entrypoint
  */
 async function main() {
-  loadEnv();
+  const environment = process.env.RAILWAY_ENVIRONMENT_NAME;
 
-  console.log("\n🚀 Starting Turso migration process...");
-  console.log(`Environment: ${process.env.RAILWAY_ENVIRONMENT_NAME ?? DEFAULT_ENVIRONMENT}`);
-  console.log(`Database: ${DB_NAME}`);
-  console.log(`Migrations directory: ${MIGRATIONS_DIR}\n`);
+  console.log("🚀 Starting migrations using libSQL client...");
+  console.log(`Environment: ${environment}`);
+  console.log(`Database URL: ${DATABASE_URL}\n`);
 
   const migrationDirs = getMigrationDirs();
 
   if (migrationDirs.length === 0) {
-    console.log("✨ No migrations to apply\n");
-    return startApplication();
+    console.log("✨ No migrations to apply");
+    return;
   }
 
   console.log(`Found ${migrationDirs.length} migration(s)\n`);
 
   let appliedCount = 0;
   for (const dir of migrationDirs) {
-    if (applyMigration(dir)) appliedCount++;
+    if (await applyMigration(dir)) appliedCount++;
   }
 
-  console.log(`\n✨ Done! Applied ${appliedCount}/${migrationDirs.length} migration(s)\n`);
+  console.log(`\n✨ Applied ${appliedCount}/${migrationDirs.length} migration(s)`);
 
-  // ⏩ Start application after successful migrations
-  startApplication();
+  await client.close();
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error("\n❌ Migration failed:", err.message);
   process.exit(1);
 });
