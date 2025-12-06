@@ -70,15 +70,15 @@
 # CMD ["sh", "-c", "node packages/database/scripts/apply-migrations.js && npm run start"]
 
 
-FROM node:22-slim AS base
+FROM node:22-alpine AS base
 
 # Builder
 FROM base AS builder
-RUN apt-get update -y && apt-get install -y ca-certificates
+RUN apk update && apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-RUN npm install -g turbo@2.6.1
+RUN npm install -g turbo@2.6.3
 COPY . .
 
 ARG RAILWAY_SERVICE_NAME
@@ -87,7 +87,7 @@ RUN turbo prune ${RAILWAY_SERVICE_NAME} --docker
 
 # Installer
 FROM base AS installer
-RUN apt-get update -y && apt-get install -y ca-certificates
+RUN apk update && apk add --no-cache libc6-compat
 WORKDIR /app
  
 COPY --from=builder /app/out/json/ .
@@ -106,8 +106,8 @@ WORKDIR /app
 
 ARG RAILWAY_SERVICE_NAME
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 appuser
+RUN addgroup -S -g 1001 nodejs && \
+    adduser -S -u 1001 -G nodejs appuser
 
 # Copy application files
 COPY --from=installer --chown=appuser:nodejs /app/apps/${RAILWAY_SERVICE_NAME}/package.json ./package.json

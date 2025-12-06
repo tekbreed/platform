@@ -18,12 +18,12 @@ graph TB
         CHALLENGES[Coding Challenges]
         LMS[LMS]
         NOTES[Notes]
+        TEAMS[Teams]
     end
 
     subgraph "Business Apps"
         JOBS[Job Board]
         STORE[Store]
-        TEAMS[Teams]
     end
 
     subgraph "Backend Services"

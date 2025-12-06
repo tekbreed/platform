@@ -57,8 +57,7 @@ cd platform
 npm install
 cp apps/web/.env.example apps/web/.env
 # Edit .env with your configuration
-npm run db:generate
-npm run dev
+turbo <app>#dev
 ```
 
 The web app will be available at `http://localhost:5173`.
@@ -67,21 +66,33 @@ The web app will be available at `http://localhost:5173`.
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start all apps |
-| `npm run build` | Build all apps |
-| `npm run test` | Run unit tests (watch) |
-| `npm run test:run` | Run unit tests (CI) |
-| `npm run test:e2e` | Run e2e tests |
-| `npm run format-and-lint` | Check code quality |
-| `npm run format-and-lint:fix` | Auto-fix issues |
-| `npm run typecheck` | Type checking |
+| `turbo web#dev` | Start web app |
+| `turbo build#web` | Build web app |
+| `turbo test:e2e#web` | Run e2e tests for web app |
+| `turbo format-and-lint` | Check code quality |
+| `turbo format-and-lint:fix#web` | Auto-fix issues |
+| `turbo typecheck#web` | Type checking |
 
 ### Turbo Commands
 
 ```bash
-turbo web#dev          # Start specific app
-turbo build --filter=web   # Build specific app
-turbo test:e2e --filter=web   # E2E tests for app
+turbo dev --filter=<app>  # Start specific app
+turbo build --filter=<app | package>   # Build specific app
+turbo test:e2e --filter=<app>   # E2E tests for app
+turbo format-and-lint   # Check code quality
+turbo format-and-lint:fix   # Auto-fix issues
+turbo typecheck --filter=<app | package>   # Type checking
+```
+
+Or you can use the following commands:
+
+```bash
+turbo <app>#dev          # Start specific app
+turbo <app>#build   # Build specific app
+turbo <app>#test:e2e   # E2E tests for app
+turbo format-and-lint   # Check code quality
+turbo format-and-lint:fix   # Auto-fix issues
+turbo <app>#typescheck  # Type checking
 ```
 
 ## 🏛️ Technology Stack
@@ -106,4 +117,4 @@ See [docs/development.md](./docs/development.md) for:
 
 ## 📝 License
 
-Private - TekBreed © 2024
+Private - TekBreed © 2025

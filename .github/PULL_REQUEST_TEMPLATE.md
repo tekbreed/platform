@@ -31,7 +31,7 @@
 - [ ] Chore
 
 ## Related Issues
-<!-- Link to Jira/Linear ticket or GitHub issue -->
+<!-- Link to Linear ticket or GitHub issue -->
 
 ## Testing
 - [ ] Unit tests pass (`npm run test:run`)
