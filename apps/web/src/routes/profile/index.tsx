@@ -3,17 +3,7 @@ import React from "react"
 // import { generateMetadata } from "~/utils/meta";
 import { useLoaderData, useSearchParams } from "react-router"
 
-import {
-	Award,
-	Bell,
-	Bookmark,
-	BookOpen,
-	CreditCard,
-	Flag,
-	type LucideIcon,
-	User,
-	Users,
-} from "lucide-react"
+import { type Icon, Icons } from "@repo/ui/composed/icons"
 
 import { requireUserId } from "@repo/utils//auth/auth.server"
 
@@ -69,17 +59,17 @@ export default function ProfileRoute() {
 		useLoaderData<Route.ComponentProps["loaderData"]>()
 
 	const tabs = [
-		{ value: "Account", Icon: User },
-		{ value: "My Programs", Icon: BookOpen },
-		{ value: "My Courses", Icon: BookOpen },
-		{ value: "My Teams", Icon: Users },
-		{ value: "Certificates", Icon: Award },
-		{ value: "Subscription", Icon: CreditCard },
-		{ value: "Notifications", Icon: Bell },
-		{ value: "Bookmarks", Icon: Bookmark },
-		{ value: "Content Reports", Icon: Flag },
-		{ value: "API Keys", Icon: Flag },
-	] as { value: TabValue; Icon: LucideIcon }[]
+		{ value: "Account", Icon: Icons.user },
+		{ value: "My Programs", Icon: Icons.bookOpen },
+		{ value: "My Courses", Icon: Icons.bookOpen },
+		{ value: "My Teams", Icon: Icons.users },
+		{ value: "Certificates", Icon: Icons.award },
+		{ value: "Subscription", Icon: Icons.creditCard },
+		{ value: "Notifications", Icon: Icons.bell },
+		{ value: "Bookmarks", Icon: Icons.bookmark },
+		{ value: "Content Reports", Icon: Icons.flag },
+		{ value: "API Keys", Icon: Icons.flag },
+	] as { value: TabValue; Icon: Icon }[]
 
 	const tabValues = tabs.map((tab) => tab.value)
 	const tabFromUrl = searchParams.get("tab") as TabValue

@@ -4,12 +4,12 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
+import { prisma } from "@repo/database/client"
+
 import { sessionKey } from "@repo/utils/auth/auth.server"
 import { authSessionStorage } from "@repo/utils/auth/session.server"
 import { invariantResponse } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
-
-import { prisma } from "@repo/database/client"
 
 import {
 	ACCOUNT_INFORMATION_INTENT,

@@ -1,4 +1,4 @@
-import { FileText, GraduationCap, Play, Target, Trophy } from "lucide-react"
+import { Icons } from "@repo/ui/composed/icons"
 
 import { baseUrl, devPorts } from "./config"
 
@@ -31,21 +31,21 @@ const buildUrl = (subdomain?: ModuleName, path: string = ""): string => {
 }
 
 export const learningIcons = {
-	articles: FileText,
-	tutorials: Play,
-	courses: GraduationCap,
-	programs: Target,
-	challenges: Trophy,
+	articles: Icons.fileText,
+	tutorials: Icons.play,
+	courses: Icons.graduationCap,
+	programs: Icons.target,
+	challenges: Icons.trophy,
 }
 
 export const serviceIcons = {
-	lms: FileText,
-	chat: Play,
-	classroom: GraduationCap,
-	notes: Target,
-	"job-board": Trophy,
-	store: Target,
-	docs: Target,
+	lms: Icons.fileText,
+	chat: Icons.play,
+	classroom: Icons.graduationCap,
+	notes: Icons.target,
+	"job-board": Icons.trophy,
+	store: Icons.target,
+	docs: Icons.target,
 }
 
 export const learning = [

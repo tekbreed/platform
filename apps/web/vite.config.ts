@@ -15,9 +15,15 @@ export default defineConfig({
 		target: "es2022",
 		cssMinify: MODE === "production",
 		rollupOptions: {
-			external: [/node:.*/],
+			external: [/node:.*/, "@libsql/client", "@prisma/adapter-libsql"],
+			onwarn: (warning, warn) => {
+				if (warning.code === "SOURCEMAP_ERROR") {
+					return
+				}
+				warn(warning)
+			},
 		},
-		// sourcemap: true,
+		sourcemap: MODE !== "production",
 	},
 	plugins: [tailwindcss(), tsconfigPaths(), reactRouter()],
 	

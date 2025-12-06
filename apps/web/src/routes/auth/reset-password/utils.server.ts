@@ -2,10 +2,10 @@ import { data, redirect } from "react-router"
 
 import { StatusCodes } from "http-status-codes"
 
+import { prisma } from "@repo/database"
+
 import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { invariant } from "@repo/utils/misc"
-
-import { prisma } from "@repo/database"
 
 import { resetPasswordEmailSessionKey } from "../forgot-password"
 import type { VerifyFunctionArgs } from "../verify.server"

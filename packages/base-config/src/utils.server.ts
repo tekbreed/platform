@@ -1,5 +1,7 @@
 import { data } from "react-router"
 
+import { prisma } from "@repo/database"
+
 import { sessionKey, signout } from "@repo/utils/auth/auth.server"
 import { authSessionStorage } from "@repo/utils/auth/session.server"
 import { getEnv } from "@repo/utils/env.server"
@@ -7,8 +9,6 @@ import { honeypot } from "@repo/utils/honeypot.server"
 import { combineHeaders, getDomainUrl } from "@repo/utils/misc"
 import { themeSessionResolver } from "@repo/utils/theme.server"
 import { getToast } from "@repo/utils/toast.server"
-
-import { prisma } from "@repo/database"
 
 export async function getAppLoaderData(request: Request) {
 	const honeypotInputProps = await honeypot.getInputProps()

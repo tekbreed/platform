@@ -1,6 +1,6 @@
-import { requireUserId } from "@repo/utils/auth/auth.server"
-
 import { prisma } from "@repo/database/client"
+
+import { requireUserId } from "@repo/utils/auth/auth.server"
 
 import type { Route } from "./+types/download-user-data"
 

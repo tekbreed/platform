@@ -1,5 +1,7 @@
 import { redirect } from "react-router"
 
+import { prisma } from "@repo/database"
+
 import {
 	authenticator,
 	getSessionExpirationDate,
@@ -14,8 +16,6 @@ import {
 	getRedirectCookieValue,
 } from "@repo/utils/redirect-cookie.server"
 import { createToastHeaders, redirectWithToast } from "@repo/utils/toast.server"
-
-import { prisma } from "@repo/database"
 
 import { providerLabels } from "@/components/connection-form"
 import { prefilledProfileKey, providerIdKey } from "../onboarding/provider"

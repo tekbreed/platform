@@ -7,6 +7,8 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
+import { prisma } from "@repo/database/client"
+
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -26,8 +28,6 @@ import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { generateMetadata } from "@repo/utils/meta"
 import { useIsPending } from "@repo/utils/misc"
 import { redirectWithToast } from "@repo/utils/toast.server"
-
-import { prisma } from "@repo/database/client"
 
 import type { Route } from "./+types/create-password"
 

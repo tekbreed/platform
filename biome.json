@@ -105,11 +105,11 @@
 							{ "type": true, "source": [":PACKAGE:", "!@repo", "!@repo/**"] },
 							[":PACKAGE:", "!@repo", "!@repo/**"],
 							":BLANK_LINE:",
-							{ "type": true, "source": ["@repo/ui", "@repo/ui/**"] },
-							["@repo/ui", "@repo/ui/**"],
-							":BLANK_LINE:",
-							{ "type": true, "source": ["@repo/utils", "@repo/utils/**"] },
-							["@repo/utils", "@repo/utils/**"],
+							{
+								"type": true,
+								"source": ["@repo/base-config", "@repo/base-config/**"]
+							},
+							["@repo/base-config", "@repo/base-config/**"],
 							":BLANK_LINE:",
 							{
 								"type": true,
@@ -119,9 +119,15 @@
 							":BLANK_LINE:",
 							{
 								"type": true,
-								"source": ["@repo/base-config", "@repo/base-config/**"]
+								"source": ["@repo/tests-config", "@repo/tests-config/**"]
 							},
-							["@repo/base-config", "@repo/base-config/**"],
+							["@repo/tests-config", "@repo/tests-config/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/ui", "@repo/ui/**"] },
+							["@repo/ui", "@repo/ui/**"],
+							":BLANK_LINE:",
+							{ "type": true, "source": ["@repo/utils", "@repo/utils/**"] },
+							["@repo/utils", "@repo/utils/**"],
 							":BLANK_LINE:",
 							{ "type": true, "source": ["@repo/**"] },
 							"@repo/**",

@@ -8,6 +8,8 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
+import { prisma } from "@repo/database"
+
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -28,8 +30,6 @@ import { sendEmail } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { generateMetadata } from "@repo/utils/meta"
 import { useIsPending } from "@repo/utils/misc"
-
-import { prisma } from "@repo/database"
 
 import type { Route } from "./+types/forgot-password"
 import { prepareVerification } from "./verify.server"

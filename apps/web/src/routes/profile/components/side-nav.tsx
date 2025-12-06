@@ -1,9 +1,8 @@
 import { Form, Link, useLoaderData } from "react-router"
 
-import { Camera, LogOut, type LucideIcon } from "lucide-react"
-
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar"
 import { Button } from "@repo/ui/components/button"
+import { type Icon, Icons } from "@repo/ui/composed/icons"
 import { cn } from "@repo/ui/lib/utils"
 
 import { getImgSrc, getInitials } from "@repo/utils/misc"
@@ -12,7 +11,7 @@ import type { TabValue } from ".."
 import type { Route } from "../+types/index"
 
 type SideNavProps = {
-	tabs: { value: TabValue; Icon: LucideIcon }[]
+	tabs: { value: TabValue; Icon: Icon }[]
 	activeTab: TabValue
 	setActiveTab: (activetab: TabValue) => void
 }
@@ -30,15 +29,15 @@ export function SideNav({ tabs, activeTab, setActiveTab }: SideNavProps) {
 						size={"icon"}
 					>
 						<Link to={"/profile/change-photo"}>
-							<Camera className="h-full w-full" />
+							<Icons.camera className="h-full w-full" />
 						</Link>
 					</Button>
 					<Avatar className="-z-20 size-24 border border-border">
 						<AvatarImage
 							alt={user.name}
 							src={getImgSrc({
-								seed: user.name,
-								fileKey: user.image?.fileKey,
+								// seed: user.name,
+								// fileKey: user.image?.fileKey,
 							})}
 						/>
 						<AvatarFallback>{getInitials(user.name)}</AvatarFallback>
@@ -71,7 +70,7 @@ export function SideNav({ tabs, activeTab, setActiveTab }: SideNavProps) {
 				method="post"
 			>
 				<Button className="w-full font-bold" variant="destructive">
-					<LogOut className="mr-3 h-5 w-5" />
+					<Icons.logOut className="mr-3 h-5 w-5" />
 					Sign Out
 				</Button>
 			</Form>
@@ -81,7 +80,7 @@ export function SideNav({ tabs, activeTab, setActiveTab }: SideNavProps) {
 
 interface TabItemProps {
 	value: TabValue
-	Icon: LucideIcon
+	Icon: Icon
 	activeTab: TabValue
 	setActiveTab: (activeTab: TabValue) => void
 }

@@ -8,9 +8,9 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
 	React.useEffect(() => {
 		posthog.init(env.POSTHOG_API_KEY, {
-			api_host: "https://posthog-reverse-proxy.tekbreed.com",
-			// api_host: "https://us.i.posthog.com",
-			ui_host: "https://us.posthog.com",
+			// api_host: "https://posthog-reverse-proxy.tekbreed.com",
+			api_host: "https://us.i.posthog.com",
+			// ui_host: "https://us.posthog.com",
 			defaults: "2025-05-24",
 			person_profiles: "identified_only",
 		})

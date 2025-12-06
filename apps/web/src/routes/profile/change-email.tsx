@@ -8,6 +8,8 @@ import { StatusCodes } from "http-status-codes"
 import { Loader2 } from "lucide-react"
 import { z } from "zod/v4"
 
+import { prisma } from "@repo/database/client"
+
 import { Button } from "@repo/ui/components/button"
 import {
 	Card,
@@ -28,8 +30,6 @@ import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { sendEmail } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { useIsPending } from "@repo/utils/misc"
-
-import { prisma } from "@repo/database/client"
 
 import { prepareVerification } from "../auth/verify.server"
 import type { Route } from "./+types/change-email"

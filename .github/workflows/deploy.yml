@@ -1,6 +1,13 @@
 name: Deploy
 
 on:
+  # Automatic deployment after CI passes
+  workflow_run:
+    workflows: ["Code Quality & Tests"]
+    types: [completed]
+    branches: [dev, main]
+
+  # Manual deployment
   workflow_dispatch:
     inputs:
       app:
@@ -8,7 +15,6 @@ on:
         required: true
         type: choice
         options:
-          - waitlist
           - web
           - chat
           - admin
@@ -31,24 +37,103 @@ on:
           - production
         default: development
 
-jobs:
-  deploy:
-    name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
-    runs-on: ubuntu-latest
-    container: ghcr.io/railwayapp/cli:latest
-    environment: ${{ inputs.environment }}
+concurrency:
+  group: deploy-${{ github.event.workflow_run.head_branch || github.ref }}
+  cancel-in-progress: true
 
+env:
+  NODE_VERSION: 22
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+jobs:
+  # Detect changed apps (only for automatic triggers)
+  detect-changes:
+    name: Detect Changed Apps
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success'
+    outputs:
+      apps: ${{ steps.changes.outputs.apps }}
+      has_changes: ${{ steps.changes.outputs.has_changes }}
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Determine environment
+        id: env
+        run: |
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          if [ "$BRANCH" = "main" ]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            echo "environment=development" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Detect changed apps
+        id: changes
+        run: |
+          # Get list of deployable apps
+          DEPLOYABLE_APPS="web chat admin programs coding-challenges classroom notes teams job-board store docs mcp apis"
+
+          # Use turbo to detect changed packages
+          echo "Detecting changes with turbo..."
+          TURBO_OUTPUT=$(npx turbo build --filter="./apps/*" --filter="[HEAD^1]" --dry-run=json 2>/dev/null || echo '{"packages":[]}')
+
+          # Parse changed packages and filter to only deployable apps
+          CHANGED_APPS=$(echo "$TURBO_OUTPUT" | jq -r '.packages[]' | while read pkg; do
+            # Extract app name from package path (e.g., @repo/web -> web)
+            APP_NAME=$(echo "$pkg" | sed 's/@repo\///' | sed 's/^apps\///')
+            # Check if it's a deployable app
+            if echo "$DEPLOYABLE_APPS" | grep -qw "$APP_NAME"; then
+              echo "$APP_NAME"
+            fi
+          done | sort -u | jq -R -s -c 'split("\n") | map(select(length > 0))')
+
+          echo "Changed apps: $CHANGED_APPS"
+
+          if [ "$CHANGED_APPS" = "[]" ] || [ -z "$CHANGED_APPS" ]; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "apps=[]" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "apps=$CHANGED_APPS" >> $GITHUB_OUTPUT
+          fi
+
+  # Automatic deployment (matrix for changed apps)
+  deploy-auto:
+    name: Deploy ${{ matrix.app }} to ${{ needs.detect-changes.outputs.environment }}
+    runs-on: ubuntu-latest
+    needs: [detect-changes]
+    if: needs.detect-changes.outputs.has_changes == 'true'
+    container: ghcr.io/railwayapp/cli:latest
+    environment: ${{ needs.detect-changes.outputs.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJson(needs.detect-changes.outputs.apps) }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Deploy to Railway
         env:
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-          TURBO_TEAM: ${{ vars.TURBO_TEAM }}
-          TURBO_REMOTE_ONLY: true
-          APP_NAME: ${{ inputs.app }}
-          ENVIRONMENT: ${{ inputs.environment }}
+          APP_NAME: ${{ matrix.app }}
+          ENVIRONMENT: ${{ needs.detect-changes.outputs.environment }}
           RAILWAY_DEV_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}
           RAILWAY_PROD_TOKEN: ${{ secrets.RAILWAY_PROD_TOKEN }}
         run: |
@@ -61,13 +146,6 @@ jobs:
 
           # Set service ID based on app and environment
           case "${APP_NAME}" in
-            waitlist)
-              if [ "${ENVIRONMENT}" = "production" ]; then
-                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_PROD_SERVICE_ID }}"
-              else
-                SERVICE_ID="${{ secrets.RAILWAY_WAITLIST_DEV_SERVICE_ID }}"
-              fi
-              ;;
             web)
               if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
@@ -145,7 +223,152 @@ jobs:
                 SERVICE_ID="${{ secrets.RAILWAY_DOCS_DEV_SERVICE_ID }}"
               fi
               ;;
-            mcps)
+            mcp)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_MCPS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_MCPS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            apis)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_APIS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_APIS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            *)
+              echo "❌ Unknown app: ${APP_NAME}"
+              exit 1
+              ;;
+          esac
+
+          # Validate required variables
+          if [ -z "${RAILWAY_TOKEN}" ]; then
+            echo "❌ RAILWAY_TOKEN not found for ${ENVIRONMENT} environment"
+            echo "Please ensure RAILWAY_DEV_TOKEN or RAILWAY_PROD_TOKEN secret is configured."
+            exit 1
+          fi
+
+          if [ -z "${SERVICE_ID}" ]; then
+            echo "❌ SERVICE_ID not found for ${APP_NAME} in ${ENVIRONMENT}"
+            echo "Please ensure the corresponding service ID secret is configured."
+            exit 1
+          fi
+
+          echo "🚀 Deploying ${APP_NAME} to ${ENVIRONMENT}"
+          railway up --service="${SERVICE_ID}" --detach
+        shell: sh
+
+  # Manual deployment (single app)
+  deploy-manual:
+    name: Deploy ${{ inputs.app }} to ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    container: ghcr.io/railwayapp/cli:latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+          TURBO_REMOTE_ONLY: true
+          APP_NAME: ${{ inputs.app }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          RAILWAY_DEV_TOKEN: ${{ secrets.RAILWAY_DEV_TOKEN }}
+          RAILWAY_PROD_TOKEN: ${{ secrets.RAILWAY_PROD_TOKEN }}
+        run: |
+          # Set Railway token based on environment
+          if [ "${ENVIRONMENT}" = "production" ]; then
+            export RAILWAY_TOKEN="${RAILWAY_PROD_TOKEN}"
+          else
+            export RAILWAY_TOKEN="${RAILWAY_DEV_TOKEN}"
+          fi
+
+          # Set service ID based on app and environment
+          case "${APP_NAME}" in
+            web)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_WEB_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            chat)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CHAT_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CHAT_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            admin)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_ADMIN_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_ADMIN_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            programs)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_PROGRAMS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_PROGRAMS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            coding-challenges)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CODING_CHALLENGES_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            classroom)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_CLASSROOM_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_CLASSROOM_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            notes)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_NOTES_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_NOTES_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            teams)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_TEAMS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_TEAMS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            job-board)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_JOB_BOARD_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_JOB_BOARD_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            store)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_STORE_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_STORE_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            docs)
+              if [ "${ENVIRONMENT}" = "production" ]; then
+                SERVICE_ID="${{ secrets.RAILWAY_DOCS_PROD_SERVICE_ID }}"
+              else
+                SERVICE_ID="${{ secrets.RAILWAY_DOCS_DEV_SERVICE_ID }}"
+              fi
+              ;;
+            mcp)
               if [ "${ENVIRONMENT}" = "production" ]; then
                 SERVICE_ID="${{ secrets.RAILWAY_MCPS_PROD_SERVICE_ID }}"
               else

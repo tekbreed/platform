@@ -6,6 +6,8 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
+import { prisma } from "@repo/database"
+
 import {
 	requireAnonymous,
 	sessionKey,
@@ -18,8 +20,6 @@ import { subscribeUser } from "@repo/utils/email.server"
 import { checkHoneypot } from "@repo/utils/honeypot.server"
 import { onboardingSessionKey } from "@repo/utils/onboarding"
 import { redirectWithToast } from "@repo/utils/toast.server"
-
-import { prisma } from "@repo/database"
 
 import { OnboardingSchema, providerIdKey } from "./provider"
 

@@ -3,9 +3,19 @@ name: Code Quality & Tests
 on:
   push:
     branches: [dev, main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
   pull_request:
     types: [opened, synchronize]
     branches: [dev, main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/PULL_REQUEST_TEMPLATE.md'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -17,8 +27,6 @@ env:
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
   # Add other global env vars here
   NODE_VERSION: 22
-  SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
-  SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
 
 jobs:
   quality:
@@ -102,100 +110,104 @@ jobs:
           path: coverage/
           retention-days: 30
 
-  # e2e-tests:
-  #   name: E2E Tests
-  #   runs-on: ubuntu-latest
-  #   needs: unit-tests
-  #   timeout-minutes: 60
-  #   env:
-  #     NODE_ENV: test
-  #     SESSION_SECRET: "mock-session-secret"
-  #     ADMIN_PASSWORD: "mock-admin-password"
-  #     POLAR_ACCESS_TOKEN: "mock-polar-token"
-  #     POLAR_WEBHOOK_SECRET: "mock-polar-secret"
-  #     POLAR_ORGANIZATION_ID: "mock-polar-org-id"
-  #     TURSO_DATABASE_URL: "libsql://mock-db-url"
-  #     TURSO_AUTH_TOKEN: "mock-turso-token"
-  #     DATABASE_URL: "file:./dev.db"
-  #     ANTHROPIC_API_KEY: "mock-anthropic-key"
-  #     VOYAGE_API_KEY: "mock-voyage-key"
-  #     UPSTASH_VECTOR_REST_URL: "https://mock-upstash-url"
-  #     UPSTASH_VECTOR_REST_TOKEN: "mock-upstash-token"
-  #     BUNNY_STORAGE_ZONE: "mock-bunny-zone"
-  #     BUNNY_ACCESS_KEY: "mock-bunny-key"
-  #     BUNNY_LIBRARY_ID: "mock-bunny-library-id"
-  #     GITHUB_CLIENT_ID: "mock-github-id"
-  #     GITHUB_CLIENT_SECRET: "mock-github-secret"
-  #     RESEND_API_KEY: "mock-resend-key"
-  #     RESEND_AUDIENCE_ID: "mock-resend-audience-id"
-  #     SANITY_STUDIO_PROJECT_ID: "mock-sanity-project-id"
-  #     SANITY_STUDIO_DATASET: "mock-sanity-dataset"
-  #     ALLOW_INDEXING: "false"
-  #     DISCORD_BOT_TOKEN: "mock-discord-token"
-  #     DISCORD_GUILD_ID: "mock-discord-guild-id"
-  #     POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v5
-  #       with:
-  #         fetch-depth: 0  # Fetch all history for Turbo to detect changes
+  e2e-tests:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 60
+    env:
+      NODE_ENV: test
+      SESSION_SECRET: "mock-session-secret"
+      ADMIN_PASSWORD: "mock-admin-password"
+      POLAR_ACCESS_TOKEN: "mock-polar-token"
+      POLAR_WEBHOOK_SECRET: "mock-polar-secret"
+      POLAR_ORGANIZATION_ID: "mock-polar-org-id"
+      TURSO_DATABASE_URL: "libsql://mock-db-url"
+      TURSO_AUTH_TOKEN: "mock-turso-token"
+      DATABASE_URL: "file:./dev.db"
+      ANTHROPIC_API_KEY: "mock-anthropic-key"
+      VOYAGE_API_KEY: "mock-voyage-key"
+      UPSTASH_VECTOR_REST_URL: "https://mock-upstash-url"
+      UPSTASH_VECTOR_REST_TOKEN: "mock-upstash-token"
+      BUNNY_STORAGE_ZONE: "mock-bunny-zone"
+      BUNNY_ACCESS_KEY: "mock-bunny-key"
+      BUNNY_LIBRARY_ID: "mock-bunny-library-id"
+      GITHUB_CLIENT_ID: "mock-github-id"
+      GITHUB_CLIENT_SECRET: "mock-github-secret"
+      RESEND_API_KEY: "mock-resend-key"
+      RESEND_AUDIENCE_ID: "mock-resend-audience-id"
+      SANITY_STUDIO_PROJECT_ID: ${{ secrets.SANITY_STUDIO_PROJECT_ID }}
+      SANITY_STUDIO_DATASET: ${{ secrets.SANITY_STUDIO_DATASET }}
+      ALLOW_INDEXING: "false"
+      DISCORD_BOT_TOKEN: "mock-discord-token"
+      DISCORD_GUILD_ID: "mock-discord-guild-id"
+      HONEYPOT_SECRET: "mock-honeypot-secret"
+      POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # Fetch all history for Turbo to detect changes
 
-  #     - name: Setup Node.js
-  #       uses: actions/setup-node@v5
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #         cache: "npm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
-  #     - name: Install dependencies
-  #       run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-  #     - name: Cache Turbo
-  #       uses: actions/cache@v4
-  #       with:
-  #         path: .turbo
-  #         key: ${{ runner.os }}-turbo-${{ github.sha }}
-  #         restore-keys: |
-  #           ${{ runner.os }}-turbo-
+      - name: Cache Turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
 
-  #     - name: Get Playwright version
-  #       id: playwright-version
-  #       run: echo "version=$(node -p "require('./package-lock.json').packages['node_modules/@playwright/test'].version")" >> $GITHUB_OUTPUT
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(node -p "require('./package-lock.json').packages['node_modules/@playwright/test'].version")" >> $GITHUB_OUTPUT
 
-  #     - name: Cache Playwright browsers
-  #       uses: actions/cache@v4
-  #       id: playwright-cache
-  #       with:
-  #         path: ~/.cache/ms-playwright
-  #         key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
 
-  #     - name: Install Playwright Browsers
-  #       if: steps.playwright-cache.outputs.cache-hit != 'true'
-  #       run: npm run test:e2e:install
+      - name: Install Playwright Browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
 
-  #     - name: Run Playwright tests on changed apps
-  #       run: npx turbo run test:e2e:run --filter="./apps/*" --filter="[HEAD^1]"
+      - name: Build apps
+        run: npx turbo run build --filter="./apps/*" --filter="[HEAD^1]"
 
-  #     - name: Upload Playwright report
-  #       uses: actions/upload-artifact@v4
-  #       if: ${{ !cancelled() }}
-  #       with:
-  #         name: playwright-report
-  #         path: playwright-report/
-  #         retention-days: 30
+      - name: Run Playwright tests on changed apps
+        run: npx turbo run test:e2e:run --filter="./apps/*" --filter="[HEAD^1]"
 
-  # ci-success:
-  #   name: CI Success
-  #   runs-on: ubuntu-latest
-  #   needs: [quality, unit-tests, e2e-tests]
-  #   if: always()
-  #   steps:
-  #     - name: Check all jobs status
-  #       run: |
-  #         if [[ "${{ needs.quality.result }}" != "success" ]] || \
-  #            [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
-  #            [[ "${{ needs.e2e-tests.result }}" != "success" ]]; then
-  #           echo "One or more jobs failed"
-  #           exit 1
-  #         fi
-  #         echo "All CI jobs passed successfully!"
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  ci-success:
+    name: CI Success
+    runs-on: ubuntu-latest
+    needs: [quality, unit-tests, e2e-tests]
+    if: always()
+    steps:
+      - name: Check all jobs status
+        run: |
+          if [[ "${{ needs.quality.result }}" != "success" ]] || \
+             [[ "${{ needs.unit-tests.result }}" != "success" ]] || \
+             [[ "${{ needs.e2e-tests.result }}" != "success" ]]; then
+            echo "One or more jobs failed"
+            exit 1
+          fi
+          echo "All CI jobs passed successfully!"
 

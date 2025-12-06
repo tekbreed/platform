@@ -75,7 +75,7 @@ export function SubscriptionForm() {
 							method="post"
 						>
 							<HoneypotInputs />
-
+							<input {...getInputProps(fields.intent, { type: "hidden" })} />
 							<div className="flex flex-col gap-3 sm:flex-row">
 								<div className="flex-1">
 									<Input

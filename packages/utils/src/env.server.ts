@@ -25,6 +25,7 @@ export const schema = z.object({
 	ALLOW_INDEXING: z.enum(["true", "false"]).optional(),
 	DISCORD_BOT_TOKEN: z.string(),
 	DISCORD_GUILD_ID: z.string(),
+	HONEYPOT_SECRET: z.string(),
 	POSTHOG_API_KEY: z.string().default("posthog"),
 })
 

@@ -5,14 +5,14 @@ import { safeRedirect } from "remix-utils/safe-redirect"
 
 import bcrypt from "bcryptjs"
 
-import { combineHeaders } from "@repo/utils/misc"
-
 import {
 	type Connection,
 	type Password,
 	prisma,
 	type User,
 } from "@repo/database"
+
+import { combineHeaders } from "@repo/utils/misc"
 
 import type { ProviderUser } from "../auth-providers/provider"
 import { providers } from "./connection.server"

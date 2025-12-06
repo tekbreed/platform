@@ -4,13 +4,13 @@ import { parseWithZod } from "@conform-to/zod/v4"
 import { StatusCodes } from "http-status-codes"
 import { z } from "zod/v4"
 
+import { prisma } from "@repo/database"
+
 import { Verification } from "@repo/ui/email/verification"
 
 import { verifySessionStorage } from "@repo/utils/auth/verification.server"
 import { sendEmail } from "@repo/utils/email.server"
 import { onboardingSessionKey } from "@repo/utils/onboarding"
-
-import { prisma } from "@repo/database"
 
 import { SignupSchema } from "@/components/auth-form"
 import { prepareVerification } from "../verify.server"

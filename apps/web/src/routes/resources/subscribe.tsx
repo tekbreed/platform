@@ -23,15 +23,7 @@ export async function action({ request }: Route.ActionArgs) {
 		schema: SubscriptionSchema.transform(async (data, ctx) => {
 			const { name, email, intent } = data
 			const response = await subscribeUser({ name, email })
-			if (intent === "waitlist") {
-				void sendEmail({
-					to: email,
-					subject: "Welcome to TekBreed - You're on the waitlist!",
-					react: (
-						<WaitlistEmail firstName={name?.split(" ")[0] || "Developer"} />
-					),
-				})
-			}
+
 			if (response.status !== "success") {
 				ctx.addIssue({
 					path: ["root"],
@@ -40,6 +32,19 @@ export async function action({ request }: Route.ActionArgs) {
 				})
 				return z.NEVER
 			}
+
+			switch (intent) {
+				case "waitlist":
+					void sendEmail({
+						to: email,
+						subject: "Welcome to TekBreed - You're on the waitlist!",
+						react: (
+							<WaitlistEmail firstName={name?.split(" ")[0] || "Developer"} />
+						),
+					})
+					break
+			}
+
 			return { response }
 		}),
 		async: true,

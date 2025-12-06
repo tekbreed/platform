@@ -27,9 +27,10 @@
 		"GITHUB_CLIENT_ID",
 		"GITHUB_CLIENT_SECRET",
 		"GITHUB_REDIRECT_URI",
+		"HONEYPOT_SECRET",
 		"DISCORD_BOT_TOKEN",
 		"DISCORD_GUILD_ID"
-	],
+	],	
 
 	"tasks": {
 		"//#format-and-lint": {},

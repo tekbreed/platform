@@ -12,7 +12,11 @@ import type { Route } from "./+types/change-photo"
 
 // import { generateMetadata } from "~/utils/meta";
 
+// import { generateMetadata } from "~/utils/meta";
+
 import { HoneypotInputs } from "remix-utils/honeypot/react"
+
+import { prisma } from "@repo/database/client"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/avatar"
 import { Button } from "@repo/ui/components/button"
@@ -40,8 +44,6 @@ import {
 	uploadFIleToStorage,
 } from "@repo/utils/storage.server"
 import { redirectWithToast } from "@repo/utils/toast.server"
-
-import { prisma } from "@repo/database/client"
 
 const MAX_SIZE = 1024 * 1024 * 3 // 3MB
 const allowedTypes = ["image/jpeg", "image/png", "image/webp"]
