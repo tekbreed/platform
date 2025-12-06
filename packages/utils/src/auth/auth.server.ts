@@ -148,11 +148,6 @@ export async function signup({
 							hash: hashedPassword,
 						},
 					},
-					notificationSettings: {
-						create: {
-							contentUpdate: true,
-						},
-					},
 				},
 			},
 		},
@@ -207,11 +202,7 @@ export async function signupWithConnection({
 			email: email.toLowerCase(),
 			roles: { connect: { name: "USER" } },
 			connections: { create: { providerId, providerName } },
-			notificationSettings: {
-				create: {
-					contentUpdate: true,
-				},
-			},
+
 			// ...(imageUrl && { image: imageUrl }),
 		},
 		select: { id: true },
